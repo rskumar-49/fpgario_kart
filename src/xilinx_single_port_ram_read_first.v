@@ -6,7 +6,7 @@
 //  retained, it is suggested to set WRITE_MODE to NO_CHANGE as it is more power efficient.
 //  If a reset or enable is not necessary, it may be tied off or removed from the code.
 //  Modify the parameters for the desired RAM characteristics.
-
+`default_nettype wire
 module xilinx_single_port_ram_read_first #(
   parameter RAM_WIDTH = 18,                       // Specify RAM data width
   parameter RAM_DEPTH = 1024,                     // Specify RAM depth (number of entries)
@@ -100,3 +100,4 @@ endmodule
 */
 						
 						
+`default_nettype none
