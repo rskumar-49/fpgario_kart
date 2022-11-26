@@ -10,7 +10,6 @@ module transmit (
 
     output logic [1:0] axiod,
     output logic axiov,
-    
 );
     
 endmodule
