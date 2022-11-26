@@ -24,13 +24,15 @@ module top_level(
     logic [9:0] vcount;     // line number
     logic hsync, vsync, blank; //control signals for vga
 
-    logic [6:0] blank_pipe;
-    logic [6:0][10:0] hcount_pipe;
-    logic [6:0][9:0] vcount_pipe;
-    logic [6:0] hsync_pipe;
-    logic [6:0] vsync_pipe;
+    logic [8:0] blank_pipe;
+    logic [8:0][10:0] hcount_pipe;
+    logic [8:0][9:0] vcount_pipe;
+    logic [8:0] hsync_pipe;
+    logic [8:0] vsync_pipe;
 
-    logic [11:0] pixel_out;
+    logic [11:0] pixel_out_track;
+    logic [1:0][11:0] pixel_out_track_pipe;
+    logic [11:0] pixel_out_racer;
 
     logic clk_65mhz;
 
@@ -51,11 +53,23 @@ module top_level(
         .rst_in(sys_rst),
         .hcount_in(hcount),
         .vcount_in(vcount),
-        .player_x(11'd192),
-        .player_y(11'd192),
+        .player_x(11'd191),
+        .player_y(11'd191),
+        .opponent_x(11'd319),
+        .opponent_y(11'd319),
+        .pixel_out(pixel_out_track));
+
+    racer_view racer_viewer(
+        .clk_in(clk_65mhz),
+        .rst_in(sys_rst),
+        .hcount_in(hcount),
+        .vcount_in(vcount),
+        .player_x(11'd191),
+        .player_y(11'd191),
+        .direction(270),
         .opponent_x(11'd320),
         .opponent_y(11'd320),
-        .pixel_out(pixel_out));
+        .pixel_out(pixel_out_racer));
 
     always_ff @(posedge clk_65mhz)begin
 
@@ -65,7 +79,10 @@ module top_level(
         hsync_pipe[0] <= hsync;
         vsync_pipe[0] <= vsync;
 
-        for (int i=1; i<7; i = i+1)begin
+        pixel_out_track_pipe[0] <= pixel_out_track;
+        pixel_out_track_pipe[1] <= pixel_out_track_pipe[0];
+
+        for (int i=1; i<9; i = i+1)begin
             hcount_pipe[i] <= hcount_pipe[i-1];
             vcount_pipe[i] <= vcount_pipe[i-1];
             hsync_pipe[i] <= hsync_pipe[i-1];
@@ -75,12 +92,12 @@ module top_level(
     end
 
     always_ff @(posedge clk_65mhz)begin
-        vga_r <= ~blank_pipe[5] ? pixel_out[11:8] : 4'hF;     //TODO: needs to use pipelined signal (PS6)      /////
-        vga_g <= ~blank_pipe[5] ? pixel_out[7:4]  : 4'hF;      //TODO: needs to use pipelined signal (PS6)      /////
-        vga_b <= ~blank_pipe[5] ? pixel_out[3:0]  : 4'hF;      //TODO: needs to use pipelined signal (PS6)      /////
+        vga_r <= ~blank_pipe[7] ? (vcount_pipe[7] < 512 ? (hcount_pipe[7] >= 512 ? pixel_out_racer[11:8] : pixel_out_track_pipe[1][11:8]) : 4'h0) : 4'h0;     //TODO: needs to use pipelined signal (PS6)      /////
+        vga_g <= ~blank_pipe[7] ? (vcount_pipe[7] < 512 ? (hcount_pipe[7] >= 512 ? pixel_out_racer[7: 4] : pixel_out_track_pipe[1][7: 4]) : 4'h0) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
+        vga_b <= ~blank_pipe[7] ? (vcount_pipe[7] < 512 ? (hcount_pipe[7] >= 512 ? pixel_out_racer[3: 0] : pixel_out_track_pipe[1][3: 0]) : 4'h0) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
     end
 
-    assign vga_hs = ~hsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
-    assign vga_vs = ~vsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
+    assign vga_hs = ~hsync_pipe[7];  //TODO: needs to use pipelined signal (PS7)                  /////
+    assign vga_vs = ~vsync_pipe[7];  //TODO: needs to use pipelined signal (PS7)                  /////
 
 endmodule 

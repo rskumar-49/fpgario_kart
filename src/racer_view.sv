@@ -88,10 +88,10 @@ module racer_view (
     end
 
 
-    assign in_player   = (hcount_in >= 704  && hcount_in <= 831) && (vcount_in >= 320 && vcount_in <= 447);
+    assign in_player   = (hcount_in >= 708  && hcount_in <= 835) && (vcount_in >= 320 && vcount_in <= 447);
     assign player_addr = {(vcount_in[6:0] - 7'h64) >> 2, (hcount_in[6:0] - 7'h64) >> 2};
-    assign in_opponent = 0;
-    assign opponent_addr = 0;
+    assign in_opponent = (loc_x + 63 >= opponent_x && opponent_x + 64 >= loc_x) && (loc_y + 63 >= opponent_y && opponent_y + 64 >= loc_y);
+    assign opponent_addr = {loc_y[6:2] + 5'h15 - opponent_y[6:2], loc_x[6:2] + 5'h15 - opponent_x[6:2]};;
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
