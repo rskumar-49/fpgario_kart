@@ -38,16 +38,16 @@ module track_view_tb;
         rst_in = 1; //reset system
         #20; //hold high for a few clock cycles
         rst_in=0;
-        player_x = 64;
-        player_y = 64;
+        player_x = 1960;
+        player_y = 1960;
         opponent_x = 224;
         opponent_y = 224;
         #20;
         
         for (int i = 0; i < 80; i = i+1)begin
             for (int j = 0; j < 80; j = j+1) begin
-                hcount_in = j;
-                vcount_in = i;
+                hcount_in = 500;
+                vcount_in = 500;
                 sprite_type = 0;
                 #20;
             end

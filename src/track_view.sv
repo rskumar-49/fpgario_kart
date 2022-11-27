@@ -29,15 +29,10 @@ module track_view (
     logic [15:0][11:0] output_color;
     logic [3:0][3:0] sprite_type_pipe;
 
-    // For figuring out how to index into the player and opponent sprites
     logic [9:0] player_addr;
     logic [1:0][9:0] player_addr_pipe;
     logic [9:0] opponent_addr;
     logic [1:0][9:0] opponent_addr_pipe;
-
-    // Correct this to only have an output in the upper left corner of the screen (for hcount_in <= 511 and vcount_in <= 511)
-    // Edit this to not take in the sprite type. That can be calculated within this module.
-    // Tweak this to be for a 2048 by 2048 grid
 
     always_ff @(posedge clk_in)begin
         for (int i = 1; i < 4; i = i+1) begin
@@ -66,10 +61,11 @@ module track_view (
 
     // All for calculating the player lookup address
     assign player_addr   = {vcount_in[4:0] + 5'd15 -   player_y[6:2], hcount_in[4:0] + 5'd15 -   player_x[6:2]};
-    assign opponent_addr = {vcount_in[4:0] + 5'h15 - opponent_y[6:2], hcount_in[4:0] + 5'h15 - opponent_x[6:2]};
+    assign opponent_addr = {vcount_in[4:0] + 5'd15 - opponent_y[6:2], hcount_in[4:0] + 5'd15 - opponent_x[6:2]};
     
     assign sprite_addr = hcount_in[4:0] + 32 * vcount_in[4:0];
     assign pixel_out = output_color[sprite_type_pipe[3]];
+
     assign in_player   = (hcount_in + 15 >=   player_x[10:2]   && player_x[10:2] + 16 >= hcount_in) && (vcount_in + 15 >=   player_y[10:2]   && player_y[10:2] + 16 >= vcount_in);
     assign in_opponent = (hcount_in + 15 >= opponent_x[10:2] && opponent_x[10:2] + 16 >= hcount_in) && (vcount_in + 15 >= opponent_y[10:2] && opponent_y[10:2] + 16 >= vcount_in);
 
