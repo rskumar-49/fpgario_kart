@@ -20,17 +20,15 @@ module racer_view (
 
     logic in_player;
     logic in_opponent;
-    logic [1:0] in_player_pipe;
+    logic [3:0] in_player_pipe;
     logic [1:0] in_opponent_pipe;
     
     logic [3:0] sprite_type;
     logic [9:0] player_addr;
     logic [9:0] opponent_addr;
     logic [9:0] sprite_addr;
-    logic [3:0][3:0] sprite_type_pipe;
+    logic [1:0][3:0] sprite_type_pipe;
     logic [1:0][9:0] player_addr_pipe;
-    logic [1:0][9:0] opponent_addr_pipe;
-    logic [1:0][9:0] sprite_addr_pipe;
 
     logic signed [10:0] cos;
     logic signed [10:0] sin;
@@ -56,24 +54,20 @@ module racer_view (
 
     always_ff @(posedge clk_in)begin
 
-        if (in_player_pipe[1])          sprite_type_pipe[0] <= 8;
+        if (in_player_pipe[3])          sprite_type_pipe[0] <= 8;
         else if (in_opponent_pipe[1])   sprite_type_pipe[0] <= 9;
         else                            sprite_type_pipe[0] <= sprite_type;  
 
         in_player_pipe[0] <= in_player;
         in_player_pipe[1] <= in_player_pipe[0];
+        in_player_pipe[2] <= in_player_pipe[1];
+        in_player_pipe[3] <= in_player_pipe[2];
 
         player_addr_pipe[0] <= player_addr;
         player_addr_pipe[1] <= player_addr_pipe[0];
 
         in_opponent_pipe[0] <= in_opponent;
         in_opponent_pipe[1] <= in_opponent_pipe[0];
-
-        opponent_addr_pipe[0] <= opponent_addr;
-        opponent_addr_pipe[1] <= opponent_addr_pipe[0];
-
-        sprite_addr_pipe[0] <= sprite_addr;
-        sprite_addr_pipe[1] <= sprite_addr_pipe[0];
 
         delta_y_pipe[0] <= delta_y;
         delta_y_pipe[1] <= delta_y_pipe[0];
@@ -87,15 +81,15 @@ module racer_view (
     end
 
     // Player_addr and Opponent_addr work properly when they're in the player or opponent. Otherwise, it can spew garbage, but it doesn't matter.
-    assign in_player   = (hcount_in >= 706  && hcount_in <= 833) && (vcount_in >= 192 && vcount_in <= 319);
-    assign player_addr = {vcount_in[6:2] - 5'd15, hcount_in[6:2] - 5'd15};
+    assign in_player   = (hcount_in >= 704  && hcount_in <= 831) && (vcount_in >= 192 && vcount_in <= 319);
     assign in_opponent = (loc_x + 63 >= opponent_x && opponent_x + 64 >= loc_x) && (loc_y + 63 >= opponent_y && opponent_y + 64 >= loc_y);
+    assign player_addr =   {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
     assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
     assign sprite_addr = {loc_y[6:2], loc_x[6:2]};
-    assign pixel_out = output_color[sprite_type_pipe[3]];
+    assign pixel_out = output_color[sprite_type_pipe[1]];
 
     
     // Track BRAM
@@ -156,11 +150,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(black_square.mem))
     ) i0_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 0 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[0])
@@ -176,7 +170,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 0),
+        .ena(sprite_type == 0),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[0])
@@ -190,11 +184,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(grey_square.mem))
     ) i1_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 1 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[1])
@@ -210,7 +204,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 1),
+        .ena(sprite_type == 1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[1])
@@ -224,11 +218,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i2_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 2 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[2])
@@ -244,7 +238,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 2),
+        .ena(sprite_type == 2),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[2])
@@ -258,11 +252,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i3_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 3 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[3])
@@ -278,7 +272,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 3),
+        .ena(sprite_type == 3),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[3])
@@ -292,11 +286,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i4_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 4 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[4])
@@ -312,7 +306,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 4),
+        .ena(sprite_type == 4),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[4])
@@ -326,11 +320,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i5_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 5 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[5])
@@ -346,7 +340,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 5),
+        .ena(sprite_type == 5),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[5])
@@ -360,11 +354,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i6_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 6 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[6])
@@ -380,7 +374,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 6),
+        .ena(sprite_type == 6),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[6])
@@ -394,11 +388,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i7_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 7 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[7])
@@ -414,7 +408,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 7),
+        .ena(sprite_type == 7),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[7])
@@ -450,7 +444,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 8),
+        .ena(in_player_pipe[3]),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[8])
@@ -466,11 +460,11 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
     ) i9_luigi (
-        .addra(opponent_addr_pipe[1]),
+        .addra(opponent_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(in_opponent_pipe[1]),
+        .ena(in_opponent),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[9])
@@ -486,7 +480,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 9),
+        .ena(in_opponent_pipe[1]),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[9])

@@ -20,36 +20,34 @@ module forward_view (
 
     logic in_player;
     logic in_opponent;
-    logic [1:0] in_player_pipe;
+    logic [3:0] in_player_pipe;
     logic [1:0] in_opponent_pipe;
-
+    
     logic [3:0] sprite_type;
     logic [9:0] player_addr;
     logic [9:0] opponent_addr;
     logic [9:0] sprite_addr;
-    logic [3:0][3:0] sprite_type_pipe;
+    logic [1:0][3:0] sprite_type_pipe;
     logic [1:0][9:0] player_addr_pipe;
-    logic [1:0][9:0] opponent_addr_pipe;
-    logic [1:0][9:0] sprite_addr_pipe;
 
     logic signed [10:0] cos;
     logic signed [10:0] sin;
     logic signed [11:0] loc_x;
     logic signed [11:0] loc_y;
 
-    logic signed [21:0] conv_x;
-    logic signed [21:0] conv_y;
-    logic signed [12:0] log;
-
     logic [7:0] track_addr;
     logic [9:0][7:0] palette_addr;
     logic [15:0][11:0] output_color;
+
+    logic signed [21:0] conv_x;
+    logic signed [21:0] conv_y;
+    logic signed [12:0] log;
 
     logic [1:0][9:0]  vcount_pipe;
     logic [1:0][10:0] hcount_pipe;
     
     assign conv_y = (vcount_pipe[1] >= 512) ? $signed(1000 - 128 * log) : 0;
-    assign conv_x = (conv_y != 0) ? ($signed(767 - hcount_pipe[1]) >> 8) * conv_y : 0;
+    assign conv_x = (conv_y != 0) ? $signed(767 - hcount_pipe[1]) * conv_y / 256: 0;
 
     // Make sure this doesn't go out of the bounds between 0 and 2047
     assign loc_x = $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
@@ -70,11 +68,11 @@ module forward_view (
         in_opponent_pipe[0] <= in_opponent;
         in_opponent_pipe[1] <= in_opponent_pipe[0];
 
-        opponent_addr_pipe[0] <= opponent_addr;
-        opponent_addr_pipe[1] <= opponent_addr_pipe[0];
+        vcount_pipe[0] <= vcount_in;
+        vcount_pipe[1] <= vcount_pipe[0];
 
-        sprite_addr_pipe[0] <= sprite_addr;
-        sprite_addr_pipe[1] <= sprite_addr_pipe[0];
+        hcount_pipe[0] <= hcount_in;
+        hcount_pipe[1] <= hcount_pipe[0];
 
         for (int i = 1; i < 4; i = i+1) begin
             sprite_type_pipe[i] <= sprite_type_pipe[i-1];
@@ -84,16 +82,32 @@ module forward_view (
 
     assign in_player     = (loc_x + 63 >=   player_x    &&  player_x   + 64 >= loc_x)  &&  (loc_y + 63 >=   player_y   &&  player_y   + 64 >= vcount_in);
     assign in_opponent   = (loc_x + 63 >=   opponent_x  &&  opponent_x + 64 >= loc_x)  &&  (loc_y + 63 >=   opponent_y &&  opponent_y + 64 >= vcount_in);
-    assign player_addr   = {vcount_in[6:2] - 5'd15,          hcount_in[6:2] - 5'd15};
+    assign player_addr   = {loc_y[6:2] + 5'd15 - player_y[6:2],     loc_x[6:2] + 5'd15 - player_x[6:2]}
     assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2],   loc_x[6:2] + 5'd15 - opponent_x[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
     assign sprite_addr = {loc_y[6:2], loc_x[6:2]};
-    assign pixel_out = output_color[sprite_type_pipe[3]];
+    assign pixel_out = output_color[sprite_type_pipe[1]];
 
     
     // Track BRAM
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(13),
+        .RAM_DEPTH(256),
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+        .INIT_FILE(`FPATH(log.mem))                    // Specify track mem file
+    ) logarithm (
+        .addra(8'd255 - vcount_in[7:0]),
+        .dina(11'b0),       
+        .clka(clk_in),
+        .wea(1'b0),
+        .ena(1'b1),
+        .rsta(rst_in),
+        .regcea(1'b1),
+        .douta(sin)
+    );
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(4),
@@ -143,22 +157,6 @@ module forward_view (
         .douta(sin)
     );
 
-    xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(13),
-        .RAM_DEPTH(256),
-        .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(log.mem))                    // Specify track mem file
-    ) logarithm (
-        .addra(8'd255 - vcount_in[7:0]),
-        .dina(11'b0),       
-        .clka(clk_in),
-        .wea(1'b0),
-        .ena(1'b1),
-        .rsta(rst_in),
-        .regcea(1'b1),
-        .douta(sin)
-    );
-
     // Normal Sprites
     
     xilinx_single_port_ram_read_first #(
@@ -167,11 +165,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(black_square.mem))
     ) i0_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 0 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[0])
@@ -187,7 +185,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 0),
+        .ena(sprite_type == 0),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[0])
@@ -201,11 +199,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(grey_square.mem))
     ) i1_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 1 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[1])
@@ -221,7 +219,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 1),
+        .ena(sprite_type == 1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[1])
@@ -235,11 +233,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i2_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 2 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[2])
@@ -255,7 +253,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 2),
+        .ena(sprite_type == 2),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[2])
@@ -269,11 +267,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i3_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 3 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[3])
@@ -289,7 +287,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 3),
+        .ena(sprite_type == 3),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[3])
@@ -303,11 +301,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i4_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 4 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[4])
@@ -323,7 +321,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 4),
+        .ena(sprite_type == 4),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[4])
@@ -337,11 +335,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i5_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 5 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[5])
@@ -357,7 +355,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 5),
+        .ena(sprite_type == 5),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[5])
@@ -371,11 +369,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i6_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 6 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[6])
@@ -391,7 +389,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 6),
+        .ena(sprite_type == 6),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[6])
@@ -405,11 +403,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH())                    // Specify i2 mem file
     ) i7_type (
-        .addra(sprite_addr_pipe[1]),
+        .addra(sprite_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 7 && ~in_player_pipe[1] && ~in_opponent_pipe[1]),
+        .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[7])
@@ -425,7 +423,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 7),
+        .ena(sprite_type == 7),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[7])
@@ -445,7 +443,7 @@ module forward_view (
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(in_player_pipe[1]),
+        .ena(in_player),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[8])
@@ -461,7 +459,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 8),
+        .ena(in_player_pipe[1]),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[8])
@@ -477,11 +475,11 @@ module forward_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
     ) i9_luigi (
-        .addra(opponent_addr_pipe[1]),
+        .addra(opponent_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(in_opponent_pipe[1]),
+        .ena(in_opponent),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[9])
@@ -497,7 +495,7 @@ module forward_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type_pipe[1] == 9),
+        .ena(in_opponent_pipe[1]),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[9])
