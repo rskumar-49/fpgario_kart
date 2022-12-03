@@ -5,6 +5,7 @@ module top_level(
     input wire clk_100mhz, //clock @ 100 mhz
     input wire [15:0] sw, //switches
     input wire btnc, //btnc (used for reset)
+    input wire btnr,
 
     //ethernet things
     input wire eth_crsdv,
@@ -43,6 +44,8 @@ module top_level(
     logic receive_axiov;
     logic [1:0] receive_axiod;
     logic [31:0] buffer;
+    logic [10:0] hcount_f;    // pixel on current line
+    logic [9:0] vcount_f;     // line number
 
     logic clk_65mhz;
 
@@ -95,8 +98,8 @@ module top_level(
     
     transmit t1(.eth_clk(eth_refclk),
                 .eth_rst(btnc),
-                .hcount(hcount),
-                .vcount(vcount),
+                .hcount(hcount_f),
+                .vcount(vcount_f),
                 .player_x(11'd191),
                 .player_y(11'd191),
                 .direction(270),
@@ -134,11 +137,17 @@ module top_level(
         if (btnc) begin
             led[13:0] <= 0;
             buffer <= 0;
+            hcount_f <= 0;
+            vcount_f <= 0;
         end else begin 
+            if (btnr) begin
+                hcount_f <= 1024;
+                vcount_f <= 768;
+                led[13:0] <= led[13:0] + 1;
+            end
 
             if (buffer != receive_axiod & receive_axiod != 0) begin
                 buffer <= receive_axiod;
-                led[13:0] <= led[13:0] + 1;
             end
         end
     end
