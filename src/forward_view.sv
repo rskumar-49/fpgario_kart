@@ -3,7 +3,7 @@
 
 `include "iverilog_hack.svh"
 
-module racer_view (
+module forward_view (
     input wire clk_in,
     input wire rst_in,
     input wire [10:0] hcount_in,
@@ -15,7 +15,7 @@ module racer_view (
     input wire [10:0]  opponent_y,
     output logic [11:0] pixel_out);
 
-    // Edit this to only act if hcount_in is between 512 and 1023, and vcount is between 0 and 383
+    // Edit this to only act if hcount_in is between 512 and 1023, and vcount is between 384 and 767
     // Note, 0 degrees is up vertically (with vcount decreasing)
 
     logic in_player;
@@ -34,34 +34,33 @@ module racer_view (
     logic signed [10:0] sin;
     logic signed [11:0] loc_x;
     logic signed [11:0] loc_y;
-    
-    logic signed [21:0] delta_x;
-    logic signed [1:0][21:0] delta_x_pipe;
-    logic signed [21:0] delta_y;
-    logic signed [1:0][21:0] delta_y_pipe;
 
     logic [7:0] track_addr;
     logic [9:0][7:0] palette_addr;
     logic [15:0][11:0] output_color;
 
-    assign delta_x = $signed(767 - hcount_in);
-    assign delta_y = $signed(255 - vcount_in);
+    logic signed [21:0] conv_x;
+    logic signed [21:0] conv_y;
+    logic signed [12:0] log;
+
+    logic [1:0][9:0]  vcount_pipe;
+    logic [1:0][10:0] hcount_pipe;
+    
+    assign conv_y = (vcount_pipe[1] >= 512) ? $signed(1000 - 128 * log) : 0;
+    assign conv_x = (conv_y != 0) ? $signed(767 - hcount_pipe[1]) * conv_y / 256: 0;
 
     // Make sure this doesn't go out of the bounds between 0 and 2047
-    // This is actually right. It checks that we're not negative.
-    assign loc_x = $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
-    assign loc_y = $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
+    assign loc_x = $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
+    assign loc_y = $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
 
     always_ff @(posedge clk_in)begin
 
-        if (in_player_pipe[3])          sprite_type_pipe[0] <= 8;
-        else if (in_opponent_pipe[1])   sprite_type_pipe[0] <= 9;
-        else                            sprite_type_pipe[0] <= sprite_type;  
+        if (in_player)          sprite_type_pipe[0] <= 8;
+        else if (in_opponent)   sprite_type_pipe[0] <= 9;
+        else                    sprite_type_pipe[0] <= sprite_type;  
 
         in_player_pipe[0] <= in_player;
         in_player_pipe[1] <= in_player_pipe[0];
-        in_player_pipe[2] <= in_player_pipe[1];
-        in_player_pipe[3] <= in_player_pipe[2];
 
         player_addr_pipe[0] <= player_addr;
         player_addr_pipe[1] <= player_addr_pipe[0];
@@ -69,22 +68,22 @@ module racer_view (
         in_opponent_pipe[0] <= in_opponent;
         in_opponent_pipe[1] <= in_opponent_pipe[0];
 
-        delta_y_pipe[0] <= delta_y;
-        delta_y_pipe[1] <= delta_y_pipe[0];
+        vcount_pipe[0] <= vcount_in;
+        vcount_pipe[1] <= vcount_pipe[0];
 
-        delta_x_pipe[0] <= delta_x;
-        delta_x_pipe[1] <= delta_x_pipe[0];
+        hcount_pipe[0] <= hcount_in;
+        hcount_pipe[1] <= hcount_pipe[0];
 
         for (int i = 1; i < 4; i = i+1) begin
             sprite_type_pipe[i] <= sprite_type_pipe[i-1];
         end
     end
 
-    // Player_addr and Opponent_addr work properly when they're in the player or opponent. Otherwise, it can spew garbage, but it doesn't matter.
-    assign in_player   = (hcount_in >= 704  && hcount_in <= 831) && (vcount_in >= 192 && vcount_in <= 319);
-    assign in_opponent = (loc_x + 63 >= opponent_x && opponent_x + 64 >= loc_x) && (loc_y + 63 >= opponent_y && opponent_y + 64 >= loc_y);
-    assign player_addr =   {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
-    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
+
+    assign in_player     = (loc_x + 63 >=   player_x    &&  player_x   + 64 >= loc_x)  &&  (loc_y + 63 >=   player_y   &&  player_y   + 64 >= vcount_in);
+    assign in_opponent   = (loc_x + 63 >=   opponent_x  &&  opponent_x + 64 >= loc_x)  &&  (loc_y + 63 >=   opponent_y &&  opponent_y + 64 >= vcount_in);
+    assign player_addr   = {loc_y[6:2] + 5'd15 - player_y[6:2],     loc_x[6:2] + 5'd15 - player_x[6:2]}
+    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2],   loc_x[6:2] + 5'd15 - opponent_x[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
@@ -93,6 +92,22 @@ module racer_view (
 
     
     // Track BRAM
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(13),
+        .RAM_DEPTH(256),
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+        .INIT_FILE(`FPATH(log.mem))                    // Specify track mem file
+    ) logarithm (
+        .addra(8'd255 - vcount_in[7:0]),
+        .dina(11'b0),       
+        .clka(clk_in),
+        .wea(1'b0),
+        .ena(1'b1),
+        .rsta(rst_in),
+        .regcea(1'b1),
+        .douta(sin)
+    );
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(4),
@@ -428,7 +443,7 @@ module racer_view (
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(in_player_pipe[1]),
+        .ena(in_player),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(palette_addr[8])
@@ -444,7 +459,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(in_player_pipe[3]),
+        .ena(in_player_pipe[1]),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[8])
