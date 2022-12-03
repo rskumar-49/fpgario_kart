@@ -10,7 +10,7 @@ module receive (
 
     output logic eth_rstn,
     output logic axiov,
-    output logic [1:0] axiod 
+    output logic [31:0] axiod 
 );
 
 assign eth_rstn = !btnc; //just done to make sys_rst more obvious
@@ -31,8 +31,8 @@ logic agg_axiov;
 logic [31:0] agg_axiod;
 logic [31:0] buffer;
 
-assign axiov = fire_axiov;
-assign axiod = fire_axiod; 
+assign axiov = agg_axiov;
+assign axiod = agg_axiod; 
 
 ether e1(.clk(eth_refclk),
          .rst(btnc),
@@ -61,6 +61,13 @@ cksum c1(.clk(eth_refclk),
          .axiid(eth_axiod),
          .done(done),
          .kill(kill));
+
+aggregate a1(.clk(eth_refclk),
+             .rst(btnc),
+             .axiiv(fire_axiov),
+             .axiid(fire_axiod), //only packet data and FCS are coming in;
+             .axiod(agg_axiod),
+             .axiov(agg_axiov));
     
 endmodule
 

@@ -57,9 +57,9 @@ module transmit_tb;
         hcount = 0;
         vcount = 0;
 
-        #40; 
-        hcount = 1024;
-        vcount = 768;
+        // #40; 
+        // hcount = 1024;
+        // vcount = 768;
 
         #10000;
         $display("Finishing Sim"); //print nice message

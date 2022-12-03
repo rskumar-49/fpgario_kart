@@ -24,6 +24,11 @@ logic [511:0] buffer;
 logic counter;
 logic [1:0] state; 
 
+logic [1:0] bit_axiid;
+logic bit_axiiv; 
+logic [1:0] bit_axiod;
+logic bit_axiov;
+
 logic [55:0] preamble;
 assign preamble = 56'h55_55_55_55_55_55_55;
 logic [7:0] sfd;
@@ -42,17 +47,19 @@ assign data = {{player_x, 1'b0}, {player_y, 1'b0}, {direction, 3'd0}, {game_stat
 assign message = {preamble, sfd, dest_addr, source_addr, len, data, 264'b0, fcs}; //, source_addr, len, message, fcs}; //263'b0, 
 
 // Might Need this
-// bitorder b1(.clk(eth_clk),
-//             .rst(btnc),
-//             .axiiv(eth_axiov),
-//             .axiid(eth_axiod),
-//             .axiod(bit_axiod),
-//             .axiov(bit_axiov));
+bitorder b1(.clk(eth_clk),
+            .rst(eth_rst),
+            .axiiv(bit_axiiv),
+            .axiid(bit_axiid),
+            .axiod(bit_axiod),
+            .axiov(bit_axiov));
 
 always_ff @(posedge eth_clk) begin
     if (eth_rst) begin
         counter <= 0;
         state <= 0;
+        bit_axiiv <= 0;
+        bit_axiid <= 0;
     end else begin
         case (state)
             2'b00: begin
@@ -66,34 +73,24 @@ always_ff @(posedge eth_clk) begin
             end
             2'b01: begin
                 if (buffer != 0) begin
-                    eth_txen <= 1;
-                    eth_txd <= buffer[511:510];
+                    bit_axiiv <= 1;
+                    bit_axiid <= buffer[511:510];
                     buffer <= {buffer[509:0], 2'b0};
-                end else begin
+                end else if (buffer == 0) begin
+                    bit_axiiv <= 0;
+                    bit_axiid <= 0;
+                end
+
+                if (bit_axiov == 1) begin
+                    eth_txen <= 1;
+                    eth_txd <= bit_axiod;
+                end else if (bit_axiov == 0 && buffer == 0) begin
                     state <= 0;
                     eth_txen <= 0;
                     eth_txd <= 0;
                 end
             end
         endcase
-        // $display(hcount);
-        // $display(vcount);
-        // $display(counter);
-        // if (hcount[10:0] == 1024 && vcount[9:0] == 768) begin
-        //     $display("in");
-        //     counter <= counter + 242;
-        //     buffer2 <= buffer1;
-        //     $display(counter);
-        // end else if (counter > 0) begin
-        //     eth_txen <= 1;
-        //     eth_txd <= buffer2[241:240];
-        //     buffer2 <= {buffer2[239:238], 2'b0};
-        //     counter <= counter - 2;
-        // end else begin
-        //     eth_txen <= 0;
-        //     eth_txd <= 0;
-        //     buffer2 <= buffer1;
-        // end
     end
 end
     

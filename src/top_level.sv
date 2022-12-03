@@ -20,13 +20,11 @@ module top_level(
     output logic vga_hs, vga_vs,
     output logic [7:0] an,
     output logic caa,cab,cac,cad,cae,caf,cag
-
-
     );
 
     logic sys_rst; //global system reset
     assign sys_rst = btnc; //just done to make sys_rst more obvious
-    assign led = sw; //switches drive LED (change if you want)
+    //assign led = sw; //switches drive LED (change if you want)
 
     //vga module generation signals:
     logic [10:0] hcount;    // pixel on current line
@@ -44,6 +42,7 @@ module top_level(
 
     logic receive_axiov;
     logic [1:0] receive_axiod;
+    logic [31:0] buffer;
 
     logic clk_65mhz;
 
@@ -130,6 +129,19 @@ module top_level(
 
     assign vga_hs = ~hsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
     assign vga_vs = ~vsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
+
+    always_ff @(posedge eth_refclk) begin
+        if (btnc) begin
+            led[13:0] <= 0;
+            buffer <= 0;
+        end else begin 
+
+            if (buffer != receive_axiod & receive_axiod != 0) begin
+                buffer <= receive_axiod;
+                led[13:0] <= led[13:0] + 1;
+            end
+        end
+    end
 
     // add logic to formulate message 
 
