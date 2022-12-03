@@ -42,7 +42,7 @@ module top_level(
     logic [11:0] pixel_out_racer;
 
     logic receive_axiov;
-    logic [1:0] receive_axiod;
+    logic [31:0] receive_axiod;
     logic [31:0] buffer;
     logic [10:0] hcount_f;    // pixel on current line
     logic [9:0] vcount_f;     // line number
