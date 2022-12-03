@@ -143,12 +143,13 @@ module top_level(
             if (btnr) begin
                 hcount_f <= 1024;
                 vcount_f <= 768;
-                led[13:0] <= led[13:0] + 1;
             end
 
             if (buffer != receive_axiod & receive_axiod != 0) begin
                 buffer <= receive_axiod;
             end
+
+            led[15:0] <= buffer[31:16];
         end
     end
 
