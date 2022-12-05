@@ -50,12 +50,6 @@ module top_level(
     logic [10:0] hcount_f;    // pixel on current line
     logic [9:0] vcount_f;     // line number
 
-    logic receive_axiov;
-    logic [31:0] receive_axiod;
-    logic [31:0] buffer;
-    logic [10:0] hcount_f;    // pixel on current line
-    logic [9:0] vcount_f;     // line number
-
     logic clk_65mhz;
 
     divider clk_gen1(
