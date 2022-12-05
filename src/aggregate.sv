@@ -8,7 +8,7 @@ module aggregate (
     input wire axiiv,
     input wire [1:0] axiid, //only packet data and FCS are coming in;
 
-    output logic [31:0] axiod,
+    output logic [43:0] axiod,
     output logic axiov
 );
 
@@ -18,7 +18,7 @@ logic output_s;
 logic reset_s;
 
 logic [63:0] counter;
-logic [31:0] data;
+logic [43:0] data;
 
 always_ff @(posedge clk) begin
     if (rst) begin
@@ -35,7 +35,7 @@ always_ff @(posedge clk) begin
             4'b1000: begin
                 if (axiiv) begin
                     counter <= counter + 1;
-                    data <= {data[29:0], axiid};
+                    data <= {data[41:0], axiid};
                     if (counter == 15) begin
                         load_data_s <= 0;
                         check_rest_s <= 1;
@@ -48,7 +48,7 @@ always_ff @(posedge clk) begin
             4'b0100: begin
                 if (axiiv) begin
                     counter <= counter + 1;
-                    if (counter == 31) begin
+                    if (counter == 43) begin
                         axiov <= 1;
                         axiod <= data;
                         check_rest_s <= 0;

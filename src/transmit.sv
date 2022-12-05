@@ -41,10 +41,13 @@ logic [15:0] len;
 assign len = 16'h00_00;
 logic [31:0] fcs;
 assign fcs = 32'hCBF43926; //needs to be determined from checksum 
-logic [39:0] data;
-assign data = {{player_x, 1'b0}, {player_y, 1'b0}, {direction, 3'd0}, {game_stat, 1'b0}};
+logic [43:0] data;
+assign data = {{player_x, 1'b0}, {player_y, 1'b0}, {direction, 3'd0}, {game_stat, 1'b0}, {eth_rst, 3'b0}};
 
-assign message = {preamble, sfd, dest_addr, source_addr, len, data, 264'b0, fcs}; //, source_addr, len, message, fcs}; //263'b0, 
+//TODO: Parsing Ethernet Data
+//4096 + 1024 + 512 + 256 + 128 + 64 + 32 + 1
+
+assign message = {preamble, sfd, dest_addr, source_addr, len, data, 260'b0, fcs}; //, source_addr, len, message, fcs}; //263'b0, 
 
 // Might Need this
 bitorder b1(.clk(eth_clk),

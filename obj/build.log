@@ -541,8 +541,9 @@ Detailed RTL Component Info :
 	              512 Bit    Registers := 1     
 	               64 Bit    Registers := 1     
 	               48 Bit    Registers := 3     
+	               44 Bit    Registers := 3     
 	               33 Bit    Registers := 1     
-	               32 Bit    Registers := 4     
+	               32 Bit    Registers := 1     
 	               22 Bit    Registers := 4     
 	               16 Bit    Registers := 6     
 	               13 Bit    Registers := 2     
