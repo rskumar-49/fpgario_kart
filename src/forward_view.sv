@@ -163,7 +163,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square.mem))
+        .INIT_FILE(`FPATH(test_black_square.mem))
     ) i0_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -179,7 +179,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square_pal.mem))
+        .INIT_FILE(`FPATH(test_black_square_pal.mem))
     ) p0_black_square_pal (
         .addra(palette_addr[0]),
         .dina(12'b0),       
@@ -197,7 +197,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square.mem))
+        .INIT_FILE(`FPATH(test_grey_square.mem))
     ) i1_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -213,7 +213,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square_pal.mem))
+        .INIT_FILE(`FPATH(test_grey_square_pal.mem))
     ) p1_type (
         .addra(palette_addr[1]),
         .dina(12'b0),       
@@ -437,7 +437,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    
+        .INIT_FILE(`FPATH(test_red_square.mem))                    
     ) i8_mario (
         .addra(player_addr),
         .dina(8'b0),       
@@ -453,7 +453,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        
+        .INIT_FILE(`FPATH(test_red_square_pal.mem))                        
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -473,7 +473,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    
+        .INIT_FILE(`FPATH(test_red_square.mem))                    
     ) i9_luigi (
         .addra(opponent_addr),
         .dina(8'b0),       
@@ -489,7 +489,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        
+        .INIT_FILE(`FPATH(test_red_square_pal.mem))                        
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       
