@@ -49,8 +49,8 @@ module racer_view (
 
     // Make sure this doesn't go out of the bounds between 0 and 2047
     // This is actually right. It checks that we're not negative.
-    assign loc_x = $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
-    assign loc_y = $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
+    assign loc_x = $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + $signed(player_x) < 0 ? 0 : $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
+    assign loc_y = $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + $signed(player_y) < 0 ? 0 : $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
 
     always_ff @(posedge clk_in)begin
 

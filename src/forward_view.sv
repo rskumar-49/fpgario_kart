@@ -46,12 +46,12 @@ module forward_view (
     logic [1:0][9:0]  vcount_pipe;
     logic [1:0][10:0] hcount_pipe;
     
-    assign conv_y = (vcount_pipe[1] >= 512) ? $signed(1000 - 128 * log) : 0;
+    assign conv_y = (vcount_pipe[1] >= 512) ? $signed(1056 - 128 * log / 512) : 0;
     assign conv_x = (conv_y != 0) ? $signed(767 - hcount_pipe[1]) * conv_y / 256: 0;
 
     // Make sure this doesn't go out of the bounds between 0 and 2047
-    assign loc_x = $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
-    assign loc_y = $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
+    assign loc_x = $signed(conv_x * cos - conv_y * sin) / 512 + $signed(player_x) < 0 ? 0 : $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
+    assign loc_y = $signed(conv_x * sin + conv_y * cos) / 512 + $signed(player_y) < 0 ? 0 : $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
 
     always_ff @(posedge clk_in)begin
 
@@ -74,7 +74,7 @@ module forward_view (
         hcount_pipe[0] <= hcount_in;
         hcount_pipe[1] <= hcount_pipe[0];
 
-        for (int i = 1; i < 4; i = i+1) begin
+        for (int i = 1; i < 2; i = i+1) begin
             sprite_type_pipe[i] <= sprite_type_pipe[i-1];
         end
     end
@@ -82,8 +82,8 @@ module forward_view (
 
     assign in_player     = (loc_x + 63 >=   player_x    &&  player_x   + 64 >= loc_x)  &&  (loc_y + 63 >=   player_y   &&  player_y   + 64 >= vcount_in);
     assign in_opponent   = (loc_x + 63 >=   opponent_x  &&  opponent_x + 64 >= loc_x)  &&  (loc_y + 63 >=   opponent_y &&  opponent_y + 64 >= vcount_in);
-    assign player_addr   = {loc_y[6:2] + 5'd15 - player_y[6:2],     loc_x[6:2] + 5'd15 - player_x[6:2]}
-    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2],   loc_x[6:2] + 5'd15 - opponent_x[6:2]};
+    assign player_addr   = {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
+    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
@@ -97,24 +97,24 @@ module forward_view (
         .RAM_WIDTH(13),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(log.mem))                    // Specify track mem file
+        .INIT_FILE(`FPATH(log.mem))                    
     ) logarithm (
         .addra(8'd255 - vcount_in[7:0]),
-        .dina(11'b0),       
+        .dina(13'b0),       
         .clka(clk_in),
         .wea(1'b0),
         .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
-        .douta(sin)
+        .douta(log)
     );
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(4),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(track.mem))                    // Specify track mem file
-    ) track (
+        .INIT_FILE(`FPATH(track.mem))                    
+    ) track_2 (
         .addra(track_addr),
         .dina(4'b0),       
         .clka(clk_in),
@@ -129,8 +129,8 @@ module forward_view (
         .RAM_WIDTH(11),
         .RAM_DEPTH(360),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(cos.mem))                    // Specify track mem file
-    ) cosine (
+        .INIT_FILE(`FPATH(cos.mem))                    
+    ) cosine_2 (
         .addra(direction),
         .dina(11'b0),       
         .clka(clk_in),
@@ -145,8 +145,8 @@ module forward_view (
         .RAM_WIDTH(11),
         .RAM_DEPTH(360),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(sin.mem))                    // Specify track mem file
-    ) sine (
+        .INIT_FILE(`FPATH(sin.mem))                    
+    ) sine_2 (
         .addra(direction),
         .dina(11'b0),       
         .clka(clk_in),
@@ -231,7 +231,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i2_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -247,7 +247,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p2_type (
         .addra(palette_addr[2]),
         .dina(12'b0),       
@@ -265,7 +265,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i3_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -281,7 +281,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p3_type (
         .addra(palette_addr[3]),
         .dina(12'b0),       
@@ -299,7 +299,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i4_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -315,7 +315,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p4_type (
         .addra(palette_addr[4]),
         .dina(12'b0),       
@@ -333,7 +333,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i5_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -349,7 +349,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p5_type (
         .addra(palette_addr[5]),
         .dina(12'b0),       
@@ -367,7 +367,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i6_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -383,7 +383,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p6_type (
         .addra(palette_addr[6]),
         .dina(12'b0),       
@@ -401,7 +401,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i7_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -417,7 +417,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p7_type (
         .addra(palette_addr[7]),
         .dina(12'b0),       
@@ -437,9 +437,9 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(red_square.mem))                    
     ) i8_mario (
-        .addra(player_addr_pipe[1]),
+        .addra(player_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
@@ -453,7 +453,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(red_square_pal.mem))                        
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -473,7 +473,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(red_square.mem))                    
     ) i9_luigi (
         .addra(opponent_addr),
         .dina(8'b0),       
@@ -489,7 +489,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(red_square_pal.mem))                        
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       

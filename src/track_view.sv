@@ -96,7 +96,7 @@ module track_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square.mem))                    // Specify i1 mem file
+        .INIT_FILE(`FPATH(00_road.mem))                    // Specify i1 mem file
     ) i0_black_square (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -112,7 +112,7 @@ module track_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square_pal.mem))                        // Specify p1 mem file
+        .INIT_FILE(`FPATH(00_road_pal.mem))                        // Specify p1 mem file
     ) p0_black_square_pal (
         .addra(palette_addr[0]),
         .dina(12'b0),       
@@ -130,7 +130,7 @@ module track_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(01_normal_sand.mem))                    // Specify i2 mem file
     ) i1_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -146,7 +146,7 @@ module track_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(01_normal_sand_pal.mem))                        // Specify p2 mem file
     ) p1_type (
         .addra(palette_addr[1]),
         .dina(12'b0),       
@@ -370,7 +370,7 @@ module track_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(08_mario_icon.mem))                    // Specify i2 mem file
     ) i8_mario (
         .addra(player_addr),
         .dina(8'b0),       
@@ -386,7 +386,7 @@ module track_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(08_mario_icon_pal.mem))                        // Specify p2 mem file
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -406,7 +406,7 @@ module track_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(09_luigi_icon.mem))                    // Specify i2 mem file
     ) i9_luigi (
         .addra(opponent_addr),
         .dina(8'b0),       
@@ -422,7 +422,7 @@ module track_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(09_luigi_icon_pal.mem))                        // Specify p2 mem file
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       

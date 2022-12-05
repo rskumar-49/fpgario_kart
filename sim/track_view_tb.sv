@@ -46,8 +46,8 @@ module track_view_tb;
         
         for (int i = 0; i < 80; i = i+1)begin
             for (int j = 0; j < 80; j = j+1) begin
-                hcount_in = 500;
-                vcount_in = 500;
+                hcount_in = j;
+                vcount_in = i;
                 sprite_type = 0;
                 #20;
             end
