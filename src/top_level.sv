@@ -52,13 +52,10 @@ module top_level(
 
     logic clk_65mhz;
 
-    divider clk_gen1(
-        .clk(clk_100mhz),
-        .ethclk(eth_refclk));
-
-    // clk_wiz_lab3 clk_gen(
-    //     .clk_in1(clk_100mhz),
-    //     .clk_out1(clk_65mhz));
+    clk_wiz_0_clk_wiz clk_maker(
+        .clk_in1(clk_100mhz),
+        .eth_clk(eth_refclk),
+        .vga_clk(clk_65mhz));
     
     vga vga_gen(
         .pixel_clk_in(eth_refclk),
