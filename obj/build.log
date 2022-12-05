@@ -386,22 +386,22 @@ INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_por
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i5_type'
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i6_type'
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i7_type'
+INFO: [Synth 8-223] decloning instance 'forward_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'forward_viewer/i3_type'
+INFO: [Synth 8-223] decloning instance 'forward_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'forward_viewer/i4_type'
+INFO: [Synth 8-223] decloning instance 'forward_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'forward_viewer/i5_type'
+INFO: [Synth 8-223] decloning instance 'forward_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'forward_viewer/i6_type'
+INFO: [Synth 8-223] decloning instance 'forward_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'forward_viewer/i7_type'
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input   64 Bit       Adders := 1     
-	   2 Input   33 Bit       Adders := 1     
 	   2 Input   22 Bit       Adders := 2     
-	   2 Input   16 Bit       Adders := 9     
 	   2 Input   13 Bit       Adders := 2     
 	   2 Input   12 Bit       Adders := 5     
 	   2 Input   11 Bit       Adders := 2     
 	   2 Input   10 Bit       Adders := 5     
 	   3 Input    5 Bit       Adders := 8     
-+---XORs : 
-	   2 Input      1 Bit         XORs := 22    
 +---Registers : 
 	              512 Bit    Registers := 1     
 	               64 Bit    Registers := 1     
@@ -410,21 +410,21 @@ Detailed RTL Component Info :
 	               33 Bit    Registers := 1     
 	               32 Bit    Registers := 1     
 	               22 Bit    Registers := 4     
-	               16 Bit    Registers := 6     
 	               12 Bit    Registers := 40    
-	               11 Bit    Registers := 12    
-	               10 Bit    Registers := 10    
-	                8 Bit    Registers := 34    
+	               11 Bit    Registers := 11    
+	               10 Bit    Registers := 9     
+	                8 Bit    Registers := 30    
 	                7 Bit    Registers := 2     
 	                6 Bit    Registers := 1     
 	                4 Bit    Registers := 14    
-	                2 Bit    Registers := 6     
-	                1 Bit    Registers := 36    
+	                2 Bit    Registers := 3     
+	                1 Bit    Registers := 5     
 +---RAMs : 
-	               8K Bit	(1024 X 8 bit)          RAMs := 15    
-	               3K Bit	(256 X 12 bit)          RAMs := 20    
-	               3K Bit	(360 X 11 bit)          RAMs := 2     
-	             1024 Bit	(256 X 4 bit)          RAMs := 2     
+	               8K Bit	(1024 X 8 bit)          RAMs := 20    
+	               3K Bit	(256 X 12 bit)          RAMs := 30    
+	               3K Bit	(360 X 11 bit)          RAMs := 4     
+	               3K Bit	(256 X 13 bit)          RAMs := 1     
+	             1024 Bit	(256 X 4 bit)          RAMs := 3     
 +---Muxes : 
 	   2 Input  512 Bit        Muxes := 1     
 	   5 Input   64 Bit        Muxes := 1     
@@ -443,13 +443,7 @@ Detailed RTL Component Info :
 	   4 Input    8 Bit        Muxes := 4     
 	   6 Input    8 Bit        Muxes := 2     
 	   2 Input    4 Bit        Muxes := 18    
-	   5 Input    2 Bit        Muxes := 3     
-	   2 Input    2 Bit        Muxes := 16    
-	   2 Input    1 Bit        Muxes := 35    
-	   7 Input    1 Bit        Muxes := 16    
-	   5 Input    1 Bit        Muxes := 50    
-	   3 Input    1 Bit        Muxes := 2     
-	   4 Input    1 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 2     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -593,22 +587,30 @@ Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Block RAM: Preliminary Mapping Report (see note below)
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name                                        | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|xilinx_single_port_ram_read_first:                 | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first:                 | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
 
@@ -616,10 +618,10 @@ DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding R
 +------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 |Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
 +------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|racer_view  | A''*B2      | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view  | C-A''*B2    | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
-|racer_view  | A''*B2      | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view  | C+A''*B2    | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
+|top_level   | A''*B2      | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|top_level   | C-A''*B2    | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
+|top_level   | A''*B2      | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|top_level   | C+A''*B2    | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
 +------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
@@ -643,22 +645,30 @@ Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Block RAM: Final Mapping Report
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name                                        | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|xilinx_single_port_ram_read_first:                 | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first:                 | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-+---------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
++----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 ---------------------------------------------------------------------------------
 Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -667,6 +677,8 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-7052] The timing for the instance racer_viewer/cosine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/cosine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/sine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 INFO: [Synth 8-7052] The timing for the instance racer_viewer/sine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
 Finished Technology Mapping : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 2676.043 ; gain = 0.000 ; free physical = 1278 ; free virtual = 6650
@@ -728,8 +740,9 @@ Static Shift Register Report:
 |Module Name | RTL Name                           | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
 +------------+------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
 |top_level   | racer_viewer/in_player_pipe_reg[3] | 4      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | vcount_pipe_reg[5][9]              | 6      | 3     | NO           | NO                 | YES               | 3      | 0       | 
-|top_level   | hcount_pipe_reg[5][10]             | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | vcount_pipe_reg[5][9]              | 4      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | vcount_pipe_reg[5][8]              | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | hcount_pipe_reg[5][10]             | 4      | 2     | NO           | NO                 | YES               | 2      | 0       | 
 |top_level   | blank_pipe_reg[5]                  | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
 |top_level   | hsync_pipe_reg[6]                  | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
 |top_level   | vsync_pipe_reg[6]                  | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
@@ -746,10 +759,10 @@ DSP Final Report (the ' indicates corresponding REG is set)
 +------------+---------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 |Module Name | DSP Mapping   | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
 +------------+---------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|racer_view  | A''*B'        | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view  | not(C+A''*B') | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
-|racer_view  | A''*B'        | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view  | C+A''*B'      | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
+|top_level   | A''*B'        | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|top_level   | not(C+A''*B') | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
+|top_level   | A''*B'        | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|top_level   | C+A''*B'      | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
 +------------+---------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 
@@ -856,7 +869,7 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 
 Synth Design complete, checksum: 46002198
 INFO: [Common 17-83] Releasing license: Synthesis
-98 Infos, 219 Warnings, 34 Critical Warnings and 0 Errors encountered.
+72 Infos, 179 Warnings, 50 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
 synth_design: Time (s): cpu = 00:00:37 ; elapsed = 00:00:34 . Memory (MB): peak = 2676.043 ; gain = 80.027 ; free physical = 1586 ; free virtual = 6957
 # opt_design;
@@ -952,6 +965,20 @@ Ending Power Optimization Task | Checksum: 16af20cf4
 
 Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2953.082 ; gain = 0.000 ; free physical = 1285 ; free virtual = 6657
 
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 7 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
+Number of BRAM Ports augmented: 4 newly gated: 2 Total Ports: 14
+Number of Flops added for Enable Generation: 6
+
+Ending PowerOpt Patch Enables Task | Checksum: 28551c0f1
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3136.125 ; gain = 0.000 ; free physical = 3636 ; free virtual = 7859
+Ending Power Optimization Task | Checksum: 28551c0f1
+
+Time (s): cpu = 00:00:00.81 ; elapsed = 00:00:00.59 . Memory (MB): peak = 3136.125 ; gain = 192.070 ; free physical = 3640 ; free virtual = 7864
+
 Starting Final Cleanup Task
 Ending Final Cleanup Task | Checksum: 16af20cf4
 
@@ -1012,8 +1039,9 @@ Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.57 . Memory (MB): peak = 2992.125 
 Phase 2 Global Placement
 
 Phase 2.1 Floorplanning
+Phase 2.1 Floorplanning | Checksum: 12d445f09
 
-Phase 2.1.1 Partition Driven Placement
+Time (s): cpu = 00:00:00.98 ; elapsed = 00:00:00.35 . Memory (MB): peak = 3136.125 ; gain = 0.000 ; free physical = 3619 ; free virtual = 7843
 
 Phase 2.1.1.1 PBP: Partition Driven Placement
 Phase 2.1.1.1 PBP: Partition Driven Placement | Checksum: f41502dc
@@ -1065,11 +1093,18 @@ INFO: [Physopt 32-1138] End 1 Pass. Optimized 6 nets or LUTs. Breaked 0 LUT, com
 INFO: [Physopt 32-65] No nets found for high-fanout optimization.
 INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
 INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
-INFO: [Physopt 32-670] No setup violation found.  DSP Register Optimization was not performed.
-INFO: [Physopt 32-670] No setup violation found.  Shift Register to Pipeline Optimization was not performed.
-INFO: [Physopt 32-670] No setup violation found.  Shift Register Optimization was not performed.
-INFO: [Physopt 32-670] No setup violation found.  BRAM Register Optimization was not performed.
-INFO: [Physopt 32-670] No setup violation found.  URAM Register Optimization was not performed.
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-1123] No candidate cells found for Shift Register to Pipeline optimization
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-527] Pass 1: Identified 1 candidate cell for BRAM register optimization
+INFO: [Physopt 32-665] Processed cell forward_viewer/logarithm/BRAM_reg. 13 registers were pushed out.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 1 net or cell. Created 13 new cells, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2910 ; free virtual = 7754
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
 INFO: [Physopt 32-949] No candidate nets found for dynamic/static region interface net replication
 INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
 Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2992.125 ; gain = 0.000 ; free physical = 1246 ; free virtual = 6617
@@ -1084,11 +1119,11 @@ Summary of Physical Synthesis Optimizations
 |  LUT Combining                                    |            0  |              6  |                     6  |           0  |           1  |  00:00:00  |
 |  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
 |  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
-|  DSP Register                                     |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
-|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
-|  Shift Register                                   |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
-|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
-|  URAM Register                                    |            0  |              0  |                     0  |           0  |           0  |  00:00:00  |
+|  DSP Register                                     |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Register                                    |           13  |              0  |                     1  |           0  |           1  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
 |  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
 |  Total                                            |            0  |              6  |                     6  |           0  |           4  |  00:00:00  |
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1221,22 +1256,282 @@ Ending Placer Task | Checksum: 121c61dfa
 
 Time (s): cpu = 00:01:55 ; elapsed = 00:00:19 . Memory (MB): peak = 2992.125 ; gain = 0.000 ; free physical = 1248 ; free virtual = 6620
 INFO: [Common 17-83] Releasing license: Implementation
-29 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+35 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
 place_design completed successfully
 place_design: Time (s): cpu = 00:01:57 ; elapsed = 00:00:20 . Memory (MB): peak = 2992.125 ; gain = 39.043 ; free physical = 1273 ; free virtual = 6645
 # phys_opt_design
 Command: phys_opt_design
 Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
-INFO: [Vivado_Tcl 4-383] Design worst setup slack (WNS) is greater than or equal to 0.000 ns. Skipping all physical synthesis optimizations.
-INFO: [Vivado_Tcl 4-232] No setup violation found. The netlist was not modified.
+INFO: [Vivado_Tcl 4-1435] PhysOpt_Tcl_Interface Runtime Before Starting Physical Synthesis Task | CPU: 0.37s |  WALL: 0.16s
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2905 ; free virtual = 7749
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 8 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.947 | TNS=-290.202 |
+Phase 1 Physical Synthesis Initialization | Checksum: 19606bd3c
+
+Time (s): cpu = 00:00:00.54 ; elapsed = 00:00:00.24 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2904 ; free virtual = 7748
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.947 | TNS=-290.202 |
+
+Phase 2 DSP Register Optimization
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 2 DSP Register Optimization | Checksum: 19606bd3c
+
+Time (s): cpu = 00:00:00.64 ; elapsed = 00:00:00.27 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2904 ; free virtual = 7748
+
+Phase 3 Critical Path Optimization
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.947 | TNS=-290.202 |
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[2]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_gen/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/track_2/D[2]. Critical path length was reduced through logic transformation on cell forward_viewer/track_2/sprite_type_pipe[0][2]_i_1__0_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/sprite_type_pipe[0][3]_i_2_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.944 | TNS=-290.187 |
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/track_2/D[0]. Critical path length was reduced through logic transformation on cell forward_viewer/track_2/sprite_type_pipe[0][0]_i_1__0_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/sprite_type_pipe[0][3]_i_2_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.922 | TNS=-290.167 |
+INFO: [Physopt 32-702] Processed net forward_viewer/in_opponent14_in. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 9 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/i__carry__0_i_3__5_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.899 | TNS=-289.675 |
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[1]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/track_2/D[1]. Critical path length was reduced through logic transformation on cell forward_viewer/track_2/sprite_type_pipe[0][1]_i_1__0_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/sprite_type_pipe[0][3]_i_2_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.888 | TNS=-289.476 |
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[3]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/sprite_type_pipe[0][3]_i_1__0_n_0. Critical path length was reduced through logic transformation on cell forward_viewer/sprite_type_pipe[0][3]_i_1__0_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/sprite_type_pipe[0][3]_i_2_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.758 | TNS=-289.289 |
+INFO: [Physopt 32-702] Processed net forward_viewer/i__carry__0_i_3__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__1_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__2_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5[9]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_i_4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 14 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/track_2/D[2]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.756 | TNS=-289.123 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 14 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/track_2/D[0]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.703 | TNS=-288.961 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 17 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/track_2/D[1]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.701 | TNS=-288.790 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 17 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/sprite_type_pipe[0][3]_i_1__0_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.594 | TNS=-288.558 |
+INFO: [Physopt 32-702] Processed net forward_viewer/track_2/D[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y7_n_104. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 9 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[14]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.505 | TNS=-287.223 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 15 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[15]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.493 | TNS=-286.377 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[21]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_1_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_23_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.430 | TNS=-285.432 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 21 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[16]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.357 | TNS=-282.888 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 21 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[13]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.343 | TNS=-282.678 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[18]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_4_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_30_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.317 | TNS=-282.288 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[20]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[20]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_2_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_28_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.289 | TNS=-281.004 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[14]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[14]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_8_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_34_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.237 | TNS=-280.224 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 18 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[19]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.224 | TNS=-280.029 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[17]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[17]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_5_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_31_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.221 | TNS=-279.984 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 21 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[12]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.200 | TNS=-279.579 |
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2[29]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__3_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y8_n_84. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4__1[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/CO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y0_carry__1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y0_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/BRAM_reg_3[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3[14]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4_n_106. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/DOADO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_gen/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_opponent14_in. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/i__carry__0_i_3__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__1_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__2_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5[9]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_i_4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/track_2/D[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y7_n_104. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net forward_viewer/logarithm/A[21].  Re-placed instance forward_viewer/logarithm/loc_x7_i_1_comp
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[21]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.164 | TNS=-279.039 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_x7_i_33_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2[23]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y8_n_84. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4__1[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/CO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/BRAM_reg_3[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3[14]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/DOADO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.164 | TNS=-279.039 |
+Phase 3 Critical Path Optimization | Checksum: 19606bd3c
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:07 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2915 ; free virtual = 7759
+
+Phase 4 Critical Path Optimization
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.164 | TNS=-279.039 |
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_gen/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_opponent14_in. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/i__carry__0_i_3__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__1_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__2_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5[9]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_i_4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/track_2/D[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y7_n_104. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[15]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_7_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_33_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.142 | TNS=-278.088 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 12 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[11]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.134 | TNS=-277.968 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 15 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[10]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.132 | TNS=-277.938 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 20 pins.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[9]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.094 | TNS=-277.368 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[16]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net forward_viewer/logarithm/A[16]. Critical path length was reduced through logic transformation on cell forward_viewer/logarithm/loc_x7_i_6_comp.
+INFO: [Physopt 32-735] Processed net forward_viewer/loc_x7_i_32_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.041 | TNS=-275.106 |
+INFO: [Physopt 32-81] Processed net forward_viewer/logarithm/A[21]. Replicated 1 times.
+INFO: [Physopt 32-735] Processed net forward_viewer/logarithm/A[21]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.036 | TNS=-275.031 |
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2[29]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2_carry__3_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y8_n_84. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4__1[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/CO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y0_carry__1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y0_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/BRAM_reg_3[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3[14]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3_carry__0_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3_carry_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4_n_106. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/DOADO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/sprite_type_pipe_reg[0]_4[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_gen/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_opponent14_in. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/i__carry__0_i_3__5_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry__1_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/in_player2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry__2_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y2_carry_i_1_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5[9]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y5_carry_i_4_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/track_2/D[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y7_n_104. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/A[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x2[29]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/loc_y8_n_84. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_x4__1[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y[21]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/CO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/BRAM_reg_3[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/conv_y3[14]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net forward_viewer/logarithm/DOADO[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-14.036 | TNS=-275.031 |
+Phase 4 Critical Path Optimization | Checksum: 19606bd3c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:10 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2914 ; free virtual = 7758
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2914 ; free virtual = 7758
+INFO: [Physopt 32-603] Post Physical Optimization Timing Summary | WNS=-14.036 | TNS=-275.031 |
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization   |  WNS Gain (ns)  |  TNS Gain (ns)  |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  DSP Register   |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Critical Path  |          0.911  |         15.171  |            1  |              0  |                    27  |           0  |           2  |  00:00:10  |
+|  Total          |          0.911  |         15.171  |            1  |              0  |                    27  |           0  |           3  |  00:00:10  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2914 ; free virtual = 7758
+Ending Physical Synthesis Task | Checksum: 16b25b5b2
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:10 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2914 ; free virtual = 7758
 INFO: [Common 17-83] Releasing license: Implementation
-4 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+218 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
 phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:00:42 ; elapsed = 00:00:10 . Memory (MB): peak = 3161.953 ; gain = 0.000 ; free physical = 2920 ; free virtual = 7764
 # route_design
 Command: route_design
 Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
 Running DRC as a precondition to command route_design
 INFO: [DRC 23-27] Running DRC with 8 threads
 INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
@@ -1397,7 +1692,7 @@ Time (s): cpu = 00:00:28 ; elapsed = 00:00:22 . Memory (MB): peak = 3019.418 ; g
 
 Routing Is Done.
 INFO: [Common 17-83] Releasing license: Implementation
-13 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+16 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
 route_design completed successfully
 route_design: Time (s): cpu = 00:00:30 ; elapsed = 00:00:23 . Memory (MB): peak = 3019.418 ; gain = 27.293 ; free physical = 1103 ; free virtual = 6475
 # write_bitstream -force /tmp/tmp.rC4LvW/obj/out.bit
@@ -1418,13 +1713,17 @@ WARNING: [DRC CFGBVS-1] Missing CFGBVS and CONFIG_VOLTAGE Design Properties: Nei
  #where value2 is the voltage provided to configuration bank 0
 
 Refer to the device configuration user guide for more information.
-WARNING: [DRC PDRC-153] Gated clock check: Net r1/b1/axiod_reg[1]_i_2_n_0 is a gated clock net sourced by a combinational pin r1/b1/axiod_reg[1]_i_2/O, cell r1/b1/axiod_reg[1]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net r1/b1/axiov_reg_i_2_n_0 is a gated clock net sourced by a combinational pin r1/b1/axiov_reg_i_2/O, cell r1/b1/axiov_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net r1/f1/axiod_reg[1]_i_2__0_n_0 is a gated clock net sourced by a combinational pin r1/f1/axiod_reg[1]_i_2__0/O, cell r1/f1/axiod_reg[1]_i_2__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net r1/f1/axiov_reg_i_2__0_n_0 is a gated clock net sourced by a combinational pin r1/f1/axiov_reg_i_2__0/O, cell r1/f1/axiov_reg_i_2__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net t1/b1/axiod_reg[1]_i_2__1_n_0 is a gated clock net sourced by a combinational pin t1/b1/axiod_reg[1]_i_2__1/O, cell t1/b1/axiod_reg[1]_i_2__1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net t1/b1/axiov_reg_i_2__1_n_0 is a gated clock net sourced by a combinational pin t1/b1/axiov_reg_i_2__1/O, cell t1/b1/axiov_reg_i_2__1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-INFO: [Vivado 12-3199] DRC finished with 0 Errors, 7 Warnings
+WARNING: [DRC DPIP-1] Input pipelining: DSP racer_viewer/loc_x1 input racer_viewer/loc_x1/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPIP-1] Input pipelining: DSP racer_viewer/loc_y1 input racer_viewer/loc_y1/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP racer_viewer/loc_x1 output racer_viewer/loc_x1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP racer_viewer/loc_x2 output racer_viewer/loc_x2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP racer_viewer/loc_y1 output racer_viewer/loc_y1/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-1] PREG Output pipelining: DSP racer_viewer/loc_y2 output racer_viewer/loc_y2/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP racer_viewer/loc_x1 multiplier stage racer_viewer/loc_x1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP racer_viewer/loc_x2 multiplier stage racer_viewer/loc_x2/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP racer_viewer/loc_y1 multiplier stage racer_viewer/loc_y1/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+WARNING: [DRC DPOP-2] MREG Output pipelining: DSP racer_viewer/loc_y2 multiplier stage racer_viewer/loc_y2/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+INFO: [Vivado 12-3199] DRC finished with 0 Errors, 11 Warnings
 INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
 INFO: [Designutils 20-2272] Running write_bitstream with 8 threads.
 Loading data files...
@@ -1437,7 +1736,7 @@ Writing bitstream /tmp/tmp.rC4LvW/obj/out.bit...
 INFO: [Vivado 12-1842] Bitgen Completed Successfully.
 INFO: [Project 1-1876] WebTalk data collection is mandatory when using a ULT device. To see the specific WebTalk data collected for your design, open the usage_statistics_webtalk.html or usage_statistics_webtalk.xml file in the implementation directory.
 INFO: [Common 17-83] Releasing license: Implementation
-11 Infos, 7 Warnings, 0 Critical Warnings and 0 Errors encountered.
+11 Infos, 11 Warnings, 0 Critical Warnings and 0 Errors encountered.
 write_bitstream completed successfully
 write_bitstream: Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 3361.488 ; gain = 342.070 ; free physical = 1060 ; free virtual = 6435
 INFO: [Common 17-206] Exiting Vivado at Mon Dec  5 13:25:24 2022...

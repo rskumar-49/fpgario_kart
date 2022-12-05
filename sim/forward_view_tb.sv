@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-module racer_view_tb;
+module forward_view_tb;
 
     //make logics for inputs and outputs!
     logic clk_in;
@@ -15,7 +15,7 @@ module racer_view_tb;
     logic [10:0] opponent_y;
     logic [11:0] pixel_out;
 
-    racer_view uut(.clk_in(clk_in), .rst_in(rst_in),
+    forward_view uut(.clk_in(clk_in), .rst_in(rst_in),
                          .hcount_in(hcount_in),
                          .vcount_in(vcount_in),
                          .direction(direction),
@@ -31,22 +31,22 @@ module racer_view_tb;
 
     //initial block...this is our test simulation
     initial begin
-        $dumpfile("racer_view.vcd"); //file to store value change dump (vcd)
-        $dumpvars(0,racer_view_tb); //store everything at the current level and below
+        $dumpfile("forward_view.vcd"); //file to store value change dump (vcd)
+        $dumpvars(0,forward_view_tb); //store everything at the current level and below
         $display("Starting Sim"); //print nice message
         clk_in = 0; //initialize clk (super important)
         rst_in = 1; //reset system
         #20; //hold high for a few clock cycles
         rst_in=0;
-        player_x = 192;
-        player_y = 192;
+        player_x = 191;
+        player_y = 191;
         opponent_x = 224;
         opponent_y = 224;
-        direction = 90;
+        direction = 270;
         #20;
         
-        for (int i = 256; i < 320; i = i+1)begin
-            for (int j = 640; j < 896; j = j+1) begin
+        for (int i = 512; i < 513; i = i+1)begin
+            for (int j = 512; j < 1024; j = j+1) begin
                 hcount_in = j;
                 vcount_in = i;
                 #20;
