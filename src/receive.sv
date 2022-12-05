@@ -10,7 +10,7 @@ module receive (
 
     output logic eth_rstn,
     output logic axiov,
-    output logic [31:0] axiod 
+    output logic [43:0] axiod 
 );
 
 assign eth_rstn = !btnc; //just done to make sys_rst more obvious
@@ -28,8 +28,8 @@ logic fire_axiov;
 logic [1:0] fire_axiod;
 
 logic agg_axiov;
-logic [31:0] agg_axiod;
-logic [31:0] buffer;
+logic [43:0] agg_axiod;
+logic [43:0] buffer;
 
 assign axiov = agg_axiov;
 assign axiod = agg_axiod; 

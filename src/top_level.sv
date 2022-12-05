@@ -42,10 +42,21 @@ module top_level(
     logic [11:0] pixel_out_racer;
 
     logic receive_axiov;
-    logic [31:0] receive_axiod;
-    logic [31:0] buffer;
+    logic [43:0] receive_axiod;
+    logic [43:0] buffer;
     logic [10:0] hcount_f;    // pixel on current line
     logic [9:0] vcount_f;     // line number
+
+    logic [10:0] opponent_x;
+    logic [10:0] opponent_y;
+    logic [8:0] opponent_dir; 
+    logic [2:0] opponent_game; 
+    logic opponent_reset;
+    assign opponent_x = receive_axiod[43:33];
+    assign opponent_y = receive_axiod[31:21];
+    assign opponent_dir = receive_axiod[19:11];
+    assign opponent_game = receive_axiod[7:5];
+    assign opponent_reset = receive_axiod[3];
 
     logic clk_65mhz;
 
@@ -134,7 +145,7 @@ module top_level(
     assign vga_vs = ~vsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
 
     always_ff @(posedge eth_refclk) begin
-        if (btnc) begin
+        if (btnc || opponent_reset) begin
             led[13:0] <= 0;
             buffer <= 0;
             hcount_f <= 0;
