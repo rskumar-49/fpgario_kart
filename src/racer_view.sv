@@ -44,6 +44,9 @@ module racer_view (
     logic [9:0][7:0] palette_addr;
     logic [15:0][11:0] output_color;
 
+    logic [13:0] player_counter;
+    logic [13:0] opponent_counter;
+
     assign delta_x = $signed(767 - hcount_in);
     assign delta_y = $signed(255 - vcount_in);
 
@@ -57,6 +60,14 @@ module racer_view (
         if (in_player_pipe[3])          sprite_type_pipe[0] <= 8;
         else if (in_opponent_pipe[1])   sprite_type_pipe[0] <= 9;
         else                            sprite_type_pipe[0] <= sprite_type;  
+
+        if (hcount_in == 0 && vcount_in == 0) begin
+            player_counter <= 0;
+            opponent_counter <= 0;
+        end
+
+        if (in_player) player_counter <= player_counter + 1;
+        if (in_opponent) opponent_counter <= opponent_counter + 1;
 
         in_player_pipe[0] <= in_player;
         in_player_pipe[1] <= in_player_pipe[0];
@@ -75,7 +86,7 @@ module racer_view (
         delta_x_pipe[0] <= delta_x;
         delta_x_pipe[1] <= delta_x_pipe[0];
 
-        for (int i = 1; i < 4; i = i+1) begin
+        for (int i = 1; i < 2; i = i+1) begin
             sprite_type_pipe[i] <= sprite_type_pipe[i-1];
         end
     end
@@ -83,8 +94,10 @@ module racer_view (
     // Player_addr and Opponent_addr work properly when they're in the player or opponent. Otherwise, it can spew garbage, but it doesn't matter.
     assign in_player   = (hcount_in >= 704  && hcount_in <= 831) && (vcount_in >= 192 && vcount_in <= 319);
     assign in_opponent = (loc_x + 63 >= opponent_x && opponent_x + 64 >= loc_x) && (loc_y + 63 >= opponent_y && opponent_y + 64 >= loc_y);
-    assign player_addr =   {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
-    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
+    // assign player_addr =   {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
+    // assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
+    assign player_addr = {player_counter[13:9], player_counter[6:2]};
+    assign opponent_addr = {opponent_counter[13:9], opponent_counter[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
@@ -148,7 +161,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square.mem))
+        .INIT_FILE(`FPATH(00_road.mem))
     ) i0_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -164,7 +177,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(black_square_pal.mem))
+        .INIT_FILE(`FPATH(00_road_pal.mem))
     ) p0_black_square_pal (
         .addra(palette_addr[0]),
         .dina(12'b0),       
@@ -182,7 +195,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square.mem))
+        .INIT_FILE(`FPATH(01_normal_sand.mem))
     ) i1_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -198,7 +211,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(grey_square_pal.mem))
+        .INIT_FILE(`FPATH(01_normal_sand_pal.mem))
     ) p1_type (
         .addra(palette_addr[1]),
         .dina(12'b0),       
@@ -216,7 +229,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i2_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -250,7 +263,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i3_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -284,7 +297,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i4_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -318,7 +331,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i5_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -352,7 +365,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i6_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -386,7 +399,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    // Specify i2 mem file
+        .INIT_FILE(`FPATH())                    
     ) i7_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -422,7 +435,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(08_mario_icon.mem))                    
     ) i8_mario (
         .addra(player_addr_pipe[1]),
         .dina(8'b0),       
@@ -438,7 +451,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(08_mario_icon_pal.mem))                        // Specify p2 mem file
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -458,7 +471,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square.mem))                    // Specify i2 mem file
+        .INIT_FILE(`FPATH(09_luigi_icon.mem))                    
     ) i9_luigi (
         .addra(opponent_addr),
         .dina(8'b0),       
@@ -474,7 +487,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(red_square_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(09_luigi_icon_pal.mem))                        // Specify p2 mem file
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       

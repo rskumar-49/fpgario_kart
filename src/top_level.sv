@@ -45,12 +45,6 @@ module top_level(
     logic [11:0] pixel_out_forward;
 
     logic receive_axiov;
-    logic [31:0] receive_axiod;
-    logic [31:0] buffer;
-    logic [10:0] hcount_f;    // pixel on current line
-    logic [9:0] vcount_f;     // line number
-
-    logic receive_axiov;
     logic [43:0] receive_axiod;
     logic [43:0] buffer;
     logic [10:0] hcount_f;    // pixel on current line
@@ -61,6 +55,7 @@ module top_level(
     logic [8:0] opponent_dir; 
     logic [2:0] opponent_game; 
     logic opponent_reset;
+
     assign opponent_x = receive_axiod[43:33];
     assign opponent_y = receive_axiod[31:21];
     assign opponent_dir = receive_axiod[19:11];
@@ -154,7 +149,7 @@ module top_level(
     end
 
     always_ff @(posedge clk_65mhz)begin
-        vga_r <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[11:8] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[11:8] : pixel_out_forward[11:8])) : 4'h0;     //TODO: needs to use pipelined signal (PS6)      /////
+        vga_r <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[11:8] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[11:8] : (vcount_pipe[5] < 512 ? 4'hFFF : pixel_out_forward[11:8]))) : 4'h0;     //TODO: needs to use pipelined signal (PS6)      /////
         vga_g <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[7 :4] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[7 :4] : pixel_out_forward[7 :4])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
         vga_b <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[3 :0] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[3 :0] : pixel_out_forward[3 :0])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
     end

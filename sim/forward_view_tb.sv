@@ -45,7 +45,7 @@ module forward_view_tb;
         direction = 270;
         #20;
         
-        for (int i = 512; i < 513; i = i+1)begin
+        for (int i = 600; i < 601; i = i+1)begin
             for (int j = 512; j < 1024; j = j+1) begin
                 hcount_in = j;
                 vcount_in = i;
