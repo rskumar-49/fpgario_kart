@@ -44,8 +44,8 @@ module track_view_tb;
         opponent_y = 224;
         #20;
         
-        for (int i = 0; i < 80; i = i+1)begin
-            for (int j = 0; j < 80; j = j+1) begin
+        for (int i = 30; i < 120; i = i+1)begin
+            for (int j = 30; j < 120; j = j+1) begin
                 hcount_in = j;
                 vcount_in = i;
                 sprite_type = 0;

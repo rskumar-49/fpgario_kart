@@ -39,7 +39,7 @@ module top_level(
     logic [6:0] vsync_pipe;
 
     logic [11:0] pixel_out_track;
-    logic [1:0][11:0] pixel_out_track_pipe;
+    logic [3:0][11:0] pixel_out_track_pipe;
     logic [11:0] pixel_out_racer;
     logic [1:0][11:0] pixel_out_racer_pipe;
     logic [11:0] pixel_out_forward;
@@ -95,7 +95,7 @@ module top_level(
         .vcount_in(vcount),
         .player_x(11'd191),
         .player_y(11'd191),
-        .direction(270),
+        .direction(315),
         .opponent_x(11'd320),
         .opponent_y(11'd320),
         .pixel_out(pixel_out_racer));
@@ -139,6 +139,9 @@ module top_level(
         hsync_pipe[0] <= hsync;
         vsync_pipe[0] <= vsync;
 
+        pixel_out_track_pipe[0] <= pixel_out_track;
+        pixel_out_track_pipe[1] <= pixel_out_track_pipe[0];
+
         for (int i=1; i<7; i = i+1)begin
             hcount_pipe[i] <= hcount_pipe[i-1];
             vcount_pipe[i] <= vcount_pipe[i-1];
@@ -149,9 +152,9 @@ module top_level(
     end
 
     always_ff @(posedge clk_65mhz)begin
-        vga_r <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[11:8] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[11:8] : (vcount_pipe[5] < 512 ? 4'hFFF : pixel_out_forward[11:8]))) : 4'h0;     //TODO: needs to use pipelined signal (PS6)      /////
-        vga_g <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[7 :4] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[7 :4] : pixel_out_forward[7 :4])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
-        vga_b <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track[3 :0] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[3 :0] : pixel_out_forward[3 :0])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
+        vga_r <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track_pipe[1][11:8] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[11:8] : (vcount_pipe[5] < 512 ? 4'hFFF : pixel_out_forward[11:8]))) : 4'h0;     //TODO: needs to use pipelined signal (PS6)      /////
+        vga_g <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track_pipe[1][7 :4] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[7 :4] : pixel_out_forward[7 :4])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
+        vga_b <= ~blank_pipe[5] ? (hcount_pipe[5] < 512 ? (vcount_pipe[5] < 512 ? pixel_out_track_pipe[1][3 :0] : 4'h0) : (vcount_pipe[5] < 384 ? pixel_out_racer[3 :0] : pixel_out_forward[3 :0])) : 4'h0;      //TODO: needs to use pipelined signal (PS6)      /////
     end
 
     assign vga_hs = ~hsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////

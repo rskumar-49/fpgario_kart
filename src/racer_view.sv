@@ -28,7 +28,6 @@ module racer_view (
     logic [9:0] opponent_addr;
     logic [9:0] sprite_addr;
     logic [1:0][3:0] sprite_type_pipe;
-    logic [1:0][9:0] player_addr_pipe;
 
     logic signed [10:0] cos;
     logic signed [10:0] sin;
@@ -74,9 +73,6 @@ module racer_view (
         in_player_pipe[2] <= in_player_pipe[1];
         in_player_pipe[3] <= in_player_pipe[2];
 
-        player_addr_pipe[0] <= player_addr;
-        player_addr_pipe[1] <= player_addr_pipe[0];
-
         in_opponent_pipe[0] <= in_opponent;
         in_opponent_pipe[1] <= in_opponent_pipe[0];
 
@@ -94,10 +90,8 @@ module racer_view (
     // Player_addr and Opponent_addr work properly when they're in the player or opponent. Otherwise, it can spew garbage, but it doesn't matter.
     assign in_player   = (hcount_in >= 704  && hcount_in <= 831) && (vcount_in >= 192 && vcount_in <= 319);
     assign in_opponent = (loc_x + 63 >= opponent_x && opponent_x + 64 >= loc_x) && (loc_y + 63 >= opponent_y && opponent_y + 64 >= loc_y);
-    // assign player_addr =   {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
-    // assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
+    assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
     assign player_addr = {player_counter[13:9], player_counter[6:2]};
-    assign opponent_addr = {opponent_counter[13:9], opponent_counter[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
@@ -437,7 +431,7 @@ module racer_view (
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
         .INIT_FILE(`FPATH(08_mario_icon.mem))                    
     ) i8_mario (
-        .addra(player_addr_pipe[1]),
+        .addra(player_addr),
         .dina(8'b0),       
         .clka(clk_in),
         .wea(1'b0),
