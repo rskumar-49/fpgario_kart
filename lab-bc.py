@@ -99,7 +99,7 @@ def regfiles():
 	ftt = {}
 	debuglog(f"projectdir is {projectdir}")
 	for dirpath, subdirs, files in os.walk(projectdir):
-		if 'src' not in dirpath and 'xdc' not in dirpath and 'data' not in dirpath:
+		if 'src' not in dirpath and 'xdc' not in dirpath and 'data' not in dirpath and 'ip' not in dirpath:
 			continue 
 		if dirpath.startswith("./"): dirpath = dirpath[2:]
 		for file in files:
@@ -113,6 +113,8 @@ def regfiles():
 			elif file.lower().endswith('.svh'): ftt[fpath] = 'source'
 			elif file.lower().endswith('.xdc'): ftt[fpath] = 'xdc'
 			elif file.lower().endswith('.mem'): ftt[fpath] = 'mem'
+			elif file.lower().endswith('.xci'): ftt[fpath] = 'ip'
+			elif file.lower().endswith('.prj'): ftt[fpath] = 'mig'
 
 	debuglog(f"elaborated file list {ftt}")
 	return ftt

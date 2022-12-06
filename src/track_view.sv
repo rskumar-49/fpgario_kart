@@ -39,6 +39,14 @@ module track_view (
         sprite_type_pipe[0] <= sprite_type; 
         in_player_pipe[0] <= in_player;
         in_opponent_pipe[0] <= in_opponent;
+
+        if (in_player_pipe[3]) begin
+            if (output_color[8] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
+            else pixel_out <= output_color[8];
+        end else if (in_opponent_pipe[3]) begin
+            if (output_color[9] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
+            else pixel_out <= output_color[9];
+        end else pixel_out <= output_color[sprite_type_pipe[1]];
     end
 
     // All for calculating the player lookup address
@@ -46,18 +54,6 @@ module track_view (
     assign opponent_addr = {vcount_in[4:0] + 5'd15 - opponent_y[6:2], hcount_in[4:0] + 5'd15 - opponent_x[6:2]};
     
     assign sprite_addr = hcount_in[4:0] + 32 * vcount_in[4:0];
-
-    always_comb begin
-        if (in_player_pipe[3]) begin
-            if (output_color[8] == 12'h406) pixel_out = output_color[sprite_type_pipe[1]];
-            else pixel_out = output_color[8];
-        end else if (in_opponent_pipe[3]) begin
-            if (output_color[9] == 12'h406) pixel_out = output_color[sprite_type_pipe[1]];
-            else pixel_out = output_color[9];
-        end else pixel_out = output_color[sprite_type_pipe[1]];
-    end
-
-    // assign pixel_out = (in_player_pipe[3]) ? output_color[8] : (in_opponent_pipe[3] ? output_color[9] : output_color[sprite_type_pipe[1]]);
 
     assign in_player   = (hcount_in + 15 >=   player_x[10:2]   && player_x[10:2] + 16 >= hcount_in) && (vcount_in + 15 >=   player_y[10:2]   && player_y[10:2] + 16 >= vcount_in);
     assign in_opponent = (hcount_in + 15 >= opponent_x[10:2] && opponent_x[10:2] + 16 >= hcount_in) && (vcount_in + 15 >= opponent_y[10:2] && opponent_y[10:2] + 16 >= vcount_in);
