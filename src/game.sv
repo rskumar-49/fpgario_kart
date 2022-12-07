@@ -124,8 +124,8 @@ always_ff @(posedge clk) begin
         player_y <= 100;
         opponent_x <= 300;
         opponent_y <= 100;
-        player_dir <= 0;
-        opp_dir <= 0;
+        player_dir <= 90;
+        opp_dir <= 90;
         i_player_x <= 0;
         i_player_y <= 0;
         i_opp_x <= 0;

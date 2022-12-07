@@ -129,8 +129,8 @@ module top_level(
     
     transmit t1(.eth_clk(eth_refclk),
                 .eth_rst(sys_rst),
-                .hcount(hcount_f),
-                .vcount(vcount_f),
+                .hcount(hcount),
+                .vcount(vcount),
                 .player_x(player_x),
                 .player_y(player_x),
                 .direction(player_dir),
