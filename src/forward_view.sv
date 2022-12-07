@@ -15,13 +15,12 @@ module forward_view (
     input wire [10:0]  opponent_y,
     output logic [11:0] pixel_out);
 
-    // Edit this to only act if hcount_in is between 512 and 1023, and vcount is between 384 and 767
     // Note, 0 degrees is up vertically (with vcount decreasing)
 
     logic in_player;
     logic in_opponent;
     logic [3:0] in_player_pipe;
-    logic [1:0] in_opponent_pipe;
+    logic [3:0] in_opponent_pipe;
     
     logic [3:0] sprite_type;
     logic [9:0] player_addr;
@@ -45,28 +44,37 @@ module forward_view (
 
     logic [1:0][9:0]  vcount_pipe;
     logic [1:0][10:0] hcount_pipe;
-    
-    assign conv_y = (vcount_pipe[1] >= 512) ? $signed(1056 - 128 * log / 512) : 0;
-    assign conv_x = (conv_y != 0) ? $signed(767 - hcount_pipe[1]) * conv_y / 256: 0;
-
-    // Make sure this doesn't go out of the bounds between 0 and 2047
-    assign loc_x = $signed(conv_x * cos - conv_y * sin) / 512 + $signed(player_x) < 0 ? 0 : $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
-    assign loc_y = $signed(conv_x * sin + conv_y * cos) / 512 + $signed(player_y) < 0 ? 0 : $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
 
     always_ff @(posedge clk_in)begin
 
-        if (in_player)          sprite_type_pipe[0] <= 8;
-        else if (in_opponent)   sprite_type_pipe[0] <= 9;
-        else                    sprite_type_pipe[0] <= sprite_type;  
+        sprite_type_pipe[0] <= sprite_type;  
+
+        if (in_player_pipe[3]) begin
+            if (output_color[8] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
+            else pixel_out <= output_color[8];
+        end else if (in_opponent_pipe[3]) begin
+            if (output_color[9] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
+            else pixel_out <= output_color[9];
+        end else pixel_out <= output_color[sprite_type_pipe[1]];
+    
+        conv_y <= $signed(1056 - log / 4);
+        conv_x <= $signed(767 - hcount_pipe[1]) * conv_y / 256;
+
+        loc_x <= $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
+        loc_y <= $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
 
         in_player_pipe[0] <= in_player;
         in_player_pipe[1] <= in_player_pipe[0];
+        in_player_pipe[2] <= in_player_pipe[1];
+        in_player_pipe[3] <= in_player_pipe[2];
 
         player_addr_pipe[0] <= player_addr;
         player_addr_pipe[1] <= player_addr_pipe[0];
 
         in_opponent_pipe[0] <= in_opponent;
         in_opponent_pipe[1] <= in_opponent_pipe[0];
+        in_opponent_pipe[2] <= in_opponent_pipe[1];
+        in_opponent_pipe[3] <= in_opponent_pipe[2];
 
         vcount_pipe[0] <= vcount_in;
         vcount_pipe[1] <= vcount_pipe[0];
@@ -80,17 +88,15 @@ module forward_view (
     end
 
 
-    assign in_player     = (loc_x + 63 >=   player_x    &&  player_x   + 64 >= loc_x)  &&  (loc_y + 63 >=   player_y   &&  player_y   + 64 >= vcount_in);
-    assign in_opponent   = (loc_x + 63 >=   opponent_x  &&  opponent_x + 64 >= loc_x)  &&  (loc_y + 63 >=   opponent_y &&  opponent_y + 64 >= vcount_in);
+    assign in_player     = (loc_x + 63 >=   player_x    &&  player_x   + 64 >= loc_x)  &&  (loc_y + 63 >=   player_y   &&  player_y   + 64 >= loc_y);
+    assign in_opponent   = (loc_x + 63 >=   opponent_x  &&  opponent_x + 64 >= loc_x)  &&  (loc_y + 63 >=   opponent_y &&  opponent_y + 64 >= loc_y);
     assign player_addr   = {loc_y[6:2] + 5'd15 - player_y[6:2],   loc_x[6:2] + 5'd15 - player_x[6:2]};
     assign opponent_addr = {loc_y[6:2] + 5'd15 - opponent_y[6:2], loc_x[6:2] + 5'd15 - opponent_x[6:2]};
 
     assign track_addr  = {loc_y[11] == 1 ? 4'b0 : loc_y[10:7], loc_x[11] == 1 ? 4'b0 : loc_x[10:7]};
     // The sprite address doesn't use the lowest two bits because our images are 32 by 32.
     assign sprite_addr = {loc_y[6:2], loc_x[6:2]};
-    assign pixel_out = output_color[sprite_type_pipe[1]];
 
-    
     // Track BRAM
 
     xilinx_single_port_ram_read_first #(
@@ -163,7 +169,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_black_square.mem))
+        .INIT_FILE(`FPATH(00_road.mem))
     ) i0_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -179,7 +185,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_black_square_pal.mem))
+        .INIT_FILE(`FPATH(00_road_pal.mem))
     ) p0_black_square_pal (
         .addra(palette_addr[0]),
         .dina(12'b0),       
@@ -197,7 +203,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_grey_square.mem))
+        .INIT_FILE(`FPATH(01_normal_sand.mem))
     ) i1_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -213,7 +219,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_grey_square_pal.mem))
+        .INIT_FILE(`FPATH(01_normal_sand_pal.mem))
     ) p1_type (
         .addra(palette_addr[1]),
         .dina(12'b0),       
@@ -437,7 +443,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_red_square.mem))                    
+        .INIT_FILE(`FPATH(08_mario_icon.mem))                    
     ) i8_mario (
         .addra(player_addr),
         .dina(8'b0),       
@@ -453,7 +459,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_red_square_pal.mem))                        
+        .INIT_FILE(`FPATH(08_mario_icon_pal.mem))                        
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -473,7 +479,7 @@ module forward_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_red_square.mem))                    
+        .INIT_FILE(`FPATH(09_luigi_icon.mem))                    
     ) i9_luigi (
         .addra(opponent_addr),
         .dina(8'b0),       
@@ -489,7 +495,7 @@ module forward_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(test_red_square_pal.mem))                        
+        .INIT_FILE(`FPATH(09_luigi_icon_pal.mem))                        
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       

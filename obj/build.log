@@ -73,14 +73,18 @@ INFO: [Synth 8-6157] synthesizing module 'IBUF' [/opt/Xilinx/Vivado/2022.1/scrip
 INFO: [Synth 8-6155] done synthesizing module 'IBUF' (0#1) [/opt/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:55203]
 INFO: [Synth 8-6157] synthesizing module 'MMCME2_ADV' [/opt/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:63509]
 	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
-	Parameter CLKFBOUT_MULT_F bound to: 10.000000 - type: double 
+	Parameter CLKFBOUT_MULT_F bound to: 9.750000 - type: double 
 	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: double 
 	Parameter CLKFBOUT_USE_FINE_PS bound to: FALSE - type: string 
 	Parameter CLKIN1_PERIOD bound to: 10.000000 - type: double 
-	Parameter CLKOUT0_DIVIDE_F bound to: 20.000000 - type: double 
+	Parameter CLKOUT0_DIVIDE_F bound to: 19.500000 - type: double 
 	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: double 
 	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: double 
 	Parameter CLKOUT0_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT1_DIVIDE bound to: 15 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT1_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT1_USE_FINE_PS bound to: FALSE - type: string 
 	Parameter CLKOUT4_CASCADE bound to: FALSE - type: string 
 	Parameter COMPENSATION bound to: ZHOLD - type: string 
 	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
@@ -534,6 +538,11 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------
 Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 2722.328 ; gain = 0.000 ; free physical = 3837 ; free virtual = 6795
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'track_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'track_viewer/i3_type'
+INFO: [Synth 8-223] decloning instance 'track_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'track_viewer/i4_type'
+INFO: [Synth 8-223] decloning instance 'track_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'track_viewer/i5_type'
+INFO: [Synth 8-223] decloning instance 'track_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'track_viewer/i6_type'
+INFO: [Synth 8-223] decloning instance 'track_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'track_viewer/i7_type'
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i3_type'
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i4_type'
 INFO: [Synth 8-223] decloning instance 'racer_viewer/i2_type' (xilinx_single_port_ram_read_first__parameterized4) to 'racer_viewer/i5_type'
@@ -551,9 +560,10 @@ Detailed RTL Component Info :
 +---Adders : 
 	   2 Input   64 Bit       Adders := 1     
 	   2 Input   33 Bit       Adders := 1     
-	   2 Input   32 Bit       Adders := 10    
+	   2 Input   32 Bit       Adders := 2     
 	   2 Input   22 Bit       Adders := 3     
 	   2 Input   16 Bit       Adders := 9     
+	   2 Input   14 Bit       Adders := 1     
 	   2 Input   13 Bit       Adders := 4     
 	   2 Input   12 Bit       Adders := 11    
 	   2 Input   11 Bit       Adders := 6     
@@ -570,7 +580,7 @@ Detailed RTL Component Info :
 	               44 Bit    Registers := 3     
 	               33 Bit    Registers := 1     
 	               32 Bit    Registers := 1     
-	               22 Bit    Registers := 4     
+	               22 Bit    Registers := 8     
 	               16 Bit    Registers := 6     
 	               13 Bit    Registers := 2     
 	               12 Bit    Registers := 60    
@@ -585,7 +595,7 @@ Detailed RTL Component Info :
 	                2 Bit    Registers := 7     
 	                1 Bit    Registers := 39    
 +---RAMs : 
-	               8K Bit	(1024 X 8 bit)          RAMs := 20    
+	               8K Bit	(1024 X 8 bit)          RAMs := 15    
 	               3K Bit	(256 X 12 bit)          RAMs := 30    
 	               3K Bit	(360 X 11 bit)          RAMs := 8     
 	               3K Bit	(256 X 13 bit)          RAMs := 1     
@@ -636,32 +646,42 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
-DSP Report: Generating DSP loc_y8, operation Mode is: A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_y8.
-DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_y8.
-DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_y8.
-DSP Report: operator loc_y8 is absorbed into DSP loc_y8.
-DSP Report: Generating DSP loc_y7, operation Mode is: C+A''*B2.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_y7.
-DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_y7.
-DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_y7.
-DSP Report: operator loc_y7 is absorbed into DSP loc_y7.
-DSP Report: operator loc_y8 is absorbed into DSP loc_y7.
-DSP Report: Generating DSP loc_x8, operation Mode is: A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_x8.
-DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_x8.
-DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_x8.
-DSP Report: operator loc_x8 is absorbed into DSP loc_x8.
-DSP Report: Generating DSP loc_x7, operation Mode is: C+A''*B2+1.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_x7.
-DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_x7.
-DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_x7.
-DSP Report: operator loc_x7 is absorbed into DSP loc_x7.
-DSP Report: operator loc_x8 is absorbed into DSP loc_x7.
-DSP Report: Generating DSP conv_x4, operation Mode is: A*B.
+WARNING: [Synth 8-3936] Found unconnected internal register 'delta_x_pipe_reg[1]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/racer_view.sv:54]
+WARNING: [Synth 8-3936] Found unconnected internal register 'delta_x_pipe_reg[0]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/racer_view.sv:54]
+WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[1]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/racer_view.sv:54]
+WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[0]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/racer_view.sv:54]
+DSP Report: Generating DSP loc_x3, operation Mode is: A''*B2.
+DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_x3.
+DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_x3.
+DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_x3.
+DSP Report: operator loc_x3 is absorbed into DSP loc_x3.
+DSP Report: Generating DSP loc_x2, operation Mode is: C-A''*B2.
+DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_x2.
+DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_x2.
+DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_x2.
+DSP Report: operator loc_x2 is absorbed into DSP loc_x2.
+DSP Report: operator loc_x3 is absorbed into DSP loc_x2.
+DSP Report: Generating DSP loc_y3, operation Mode is: A''*B2.
+DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_y3.
+DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_y3.
+DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_y3.
+DSP Report: operator loc_y3 is absorbed into DSP loc_y3.
+DSP Report: Generating DSP loc_y2, operation Mode is: C+A''*B2.
+DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_y2.
+DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_y2.
+DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_y2.
+DSP Report: operator loc_y2 is absorbed into DSP loc_y2.
+DSP Report: operator loc_y3 is absorbed into DSP loc_y2.
+WARNING: [Synth 8-3936] Found unconnected internal register 'conv_x_reg' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/forward_view.sv:61]
+WARNING: [Synth 8-3936] Found unconnected internal register 'conv_y_reg' and it is trimmed from '22' to '21' bits. [/tmp/tmp.ob7f0Z/src/forward_view.sv:60]
+DSP Report: Generating DSP conv_x4, operation Mode is: ((D:0x421)+A)*B.
+DSP Report: register conv_y_reg is absorbed into DSP conv_x4.
+DSP Report: operator conv_y0 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
-DSP Report: Generating DSP conv_x4, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: Generating DSP conv_x4, operation Mode is: (PCIN>>17)+((D:0x421)+A)*B.
+DSP Report: register conv_y_reg is absorbed into DSP conv_x4.
+DSP Report: operator conv_y0 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: Generating DSP loc_x8, operation Mode is: A*B2.
@@ -721,34 +741,16 @@ WARNING: [Synth 8-7257] Removed RAM (i2_type/BRAM_reg) due to inactive write ena
 WARNING: [Synth 8-6014] Unused sequential element i2_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p2_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p2_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i3_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p3_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p3_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i4_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i4_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p4_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p4_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i5_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i5_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p5_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p5_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i6_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p6_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p6_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i7_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i7_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p7_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i0_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i0_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (p0_black_square_pal/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element p0_black_square_pal/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i1_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i1_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (p1_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element p1_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (i2_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element i2_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p2_type/BRAM_reg) due to inactive write enable.
@@ -763,18 +765,6 @@ WARNING: [Synth 8-7257] Removed RAM (p6_type/BRAM_reg) due to inactive write ena
 WARNING: [Synth 8-6014] Unused sequential element p6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p7_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i8_mario/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i8_mario/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (p8_mario/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element p8_mario/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i9_luigi/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i9_luigi/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (p9_luigi/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element p9_luigi/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i0_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i0_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (p0_black_square_pal/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element p0_black_square_pal/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (i2_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element i2_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p2_type/BRAM_reg) due to inactive write enable.
@@ -789,10 +779,6 @@ WARNING: [Synth 8-7257] Removed RAM (p6_type/BRAM_reg) due to inactive write ena
 WARNING: [Synth 8-6014] Unused sequential element p6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element p7_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i8_mario/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i8_mario/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (i9_luigi/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element i9_luigi/BRAM_reg was removed. 
 ---------------------------------------------------------------------------------
 Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 2722.328 ; gain = 0.000 ; free physical = 3807 ; free virtual = 6776
 ---------------------------------------------------------------------------------
@@ -813,7 +799,6 @@ Block RAM: Preliminary Mapping Report (see note below)
 |xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized18: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
@@ -830,20 +815,20 @@ Block RAM: Preliminary Mapping Report (see note below)
 Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
 
 DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
-+-------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|Module Name  | DSP Mapping    | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
-+-------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|racer_view   | A''*B2         | 22     | 11     | -      | -      | 33     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view   | C+A''*B2       | 22     | 11     | 22     | -      | 22     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
-|racer_view   | A''*B2         | 22     | 11     | -      | -      | 33     | 2    | 1    | -    | -    | -     | 0    | 0    | 
-|racer_view   | C+A''*B2+1     | 22     | 11     | 22     | -      | 22     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
-|forward_view | A*B            | 22     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
-|forward_view | (PCIN>>17)+A*B | 15     | 15     | -      | -      | 15     | 0    | 0    | -    | -    | -     | 0    | 0    | 
-|forward_view | A*B2           | 22     | 11     | -      | -      | 33     | 0    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | C+A*B2+1       | 22     | 11     | 22     | -      | 22     | 0    | 1    | 0    | -    | -     | 0    | 0    | 
-|forward_view | A*B2           | 22     | 11     | -      | -      | 33     | 0    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | C+A*B2         | 22     | 11     | 22     | -      | 22     | 0    | 1    | 0    | -    | -     | 0    | 0    | 
-+-------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
++-------------+----------------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name  | DSP Mapping                | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------+----------------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|racer_view   | A''*B2                     | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|racer_view   | C-A''*B2                   | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
+|racer_view   | A''*B2                     | 21     | 11     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|racer_view   | C+A''*B2                   | 21     | 11     | 21     | -      | 21     | 2    | 1    | 0    | -    | -     | 0    | 0    | 
+|forward_view | ((D:0x421)+A)*B            | 12     | 18     | -      | 12     | 48     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
+|forward_view | (PCIN>>17)+((D:0x421)+A)*B | 12     | 15     | -      | 12     | 15     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
+|forward_view | A2*B2                      | 21     | 11     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|forward_view | C-((D:0x420)-A)*B2         | 21     | 11     | 21     | 12     | 21     | 0    | 1    | 0    | 0    | 1     | 0    | 0    | 
+|forward_view | A2*B2                      | 21     | 11     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|forward_view | C+((D:0x420)-A)*B2         | 21     | 11     | 21     | 12     | 21     | 0    | 1    | 0    | 0    | 1     | 0    | 0    | 
++-------------+----------------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
 ---------------------------------------------------------------------------------
@@ -878,7 +863,6 @@ Block RAM: Final Mapping Report
 |xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized18: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
@@ -898,8 +882,10 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-7052] The timing for the instance forward_viewer/cosine_2/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance forward_viewer/sine_2/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/cosine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/cosine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/sine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance racer_viewer/sine/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
 Finished Technology Mapping : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 2722.328 ; gain = 0.000 ; free physical = 3621 ; free virtual = 6597
 ---------------------------------------------------------------------------------
@@ -956,16 +942,18 @@ Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Static Shift Register Report:
-+------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
-|Module Name | RTL Name               | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
-+------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
-|top_level   | vcount_pipe_reg[5][9]  | 4      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | vcount_pipe_reg[5][8]  | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
-|top_level   | hcount_pipe_reg[5][10] | 4      | 2     | NO           | NO                 | YES               | 2      | 0       | 
-|top_level   | blank_pipe_reg[5]      | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | hsync_pipe_reg[6]      | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | vsync_pipe_reg[6]      | 7      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-+------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
++------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name | RTL Name                        | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|top_level   | blank_pipe_reg[7]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | hcount_pipe_reg[7][10]          | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | vcount_pipe_reg[5][9]           | 6      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | vcount_pipe_reg[7][8]           | 8      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | pixel_out_track_pipe_reg[3][11] | 5      | 9     | NO           | NO                 | YES               | 9      | 0       | 
+|top_level   | pixel_out_track_pipe_reg[3][6]  | 5      | 3     | NO           | YES                | YES               | 3      | 0       | 
+|top_level   | hsync_pipe_reg[8]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | vsync_pipe_reg[8]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
++------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
 
 ---------------------------------------------------------------------------------
 Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -975,16 +963,20 @@ Start Writing Synthesis Report
 ---------------------------------------------------------------------------------
 
 DSP Final Report (the ' indicates corresponding REG is set)
-+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|Module Name  | DSP Mapping  | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
-+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|forward_view | A*B          | 30     | 17     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
-|forward_view | PCIN>>17+A*B | 30     | 18     | -      | -      | 15     | 0    | 0    | -    | -    | -     | 0    | 0    | 
-|forward_view | A*B'         | 30     | 18     | -      | -      | 33     | 0    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | C-(A*B'+1)   | 30     | 18     | 48     | -      | 22     | 0    | 1    | 1    | -    | -     | 0    | 0    | 
-|forward_view | A*B'         | 30     | 18     | -      | -      | 33     | 0    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | C+A*B'       | 30     | 18     | 48     | -      | 22     | 0    | 1    | 1    | -    | -     | 0    | 0    | 
-+-------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
++-------------+-------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name  | DSP Mapping       | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------+-------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|forward_view | (D+A)'*B          | 30     | 17     | -      | 11     | 48     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
+|forward_view | PCIN>>17+(D+A)'*B | 30     | 18     | -      | 11     | 15     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
+|forward_view | A'*B'             | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|forward_view | not(C+(D-A)'*B')  | 30     | 18     | 48     | 11     | 21     | 0    | 1    | 1    | 1    | 1     | 0    | 0    | 
+|forward_view | A'*B'             | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|forward_view | C+(D-A)'*B'       | 30     | 18     | 48     | 11     | 21     | 0    | 1    | 1    | 1    | 1     | 0    | 0    | 
+|racer_view   | A''*B'            | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|racer_view   | not(C+A''*B')     | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
+|racer_view   | A''*B'            | 30     | 18     | -      | -      | 32     | 2    | 1    | -    | -    | -     | 0    | 0    | 
+|racer_view   | C+A''*B'          | 30     | 18     | 48     | -      | 21     | 2    | 1    | 1    | -    | -     | 0    | 0    | 
++-------------+-------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 
 Report BlackBoxes: 
@@ -1452,7 +1444,7 @@ INFO: [Place 30-612] Post-Placement Estimated Congestion
 |           | Global Congestion | Short Congestion  |
 | Direction | Region Size       | Region Size       |
 |___________|___________________|___________________|
-|      North|                1x1|                1x1|
+|      North|                1x1|                2x2|
 |___________|___________________|___________________|
 |      South|                1x1|                1x1|
 |___________|___________________|___________________|
@@ -1574,6 +1566,7 @@ Time (s): cpu = 00:00:28 ; elapsed = 00:00:22 . Memory (MB): peak = 3171.184 ; g
 Phase 5 Delay and Skew Optimization
 
 Phase 5.1 Delay CleanUp
+Phase 5.1 Delay CleanUp | Checksum: 1ae5e1cd9
 
 Phase 5.1.1 Update Timing
 Phase 5.1.1 Update Timing | Checksum: 27964ccc9
