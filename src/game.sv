@@ -184,10 +184,10 @@ always_ff @(posedge clk) begin
                 end
 
                 if (receive_axiov) begin
-                    i_player_x <= speed * p_c;
-                    i_player_y <= speed * p_s;
-                    i_opp_x <= speed * o_c;
-                    i_opp_y <= speed * o_s;
+                    i_player_x <= $signed(speed * p_c);
+                    i_player_y <= $signed(speed * p_s);
+                    i_opp_x <= $signed(speed * o_c);
+                    i_opp_y <= $signed(speed * o_s);
                 end else begin
                     i_player_x <= 0;
                     i_player_y <= 0;

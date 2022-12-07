@@ -155,7 +155,7 @@ module top_level(
             .game_stat(p_game_stat)
             );
 
-    always_ff @(posedge eth_refclk)begin
+    always_ff @(posedge clk_65mhz)begin
 
         blank_pipe[0] <= blank;
         hcount_pipe[0] <= hcount;
