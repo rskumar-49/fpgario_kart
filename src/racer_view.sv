@@ -15,7 +15,6 @@ module racer_view (
     input wire [10:0]  opponent_y,
     output logic [11:0] pixel_out);
 
-    // Edit this to only act if hcount_in is between 512 and 1023, and vcount is between 0 and 383
     // Note, 0 degrees is up vertically (with vcount decreasing)
 
     logic in_player;
@@ -48,12 +47,12 @@ module racer_view (
     assign delta_x = $signed(767 - hcount_in);
     assign delta_y = $signed(255 - vcount_in);
 
-    // Make sure this doesn't go out of the bounds between 0 and 2047
-    // This is actually right. It checks that we're not negative.
-    assign loc_x = $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
-    assign loc_y = $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
-
     always_ff @(posedge clk_in)begin  
+
+        // Make sure this doesn't go out of the bounds between 0 and 2047
+        // This is actually right. It checks that we're not negative.
+        loc_x <= $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
+        loc_y <= $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
 
         sprite_type_pipe[0] <= sprite_type;
         sprite_type_pipe[1] <= sprite_type_pipe[0];
@@ -98,7 +97,7 @@ module racer_view (
         .RAM_WIDTH(4),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(track.mem))                    // Specify track mem file
+        .INIT_FILE(`FPATH(track.mem))                    
     ) track (
         .addra(track_addr),
         .dina(4'b0),       
@@ -114,7 +113,7 @@ module racer_view (
         .RAM_WIDTH(11),
         .RAM_DEPTH(360),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(cos.mem))                    // Specify track mem file
+        .INIT_FILE(`FPATH(cos.mem))                    
     ) cosine (
         .addra(direction),
         .dina(11'b0),       
@@ -130,7 +129,7 @@ module racer_view (
         .RAM_WIDTH(11),
         .RAM_DEPTH(360),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(sin.mem))                    // Specify track mem file
+        .INIT_FILE(`FPATH(sin.mem))                    
     ) sine (
         .addra(direction),
         .dina(11'b0),       
@@ -232,7 +231,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p2_type (
         .addra(palette_addr[2]),
         .dina(12'b0),       
@@ -266,7 +265,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p3_type (
         .addra(palette_addr[3]),
         .dina(12'b0),       
@@ -300,7 +299,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p4_type (
         .addra(palette_addr[4]),
         .dina(12'b0),       
@@ -334,7 +333,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p5_type (
         .addra(palette_addr[5]),
         .dina(12'b0),       
@@ -368,7 +367,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p6_type (
         .addra(palette_addr[6]),
         .dina(12'b0),       
@@ -402,7 +401,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        // Specify p2 mem file
+        .INIT_FILE(`FPATH())                        
     ) p7_type (
         .addra(palette_addr[7]),
         .dina(12'b0),       
@@ -438,7 +437,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(08_mario_icon_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(08_mario_icon_pal.mem))                        
     ) p8_mario (
         .addra(palette_addr[8]),
         .dina(12'b0),       
@@ -474,7 +473,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(09_luigi_icon_pal.mem))                        // Specify p2 mem file
+        .INIT_FILE(`FPATH(09_luigi_icon_pal.mem))                        
     ) p9_luigi (
         .addra(palette_addr[9]),
         .dina(12'b0),       
