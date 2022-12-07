@@ -6,6 +6,7 @@ module top_level(
     input wire [15:0] sw, //switches
     input wire btnc, //btnc (used for reset)
     input wire btnr,
+    input wire btnu,
 
     //ethernet things
     input wire eth_crsdv,
@@ -24,7 +25,7 @@ module top_level(
     );
 
     logic sys_rst; //global system reset
-    assign sys_rst = btnc; //just done to make sys_rst more obvious
+    assign sys_rst = btnc || r_opponent_reset; //just done to make sys_rst more obvious
     //assign led = sw; //switches drive LED (change if you want)
 
     //vga module generation signals:
@@ -45,27 +46,28 @@ module top_level(
     logic [11:0] pixel_out_forward;
 
     logic receive_axiov;
-    logic [31:0] receive_axiod;
-    logic [31:0] buffer;
-    logic [10:0] hcount_f;    // pixel on current line
-    logic [9:0] vcount_f;     // line number
-
-    logic receive_axiov;
     logic [43:0] receive_axiod;
     logic [43:0] buffer;
     logic [10:0] hcount_f;    // pixel on current line
     logic [9:0] vcount_f;     // line number
 
+    logic [10:0] r_opponent_x;
+    logic [10:0] r_opponent_y;
+    logic [8:0] r_opponent_dir; 
+    logic [2:0] r_opponent_game; 
+    logic r_opponent_reset;
+    assign r_opponent_x = receive_axiod[43:33];
+    assign r_opponent_y = receive_axiod[31:21];
+    assign r_opponent_dir = receive_axiod[19:11];
+    assign r_opponent_game = receive_axiod[7:5];
+    assign r_opponent_reset = receive_axiod[3];
+
+    logic [10:0] player_x;
+    logic [10:0] player_y;
+    logic [8:0] player_dir;
     logic [10:0] opponent_x;
     logic [10:0] opponent_y;
-    logic [8:0] opponent_dir; 
-    logic [2:0] opponent_game; 
-    logic opponent_reset;
-    assign opponent_x = receive_axiod[43:33];
-    assign opponent_y = receive_axiod[31:21];
-    assign opponent_dir = receive_axiod[19:11];
-    assign opponent_game = receive_axiod[7:5];
-    assign opponent_reset = receive_axiod[3];
+    logic [2:0] p_game_stat;
 
     logic clk_65mhz;
 
@@ -90,10 +92,10 @@ module top_level(
         .rst_in(sys_rst),
         .hcount_in(hcount),
         .vcount_in(vcount),
-        .player_x(11'd191),
-        .player_y(11'd191),
-        .opponent_x(11'd319),
-        .opponent_y(11'd319),
+        .player_x(player_x),
+        .player_y(player_y),
+        .opponent_x(opponent_x),
+        .opponent_y(opponent_y),
         .pixel_out(pixel_out_track));
 
     racer_view racer_viewer(
@@ -101,11 +103,11 @@ module top_level(
         .rst_in(sys_rst),
         .hcount_in(hcount),
         .vcount_in(vcount),
-        .player_x(11'd191),
-        .player_y(11'd191),
-        .direction(270),
-        .opponent_x(11'd320),
-        .opponent_y(11'd320),
+        .player_x(player_x),
+        .player_y(player_y),
+        .direction(player_dir),
+        .opponent_x(opponent_x),
+        .opponent_y(opponent_y),
         .pixel_out(pixel_out_racer));
 
     forward_view forward_viewer(
@@ -113,15 +115,15 @@ module top_level(
         .rst_in(sys_rst),
         .hcount_in(hcount),
         .vcount_in(vcount),
-        .player_x(11'd191),
-        .player_y(11'd191),
-        .direction(270),
-        .opponent_x(11'd320),
-        .opponent_y(11'd320),
+        .player_x(player_x),
+        .player_y(player_y),
+        .direction(player_dir),
+        .opponent_x(opponent_x),
+        .opponent_y(opponent_y),
         .pixel_out(pixel_out_forward));
 
     receive r1(.eth_refclk(eth_refclk),
-               .btnc(btnc),
+               .btnc(sys_rst),
                .eth_crsdv(eth_crsdv),
                .eth_rxd(eth_rxd),
                .axiov(receive_axiov),
@@ -129,15 +131,32 @@ module top_level(
                .eth_rstn(eth_rstn));
     
     transmit t1(.eth_clk(eth_refclk),
-                .eth_rst(btnc),
+                .eth_rst(sys_rst),
                 .hcount(hcount_f),
                 .vcount(vcount_f),
-                .player_x(11'd191),
-                .player_y(11'd191),
-                .direction(270),
-                .game_stat(1),
+                .player_x(player_x),
+                .player_y(player_x),
+                .direction(player_dir),
+                .game_stat(p_game_stat),
                 .eth_txd(eth_txd),
                 .eth_txen(eth_txen));
+
+    game g1(.clk(eth_refclk),
+            .sw(sw),
+            .btnc(sys_rst),
+            .btnu(btnu),
+            .receive_axiov(receive_axiov),
+            .r_opp_x(r_opponent_x),
+            .r_opp_y(r_opponent_y),
+            .r_opp_dir(r_opponent_dir),
+            .r_opp_game(r_opponent_game),
+            .player_x(player_x),
+            .player_y(player_y),
+            .player_direction(player_dir),
+            .opponent_x(opponent_x),
+            .opponent_y(opponent_y),
+            .game_stat(p_game_stat)
+            );
 
     always_ff @(posedge eth_refclk)begin
 
@@ -166,7 +185,7 @@ module top_level(
     assign vga_vs = ~vsync_pipe[6];  //TODO: needs to use pipelined signal (PS7)                  /////
 
     always_ff @(posedge eth_refclk) begin
-        if (btnc || opponent_reset) begin
+        if (sys_rst) begin
             led[13:0] <= 0;
             buffer <= 0;
             hcount_f <= 0;
