@@ -113,9 +113,9 @@ xilinx_single_port_ram_read_first #(
 
 always_ff @(posedge clk) begin
     if (btnc) begin
-        wait_state <= 1;
+        wait_state <= 0;
         reset_state <= 0;
-        game_state <= 0;
+        game_state <= 1;
         game_status <= 0;
         laps <= 0;
         
