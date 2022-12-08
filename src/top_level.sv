@@ -95,7 +95,7 @@ module top_level(
         .vcount_in(vcount),
         .player_x(11'd191),
         .player_y(11'd191),
-        .direction(315),
+        .direction(270),
         .opponent_x(11'd320),
         .opponent_y(11'd320),
         .pixel_out(pixel_out_racer));

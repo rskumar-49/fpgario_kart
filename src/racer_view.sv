@@ -44,15 +44,15 @@ module racer_view (
 
     logic [13:0] player_counter;
 
-    assign delta_x = $signed(767 - hcount_in);
-    assign delta_y = $signed(255 - vcount_in);
+    assign delta_x = $signed(hcount_in - 767);
+    assign delta_y = $signed(vcount_in - 255);
 
     always_ff @(posedge clk_in)begin  
 
         // Make sure this doesn't go out of the bounds between 0 and 2047
         // This is actually right. It checks that we're not negative.
-        loc_x <= $signed($signed(delta_x_pipe[1]) * cos - $signed(delta_y_pipe[1]) * sin) / 512 + player_x;
-        loc_y <= $signed($signed(delta_x_pipe[1]) * sin + $signed(delta_y_pipe[1]) * cos) / 512 + player_y;
+        loc_x <= $signed($signed(delta_x_pipe[1]) * sin - $signed(delta_y_pipe[1]) * cos) / 512 + player_x;
+        loc_y <= $signed($signed(delta_x_pipe[1]) * cos + $signed(delta_y_pipe[1]) * sin) / 512 + player_y;
 
         sprite_type_pipe[0] <= sprite_type;
         sprite_type_pipe[1] <= sprite_type_pipe[0];
