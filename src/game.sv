@@ -115,7 +115,7 @@ xilinx_single_port_ram_read_first #(
 );
 
 always_ff @(posedge clk) begin
-    if (rst || r_opp_rst) begin
+    if (rst) begin
         game_state <= 0;
         game_status <= 0;
         laps <= 0;
@@ -221,12 +221,12 @@ always_ff @(posedge clk) begin
         //     end
         // end 
 
-        if (receive_axiiv) begin
+        //if (receive_axiiv) begin
             i_player_x <= $signed(speed * p_c);
             i_player_y <= $signed(-1 * speed * p_s);
             i_opp_x <= $signed(speed * o_c);
             i_opp_y <= $signed(-1 * speed * o_s);
-        end
+        //end
     end
 end
     

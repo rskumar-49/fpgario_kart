@@ -87,7 +87,7 @@ module top_level(
         .dina({receive_axiov, receive_axiod}),
         .ena(receive_axiov),
         .regcea(1'b1),
-        .rsta(sys_rst),
+        .rsta(btnc),
         .douta(),
         //Read Side (65 MHz)
         .addrb(0),
@@ -95,7 +95,7 @@ module top_level(
         .clkb(clk_65mhz),
         .web(1'b0),
         .enb(1'b1),
-        .rstb(sys_rst),
+        .rstb(btnc),
         .regceb(1'b1),
         .doutb(sync_receive)
     );
@@ -118,7 +118,7 @@ module top_level(
         .dina({hcount, vcount}),
         .ena(1'b1),
         .regcea(1'b1),
-        .rsta(sys_rst),
+        .rsta(btnc),
         .douta(),
         //Read Side (50 MHz)
         .addrb(0),
@@ -126,7 +126,7 @@ module top_level(
         .clkb(eth_refclk),
         .web(1'b0),
         .enb(1'b1),
-        .rstb(sys_rst),
+        .rstb(btnc),
         .regceb(1'b1),
         .doutb(screen_sync)
     );
@@ -153,7 +153,7 @@ module top_level(
 
     receive r1(.eth_refclk(eth_refclk),
                //.btnc(sys_rst),
-               .btnc(btnc),
+               .btnc(btnu),
                .eth_crsdv(eth_crsdv),
                .eth_rxd(eth_rxd),
                .axiov(receive_axiov),
@@ -162,7 +162,7 @@ module top_level(
     
     transmit t1(.eth_clk(eth_refclk),
                 //.eth_rst(sys_rst),
-                .eth_rst(btnc),
+                .eth_rst(btnu),
                 // .hcount(hcount),
                 // .vcount(vcount),
                 .hcount(sync_hcount),
@@ -196,7 +196,7 @@ module top_level(
         //Write Side (.67MHz)
         .addra(0),
         .clka(clk_65mhz), //NEW FOR LAB 04B
-        .wea(1),
+        .wea(flag),
         .dina({player_x, player_y, player_dir, p_game_stat}),
         .ena(1'b1),
         .regcea(1'b1),
@@ -278,6 +278,22 @@ module top_level(
             end
 
             led[7:0] <= buffer[7:0];
+        end
+    end
+
+    logic [10:0] buffer2;
+    logic flag;
+    always_ff @(posedge clk_65mhz) begin
+        if (sys_rst) begin
+            buffer2 <= player_x;
+            flag <= 0;
+        end else begin
+            if (buffer2 != player_x) begin
+                buffer2 <= player_x;
+                flag <= 1;
+            end else begin
+                flag <= 0;
+            end
         end
     end
 
