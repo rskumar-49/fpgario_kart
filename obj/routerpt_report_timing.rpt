@@ -1,9 +1,9 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
-| Date         : Sun Dec 11 14:26:14 2022
-| Host         : EECS-DIGITAL-52 running 64-bit Ubuntu 20.04.5 LTS
-| Command      : report_timing -file /tmp/tmp.rPtEZY/obj/routerpt_report_timing.rpt
+| Date         : Sun Dec 11 14:47:35 2022
+| Host         : EECS-DIGITAL-11 running 64-bit Ubuntu 20.04.5 LTS
+| Command      : report_timing -file /tmp/tmp.UlnmaS/obj/routerpt_report_timing.rpt
 | Design       : top_level
 | Device       : 7a100t-csg324
 | Speed File   : -1  PRODUCTION 1.23 2018-06-13
@@ -11,19 +11,19 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 
 Timing Report
 
-Slack (VIOLATED) :        -1.337ns  (required time - arrival time)
-  Source:                 transmit_buffer/BRAM_reg_0_1_18_23/RAMB/CLK
-                            (rising edge-triggered cell RAMD32 clocked by vga_clk_clk_wiz_0  {rise@0.000ns fall@7.692ns period=15.385ns})
-  Destination:            transmit_buffer/ram_data_b_reg[20]/D
+Slack (VIOLATED) :        -1.410ns  (required time - arrival time)
+  Source:                 eth_buffer/output_register.doutb_reg_reg[3]_replica/C
+                            (rising edge-triggered cell FDRE clocked by vga_clk_clk_wiz_0  {rise@0.000ns fall@7.692ns period=15.385ns})
+  Destination:            vga_buffer/output_register.doutb_reg_reg[13]/R
                             (rising edge-triggered cell FDRE clocked by eth_clk_clk_wiz_0  {rise@0.000ns fall@10.000ns period=20.000ns})
   Path Group:             eth_clk_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            1.538ns  (eth_clk_clk_wiz_0 rise@140.000ns - vga_clk_clk_wiz_0 rise@138.462ns)
-  Data Path Delay:        2.203ns  (logic 1.343ns (60.967%)  route 0.860ns (39.033%))
-  Logic Levels:           0  
-  Clock Path Skew:        -0.208ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -1.532ns = ( 138.468 - 140.000 ) 
-    Source Clock Delay      (SCD):    -0.929ns = ( 137.532 - 138.462 ) 
+  Data Path Delay:        2.019ns  (logic 0.580ns (28.725%)  route 1.439ns (71.275%))
+  Logic Levels:           1  (LUT2=1)
+  Clock Path Skew:        -0.204ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -1.493ns = ( 138.507 - 140.000 ) 
+    Source Clock Delay      (SCD):    -0.894ns = ( 137.568 - 138.462 ) 
     Clock Pessimism Removal (CPR):    0.395ns
   Clock Uncertainty:      0.201ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -42,13 +42,14 @@ Slack (VIOLATED) :        -1.337ns  (required time - arrival time)
                                                      -7.070   134.106 r  clk_maker/mmcm_adv_inst/CLKOUT1
                          net (fo=1, routed)           1.719   135.825    clk_maker/vga_clk_clk_wiz_0
     BUFGCTRL_X0Y17       BUFG (Prop_bufg_I_O)         0.096   135.921 r  clk_maker/clkout2_buf/O
-                         net (fo=478, routed)         1.611   137.532    transmit_buffer/BRAM_reg_0_1_18_23/WCLK
-    SLICE_X56Y100        RAMD32                                       r  transmit_buffer/BRAM_reg_0_1_18_23/RAMB/CLK
+                         net (fo=479, routed)         1.646   137.568    eth_buffer/vga_clk
+    SLICE_X15Y94         FDRE                                         r  eth_buffer/output_register.doutb_reg_reg[3]_replica/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X56Y100        RAMD32 (Prop_ramd32_CLK_O)
-                                                      1.343   138.875 r  transmit_buffer/BRAM_reg_0_1_18_23/RAMB/O
-                         net (fo=1, routed)           0.860   139.735    transmit_buffer/ram_data_a0[20]
-    SLICE_X53Y100        FDRE                                         r  transmit_buffer/ram_data_b_reg[20]/D
+    SLICE_X15Y94         FDRE (Prop_fdre_C_Q)         0.456   138.024 r  eth_buffer/output_register.doutb_reg_reg[3]_replica/Q
+                         net (fo=1, routed)           0.727   138.751    eth_buffer/Q[0]_repN
+    SLICE_X14Y93         LUT2 (Prop_lut2_I1_O)        0.124   138.875 r  eth_buffer/BRAM_reg_i_1__5/O
+                         net (fo=107, routed)         0.712   139.587    vga_buffer/sys_rst
+    SLICE_X10Y94         FDRE                                         r  vga_buffer/output_register.doutb_reg_reg[13]/R
   -------------------------------------------------------------------    -------------------
 
                          (clock eth_clk_clk_wiz_0 rise edge)
@@ -61,16 +62,16 @@ Slack (VIOLATED) :        -1.337ns  (required time - arrival time)
                                                      -7.324   135.249 r  clk_maker/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.639   136.888    clk_maker/eth_clk_clk_wiz_0
     BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091   136.979 r  clk_maker/clkout1_buf/O
-                         net (fo=983, routed)         1.489   138.468    transmit_buffer/eth_clk
-    SLICE_X53Y100        FDRE                                         r  transmit_buffer/ram_data_b_reg[20]/C
-                         clock pessimism              0.395   138.863    
-                         clock uncertainty           -0.201   138.662    
-    SLICE_X53Y100        FDRE (Setup_fdre_C_D)       -0.264   138.398    transmit_buffer/ram_data_b_reg[20]
+                         net (fo=1075, routed)        1.527   138.507    vga_buffer/eth_clk
+    SLICE_X10Y94         FDRE                                         r  vga_buffer/output_register.doutb_reg_reg[13]/C
+                         clock pessimism              0.395   138.902    
+                         clock uncertainty           -0.201   138.701    
+    SLICE_X10Y94         FDRE (Setup_fdre_C_R)       -0.524   138.177    vga_buffer/output_register.doutb_reg_reg[13]
   -------------------------------------------------------------------
-                         required time                        138.398    
-                         arrival time                        -139.735    
+                         required time                        138.177    
+                         arrival time                        -139.587    
   -------------------------------------------------------------------
-                         slack                                 -1.337    
+                         slack                                 -1.410    
 
 
 

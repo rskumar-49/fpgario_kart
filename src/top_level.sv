@@ -25,7 +25,7 @@ module top_level(
     );
 
     logic sys_rst; //global system reset
-    assign sys_rst = btnc; //|| r_opponent_reset; //just done to make sys_rst more obvious
+    assign sys_rst = btnc || r_opponent_reset; //just done to make sys_rst more obvious
     //assign led = sw; //switches drive LED (change if you want)
 
     //vga module generation signals:
@@ -267,26 +267,19 @@ module top_level(
 
     logic [2:0] receive_o_counter;
 
-    // always_ff @(posedge eth_refclk) begin
-    //     //if (sys_rst) begin
-    //     if (btnc) begin
-    //         led[13:0] <= 0;
-    //         buffer <= 0;
-    //         hcount_f <= 0;
-    //         vcount_f <= 0;
-    //     end else begin 
-    //         if (btnr) begin
-    //             hcount_f <= 1024;
-    //             vcount_f <= 768;
-    //         end
+    always_ff @(posedge eth_refclk) begin
+        //if (sys_rst) begin
+        if (btnc) begin
+            led[13:0] <= 0;
+            buffer <= 0;
+        end else begin 
+            if (buffer != receive_axiod & receive_axiod != 0) begin
+                buffer <= receive_axiod;
+            end
 
-    //         if (buffer != receive_axiod & receive_axiod != 0) begin
-    //             buffer <= receive_axiod;
-    //         end
-
-    //         led[15:0] <= buffer[31:16];
-    //     end
-    // end
+            led[7:0] <= buffer[7:0];
+        end
+    end
 
     // add logic to formulate message 
 
