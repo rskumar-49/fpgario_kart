@@ -39,12 +39,6 @@ module top_level(
     logic [9:0] hsync_pipe;
     logic [9:0] vsync_pipe;
 
-    // logic [11:0] pixel_out_track;
-    // logic [3:0][11:0] pixel_out_track_pipe;
-    // logic [11:0] pixel_out_racer;
-    // logic [11:0] pixel_out_racer_pipe;
-    // logic [11:0] pixel_out_forward;
-
     logic [11:0] pixel_out;
 
     logic receive_axiov;
@@ -53,6 +47,7 @@ module top_level(
     logic [10:0] hcount_f;    // pixel on current line
     logic [9:0] vcount_f;     // line number
 
+    logic r_axiov;
     logic [10:0] r_opponent_x;
     logic [10:0] r_opponent_y;
     logic [8:0] r_opponent_dir; 
@@ -63,6 +58,7 @@ module top_level(
     assign r_opponent_dir = sync_receive[19:11];
     assign r_opponent_game = sync_receive[7:5];
     assign r_opponent_reset = sync_receive[3];
+    assign r_axiov = sync_receive[44];
 
     logic [10:0] player_x;
     logic [10:0] player_y;
@@ -79,16 +75,16 @@ module top_level(
         .clk_in1(clk_100mhz),
         .eth_clk(eth_refclk),
         .vga_clk(clk_65mhz));
-
+    
     xilinx_true_dual_port_read_first_2_clock_ram #(
-        .RAM_WIDTH(44),
+        .RAM_WIDTH(45),
         .RAM_DEPTH(2))
     eth_buffer (
         //Write Side (50MHz)
         .addra(0),
         .clka(eth_refclk), //NEW FOR LAB 04B
         .wea(1),
-        .dina(receive_axiod),
+        .dina({receive_axiov, receive_axiod}),
         .ena(receive_axiov),
         .regcea(1'b1),
         .rsta(sys_rst),
@@ -171,10 +167,10 @@ module top_level(
                 // .vcount(vcount),
                 .hcount(sync_hcount),
                 .vcount(sync_vcount),
-                .player_x(player_x),
-                .player_y(player_x),
-                .direction(player_dir),
-                .game_stat(p_game_stat),
+                .player_x(p_x_sync),
+                .player_y(p_y_sync),
+                .direction(p_dir_sync),
+                .game_stat(p_game_sync),
                 // .player_x(11'd191),
                 // .player_y(11'd191),
                 // .direction(270),
@@ -182,13 +178,48 @@ module top_level(
                 .eth_txd(eth_txd),
                 .eth_txen(eth_txen));
 
+    logic [33:0] game_out_sync;
+    logic [10:0] p_x_sync;
+    logic [10:0] p_y_sync;
+    logic [8:0] p_dir_sync;
+    logic [2:0] p_game_sync;
+    assign p_x_sync = game_out_sync[33:23];
+    assign p_y_sync = game_out_sync[22:12];
+    assign p_dir_sync = game_out_sync[11:3];
+    assign p_game_sync = game_out_sync[2:0];
+
+
+    xilinx_true_dual_port_read_first_2_clock_ram #(
+        .RAM_WIDTH(34),
+        .RAM_DEPTH(2))
+    transmit_buffer (
+        //Write Side (.67MHz)
+        .addra(0),
+        .clka(clk_65mhz), //NEW FOR LAB 04B
+        .wea(1),
+        .dina({player_x, player_y, player_dir, p_game_stat}),
+        .ena(1'b1),
+        .regcea(1'b1),
+        .rsta(sys_rst),
+        .douta(),
+        //Read Side (50 MHz)
+        .addrb(0),
+        .dinb(34'b0),
+        .clkb(eth_refclk),
+        .web(1'b0),
+        .enb(1'b1),
+        .rstb(sys_rst),
+        .regceb(1'b1),
+        .doutb(game_out_sync)
+    );
+
     game g1(.clk(clk_65mhz),
             .sw(sw),
             .rst(sys_rst),
             .btnu(btnu),
             .hcount(hcount),
             .vcount(vcount),
-            .receive_axiiv(receive_axiov),
+            .receive_axiiv(r_axiov),
             .r_opp_x(r_opponent_x),
             .r_opp_y(r_opponent_y),
             .r_opp_dir(r_opponent_dir),
@@ -226,14 +257,9 @@ module top_level(
     end
 
     always_ff @(posedge clk_65mhz)begin
-        // vga_r <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][11:8] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[11:8] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[11:8]))) : 4'h0;
-        // vga_g <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][7 :4] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[7 :4] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[7: 4]))) : 4'h0;
-        // vga_b <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][3 :0] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[3 :0] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[3: 0]))) : 4'h0;
-
         vga_r <= ~blank_pipe[8] ? pixel_out[11:8] : 4'h0;
         vga_g <= ~blank_pipe[8] ? pixel_out[7 :4] : 4'h0;
         vga_b <= ~blank_pipe[8] ? pixel_out[3 :0] : 4'h0;
-
     end
 
     assign vga_hs = ~hsync_pipe[9];
@@ -241,26 +267,26 @@ module top_level(
 
     logic [2:0] receive_o_counter;
 
-    always_ff @(posedge eth_refclk) begin
-        //if (sys_rst) begin
-        if (btnc) begin
-            led[13:0] <= 0;
-            buffer <= 0;
-            hcount_f <= 0;
-            vcount_f <= 0;
-        end else begin 
-            if (btnr) begin
-                hcount_f <= 1024;
-                vcount_f <= 768;
-            end
+    // always_ff @(posedge eth_refclk) begin
+    //     //if (sys_rst) begin
+    //     if (btnc) begin
+    //         led[13:0] <= 0;
+    //         buffer <= 0;
+    //         hcount_f <= 0;
+    //         vcount_f <= 0;
+    //     end else begin 
+    //         if (btnr) begin
+    //             hcount_f <= 1024;
+    //             vcount_f <= 768;
+    //         end
 
-            if (buffer != receive_axiod & receive_axiod != 0) begin
-                buffer <= receive_axiod;
-            end
+    //         if (buffer != receive_axiod & receive_axiod != 0) begin
+    //             buffer <= receive_axiod;
+    //         end
 
-            led[15:0] <= buffer[31:16];
-        end
-    end
+    //         led[15:0] <= buffer[31:16];
+    //     end
+    // end
 
     // add logic to formulate message 
 

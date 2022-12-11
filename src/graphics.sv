@@ -76,7 +76,7 @@ module graphics (
             hcount_pipe[i] <= hcount_pipe[i-1];
             vcount_pipe[i] <= vcount_pipe[i-1];
         end
-
+        //pixel_out <= 12'hFFF;
         pixel_out <= hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3] : 12'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe : (vcount_pipe[5] < 512 ? 12'h0 : pixel_out_forward));
     end
 

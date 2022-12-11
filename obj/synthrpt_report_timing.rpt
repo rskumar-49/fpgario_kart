@@ -1,0 +1,77 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
+| Date         : Sun Dec 11 14:24:45 2022
+| Host         : EECS-DIGITAL-52 running 64-bit Ubuntu 20.04.5 LTS
+| Command      : report_timing -file /tmp/tmp.rPtEZY/obj/synthrpt_report_timing.rpt
+| Design       : top_level
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (VIOLATED) :        -0.798ns  (required time - arrival time)
+  Source:                 eth_buffer/BRAM_reg_0_1_12_17/RAMA/CLK
+                            (rising edge-triggered cell RAMD32 clocked by eth_clk_clk_wiz_0  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            eth_buffer/ram_data_b_reg[12]/D
+                            (rising edge-triggered cell FDRE clocked by vga_clk_clk_wiz_0  {rise@0.000ns fall@7.692ns period=15.385ns})
+  Path Group:             vga_clk_clk_wiz_0
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            1.538ns  (vga_clk_clk_wiz_0 rise@61.538ns - eth_clk_clk_wiz_0 rise@60.000ns)
+  Data Path Delay:        1.677ns  (logic 1.344ns (80.143%)  route 0.333ns (19.857%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.409ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.238ns = ( 59.301 - 61.538 ) 
+    Source Clock Delay      (SCD):    -1.343ns = ( 58.657 - 60.000 ) 
+    Clock Pessimism Removal (CPR):    0.485ns
+  Clock Uncertainty:      0.201ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.146ns
+    Phase Error              (PE):    0.120ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock eth_clk_clk_wiz_0 rise edge)
+                                                     60.000    60.000 r  
+    E3                                                0.000    60.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000    60.000    clk_maker/clk_100mhz
+    E3                   IBUF (Prop_ibuf_I_O)         1.482    61.482 r  clk_maker/clkin1_ibufg/O
+                         net (fo=1, unplaced)         0.584    62.066    clk_maker/clk_in1_clk_wiz_0
+                         MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -5.111    56.955 r  clk_maker/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, unplaced)         0.803    57.758    clk_maker/eth_clk_clk_wiz_0
+                         BUFG (Prop_bufg_I_O)         0.096    57.854 r  clk_maker/clkout1_buf/O
+                         net (fo=983, unplaced)       0.803    58.657    eth_buffer/BRAM_reg_0_1_12_17/WCLK
+                         RAMD32                                       r  eth_buffer/BRAM_reg_0_1_12_17/RAMA/CLK
+  -------------------------------------------------------------------    -------------------
+                         RAMD32 (Prop_ramd32_CLK_O)
+                                                      1.344    60.001 r  eth_buffer/BRAM_reg_0_1_12_17/RAMA/O
+                         net (fo=1, unplaced)         0.333    60.334    eth_buffer/ram_data_a0[12]
+                         FDRE                                         r  eth_buffer/ram_data_b_reg[12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock vga_clk_clk_wiz_0 rise edge)
+                                                     61.538    61.538 r  
+    E3                                                0.000    61.538 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000    61.538    clk_maker/clk_100mhz
+    E3                   IBUF (Prop_ibuf_I_O)         1.411    62.950 r  clk_maker/clkin1_ibufg/O
+                         net (fo=1, unplaced)         0.439    63.389    clk_maker/clk_in1_clk_wiz_0
+                         MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT1)
+                                                     -5.381    58.008 r  clk_maker/mmcm_adv_inst/CLKOUT1
+                         net (fo=1, unplaced)         0.763    58.771    clk_maker/vga_clk_clk_wiz_0
+                         BUFG (Prop_bufg_I_O)         0.091    58.862 r  clk_maker/clkout2_buf/O
+                         net (fo=470, unplaced)       0.439    59.301    eth_buffer/vga_clk
+                         FDRE                                         r  eth_buffer/ram_data_b_reg[12]/C
+                         clock pessimism              0.485    59.786    
+                         clock uncertainty           -0.201    59.585    
+                         FDRE (Setup_fdre_C_D)       -0.049    59.536    eth_buffer/ram_data_b_reg[12]
+  -------------------------------------------------------------------
+                         required time                         59.536    
+                         arrival time                         -60.334    
+  -------------------------------------------------------------------
+                         slack                                 -0.798    
+
+
+
+

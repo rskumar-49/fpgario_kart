@@ -69,7 +69,7 @@ always_ff @(posedge eth_clk) begin
                 eth_txen <= 0;
                 eth_txd <= 0;
                 if (hcount[10:0] == 1024 && vcount[9:0] == 768) begin
-                    $displayh(message);
+                    //$displayh(message);
                     buffer <= message;
                     state <= 1;
                 end
