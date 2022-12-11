@@ -600,23 +600,23 @@ WARNING: [Synth 8-3936] Found unconnected internal register 'delta_x_pipe_reg[0]
 WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[1]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.zFWWKE/src/racer_view.sv:54]
 WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[0]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.zFWWKE/src/racer_view.sv:54]
 DSP Report: Generating DSP loc_x3, operation Mode is: A''*B2.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_x3.
+DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_x3.
 DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_x3.
 DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_x3.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x3.
 DSP Report: Generating DSP loc_x2, operation Mode is: C-A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_x2.
+DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_x2.
 DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_x2.
 DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_x2.
 DSP Report: operator loc_x2 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x2.
 DSP Report: Generating DSP loc_y3, operation Mode is: A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_y3.
+DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_y3.
 DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_y3.
 DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_y3.
 DSP Report: operator loc_y3 is absorbed into DSP loc_y3.
 DSP Report: Generating DSP loc_y2, operation Mode is: C+A''*B2.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_y2.
+DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_y2.
 DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_y2.
 DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_y2.
 DSP Report: operator loc_y2 is absorbed into DSP loc_y2.
@@ -634,21 +634,21 @@ DSP Report: operator conv_y0 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: Generating DSP loc_x3, operation Mode is: A2*B2.
-DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_x3.
+DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_x3.
 DSP Report: register conv_x_reg is absorbed into DSP loc_x3.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x3.
-DSP Report: Generating DSP loc_x2, operation Mode is: C-((D:0x420)-A)*B2.
-DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_x2.
+DSP Report: Generating DSP loc_x2, operation Mode is: C+((D:0x420)-A)*B2.
+DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_x2.
 DSP Report: register conv_y_reg is absorbed into DSP loc_x2.
 DSP Report: operator conv_y0 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x2 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x2.
 DSP Report: Generating DSP loc_y3, operation Mode is: A2*B2.
-DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_y3.
+DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_y3.
 DSP Report: register conv_x_reg is absorbed into DSP loc_y3.
 DSP Report: operator loc_y3 is absorbed into DSP loc_y3.
-DSP Report: Generating DSP loc_y2, operation Mode is: C+((D:0x420)-A)*B2.
-DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_y2.
+DSP Report: Generating DSP loc_y2, operation Mode is: C-((D:0x420)-A)*B2.
+DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_y2.
 DSP Report: register conv_y_reg is absorbed into DSP loc_y2.
 DSP Report: operator conv_y0 is absorbed into DSP loc_y2.
 DSP Report: operator loc_y2 is absorbed into DSP loc_y2.
@@ -824,8 +824,6 @@ DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding R
 |forward_view | ((D:0x421)+A)*B            | 12     | 18     | -      | 12     | 48     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
 |forward_view | (PCIN>>17)+((D:0x421)+A)*B | 12     | 15     | -      | 12     | 15     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
 |forward_view | A2*B2                      | 21     | 11     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | C-((D:0x420)-A)*B2         | 21     | 11     | 21     | 12     | 21     | 0    | 1    | 0    | 0    | 1     | 0    | 0    | 
-|forward_view | A2*B2                      | 21     | 11     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
 |forward_view | C+((D:0x420)-A)*B2         | 21     | 11     | 21     | 12     | 21     | 0    | 1    | 0    | 0    | 1     | 0    | 0    | 
 |game         | ((A:0x7fa)*B2)'            | 11     | 11     | -      | -      | 11     | 1    | 0    | -    | -    | -     | 1    | 0    | 
 |game         | C'+((A:0x7fa)*B2)'         | 11     | 11     | 11     | -      | 11     | 1    | 0    | 1    | -    | -     | 1    | 0    | 
@@ -972,18 +970,18 @@ Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Static Shift Register Report:
-+------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
-|Module Name | RTL Name                        | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
-+------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
-|top_level   | blank_pipe_reg[7]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | hcount_pipe_reg[7][10]          | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
-|top_level   | vcount_pipe_reg[5][9]           | 6      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | vcount_pipe_reg[7][8]           | 8      | 2     | NO           | NO                 | YES               | 2      | 0       | 
-|top_level   | pixel_out_track_pipe_reg[3][11] | 5      | 9     | NO           | NO                 | YES               | 9      | 0       | 
-|top_level   | pixel_out_track_pipe_reg[3][6]  | 5      | 3     | NO           | YES                | YES               | 3      | 0       | 
-|top_level   | hsync_pipe_reg[8]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-|top_level   | vsync_pipe_reg[8]               | 9      | 1     | NO           | NO                 | YES               | 1      | 0       | 
-+------------+---------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
++------------+-----------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name | RTL Name                                | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++------------+-----------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|top_level   | grapher/hcount_pipe_reg[7][10]          | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | grapher/vcount_pipe_reg[5][9]           | 6      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | grapher/vcount_pipe_reg[7][8]           | 8      | 2     | NO           | NO                 | YES               | 2      | 0       | 
+|top_level   | grapher/pixel_out_track_pipe_reg[3][11] | 5      | 9     | NO           | NO                 | YES               | 9      | 0       | 
+|top_level   | grapher/pixel_out_track_pipe_reg[3][6]  | 5      | 3     | NO           | YES                | YES               | 3      | 0       | 
+|top_level   | blank_pipe_reg[8]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | hsync_pipe_reg[9]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | vsync_pipe_reg[9]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
++------------+-----------------------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
 
 ---------------------------------------------------------------------------------
 Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -996,10 +994,10 @@ DSP Final Report (the ' indicates corresponding REG is set)
 +-------------+-------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 |Module Name  | DSP Mapping       | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
 +-------------+-------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|game         | A'*B              | 11     | 11     | -      | -      | 22     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|game         | A'*B              | 11     | 11     | -      | -      | 22     | 1    | 0    | -    | -    | -     | 0    | 0    | 
 |forward_view | (D+A)'*B          | 30     | 17     | -      | 11     | 48     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
 |forward_view | PCIN>>17+(D+A)'*B | 30     | 18     | -      | 11     | 15     | 0    | 0    | -    | 0    | 1     | 0    | 0    | 
-|forward_view | A'*B'             | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
-|forward_view | not(C+(D-A)'*B')  | 30     | 18     | 48     | 11     | 21     | 0    | 1    | 1    | 1    | 1     | 0    | 0    | 
 |forward_view | A'*B'             | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
 |forward_view | C+(D-A)'*B'       | 30     | 18     | 48     | 11     | 21     | 0    | 1    | 1    | 1    | 1     | 0    | 0    | 
 |game         | (A'*B)'           | 11     | 11     | -      | -      | 11     | 1    | 0    | -    | -    | -     | 0    | 1    | 
@@ -1471,7 +1469,7 @@ INFO: [Place 30-612] Post-Placement Estimated Congestion
 |___________|___________________|___________________|
 |       East|                1x1|                1x1|
 |___________|___________________|___________________|
-|       West|                1x1|                1x1|
+|       West|                4x4|                4x4|
 |___________|___________________|___________________|
 
 Phase 4.3.1 Print Estimated Congestion | Checksum: 1958d68f2

@@ -15,7 +15,7 @@ module forward_view (
     input wire [10:0]  opponent_y,
     output logic [11:0] pixel_out);
 
-    // Note, 0 degrees is up vertically (with vcount decreasing)
+    // Note, 0 degrees is normal to the right and going counterclockwise.
 
     logic in_player;
     logic in_opponent;
@@ -58,10 +58,10 @@ module forward_view (
         end else pixel_out <= output_color[sprite_type_pipe[1]];
     
         conv_y <= $signed(1056 - log / 4);
-        conv_x <= $signed(767 - hcount_pipe[1]) * conv_y / 256;
+        conv_x <= $signed(hcount_pipe[1] - 767) * conv_y / 256;
 
-        loc_x <= $signed(conv_x * cos - conv_y * sin) / 512 + player_x;
-        loc_y <= $signed(conv_x * sin + conv_y * cos) / 512 + player_y;
+        loc_x <= $signed(conv_x * sin + conv_y * cos) / 512 + player_x;
+        loc_y <= $signed(conv_x * cos - conv_y * sin) / 512 + player_y;
 
         in_player_pipe[0] <= in_player;
         in_player_pipe[1] <= in_player_pipe[0];

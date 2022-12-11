@@ -33,17 +33,19 @@ module top_level(
     logic [9:0] vcount;     // line number
     logic hsync, vsync, blank; //control signals for vga
 
-    logic [8:0] blank_pipe;
-    logic [8:0][10:0] hcount_pipe;
-    logic [8:0][9:0] vcount_pipe;
-    logic [8:0] hsync_pipe;
-    logic [8:0] vsync_pipe;
+    logic [9:0] blank_pipe;
+    logic [9:0][10:0] hcount_pipe;
+    logic [9:0][9:0] vcount_pipe;
+    logic [9:0] hsync_pipe;
+    logic [9:0] vsync_pipe;
 
-    logic [11:0] pixel_out_track;
-    logic [3:0][11:0] pixel_out_track_pipe;
-    logic [11:0] pixel_out_racer;
-    logic [11:0] pixel_out_racer_pipe;
-    logic [11:0] pixel_out_forward;
+    // logic [11:0] pixel_out_track;
+    // logic [3:0][11:0] pixel_out_track_pipe;
+    // logic [11:0] pixel_out_racer;
+    // logic [11:0] pixel_out_racer_pipe;
+    // logic [11:0] pixel_out_forward;
+
+    logic [11:0] pixel_out;
 
     logic receive_axiov;
     logic [43:0] receive_axiod;
@@ -141,39 +143,7 @@ module top_level(
         .vsync_out(vsync),
         .blank_out(blank));
 
-    track_view track_viewer(
-        .clk_in(clk_65mhz),
-        .rst_in(sys_rst),
-        .hcount_in(hcount),
-        .vcount_in(vcount),
-        .pixel_out(pixel_out_track),
-        // .player_x(11'd191),
-        // .player_y(11'd191),
-        // .opponent_x(11'd319),
-        // .opponent_y(11'd319));
-        .player_x(player_x),
-        .player_y(player_y),
-        .opponent_x(opponent_x),
-        .opponent_y(opponent_y));
-
-    racer_view racer_viewer(
-        .clk_in(clk_65mhz),
-        .rst_in(sys_rst),
-        .hcount_in(hcount),
-        .vcount_in(vcount),
-        .pixel_out(pixel_out_racer),
-        .player_x(player_x),
-        .player_y(player_y),
-        .direction(player_dir),
-        .opponent_x(opponent_x),
-        .opponent_y(opponent_y));
-        // .player_x(11'd191),
-        // .player_y(11'd191),
-        // .direction(270),
-        // .opponent_x(11'd320),
-        // .opponent_y(11'd320));
-
-    forward_view forward_viewer(
+    graphics grapher(
         .clk_in(clk_65mhz),
         .rst_in(sys_rst),
         .hcount_in(hcount),
@@ -183,12 +153,7 @@ module top_level(
         .direction(player_dir),
         .opponent_x(opponent_x),
         .opponent_y(opponent_y),
-        // .player_x(11'd191),
-        // .player_y(11'd191),
-        // .direction(270),
-        // .opponent_x(11'd320),
-        // .opponent_y(11'd320),
-        .pixel_out(pixel_out_forward));
+        .pixel_out(pixel_out));
 
     receive r1(.eth_refclk(eth_refclk),
                //.btnc(sys_rst),
@@ -251,14 +216,7 @@ module top_level(
         hsync_pipe[0] <= hsync;
         vsync_pipe[0] <= vsync;
 
-        pixel_out_track_pipe[0] <= pixel_out_track;
-        pixel_out_track_pipe[1] <= pixel_out_track_pipe[0];
-        pixel_out_track_pipe[2] <= pixel_out_track_pipe[1];
-        pixel_out_track_pipe[3] <= pixel_out_track_pipe[2];
-
-        pixel_out_racer_pipe <= pixel_out_racer;
-
-        for (int i=1; i<9; i = i+1)begin
+        for (int i=1; i<10; i = i+1)begin
             hcount_pipe[i] <= hcount_pipe[i-1];
             vcount_pipe[i] <= vcount_pipe[i-1];
             hsync_pipe[i] <= hsync_pipe[i-1];
@@ -268,13 +226,18 @@ module top_level(
     end
 
     always_ff @(posedge clk_65mhz)begin
-        vga_r <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][11:8] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[11:8] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[11:8]))) : 4'h0;
-        vga_g <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][7 :4] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[7 :4] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[7: 4]))) : 4'h0;
-        vga_b <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][3 :0] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[3 :0] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[3: 0]))) : 4'h0;
+        // vga_r <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][11:8] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[11:8] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[11:8]))) : 4'h0;
+        // vga_g <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][7 :4] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[7 :4] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[7: 4]))) : 4'h0;
+        // vga_b <= ~blank_pipe[7] ? (hcount_pipe[7] < 512 ? (vcount_pipe[7] < 512 ? pixel_out_track_pipe[3][3 :0] : 4'h0) : (vcount_pipe[7] < 384 ? pixel_out_racer_pipe[3 :0] : (vcount_pipe[5] < 512 ? 4'h0 : pixel_out_forward[3: 0]))) : 4'h0;
+
+        vga_r <= ~blank_pipe[8] ? pixel_out[11:8] : 4'h0;
+        vga_g <= ~blank_pipe[8] ? pixel_out[7 :4] : 4'h0;
+        vga_b <= ~blank_pipe[8] ? pixel_out[3 :0] : 4'h0;
+
     end
 
-    assign vga_hs = ~hsync_pipe[8];
-    assign vga_vs = ~vsync_pipe[8];
+    assign vga_hs = ~hsync_pipe[9];
+    assign vga_vs = ~vsync_pipe[9];
 
     logic [2:0] receive_o_counter;
 
