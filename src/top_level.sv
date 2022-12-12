@@ -300,7 +300,7 @@ module top_level(
             //     buffer <= receive_axiod;
             // end
 
-            led[1:0] <= eth_txen;
+            led[15:0] <= sync_receive[19:4];
         end
     end
 
