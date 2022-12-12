@@ -12,8 +12,8 @@ module game (
     input wire [10:0] hcount, 
     input wire [9:0] vcount,
     input wire receive_axiiv,
-    input wire [10:0] r_opp_x,
-    input wire [10:0] r_opp_y,
+    input wire [10:0] r_opp_x,          // is this necessary
+    input wire [10:0] r_opp_y,          // is this necessary
     input wire [8:0] r_opp_dir,
     input wire [2:0] r_opp_game,
     input wire r_opp_rst,
@@ -30,24 +30,23 @@ logic wait_state;
 logic reset_state;
 logic game_state; 
 
-logic [10:0] p_c;
-logic [10:0] p_s;
-logic [10:0] o_c;
-logic [10:0] o_s;
+logic signed [10:0] p_c;
+logic signed [10:0] p_s;
+logic signed [10:0] o_c;
+logic signed [10:0] o_s;
 
-logic [10:0] i_opp_x;
-logic [10:0] i_opp_y;
+logic signed [11:0] i_opp_x;
+logic signed [11:0] i_opp_y;
 logic [8:0] opp_dir;
 logic [2:0] o_game_status;
 logic [2:0] o_laps;
 
-logic [10:0] i_player_x;
-logic [10:0] i_player_y;
-logic [8:0] player_dir;
+logic signed [11:0] i_player_x;
+logic signed [11:0] i_player_y;
 logic [2:0] game_status;
 logic [2:0] laps;
 
-logic [3:0] speed;
+logic [10:0] speed;
 assign speed = 6;
 
 xilinx_single_port_ram_read_first #(
@@ -56,7 +55,7 @@ xilinx_single_port_ram_read_first #(
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .INIT_FILE(`FPATH(cos.mem))                    
 ) p_cos (
-    .addra(player_dir),
+    .addra(player_direction),
     .dina(11'b0),       
     .clka(clk),
     .wea(1'b0),
@@ -72,7 +71,7 @@ xilinx_single_port_ram_read_first #(
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .INIT_FILE(`FPATH(sin.mem))                    
 ) p_sin (
-    .addra(player_dir),
+    .addra(player_direction),
     .dina(11'b0),       
     .clka(clk),
     .wea(1'b0),
@@ -121,12 +120,12 @@ always_ff @(posedge clk) begin
         laps <= 0;
         
         // set player and opponent to initial starting locations
-        player_x <= 100;
+        player_x <= 128;
         player_y <= 100;
-        opponent_x <= 300;
+        opponent_x <= 256;
         opponent_y <= 100;
-        player_direction <= 90;
-        opp_dir <= 90;
+        player_direction <= 0;
+        opp_dir <= 0;
         i_player_x <= 0;
         i_player_y <= 0;
         i_opp_x <= 0;
@@ -137,13 +136,13 @@ always_ff @(posedge clk) begin
     end else begin
         if (hcount == 1200 & vcount == 800) begin
             // loss condition
-            if (r_opp_game == 1) begin
+            if (r_opp_game) begin
                 game_state <= 1;
                 game_status <= 1;
             end
 
             // Check if completed lap (checks range of position (which will be in track) %% direction (to check they are going right way))
-            if ((player_x == 0 && player_y == 1) && (player_dir >= 0 && player_dir <= 180)) begin
+            if (~player_x == 0 && player_y && player_direction >= 0 && player_direction <= 180) begin
                 laps <= laps + 1;
             end
 
@@ -154,56 +153,34 @@ always_ff @(posedge clk) begin
             end
 
             // Turning Mechanic
-            if ((sw[15] == 1 && sw[0] == 1) || (sw[15] == 0 && sw[0] == 0)) begin
-                player_dir <= player_dir;
-            end else if (sw[15] == 1) begin
-                player_dir <= player_dir + 1;
-                if (player_dir == 359) begin
-                    player_dir <= 0;
-                end
-            end else if (sw[0] == 1) begin
-                player_dir <= player_dir -1;
-                if (player_dir == 1) begin
-                    player_dir <= 360;
-                end
+            if (sw[15] && ~sw[0]) begin
+                if (player_direction == 359)    player_direction <= 0;
+                else                            player_direction <= player_direction + 1;
+            end else if (sw[0] && ~sw[15]) begin
+                if (player_direction == 0)      player_direction <= 359;
+                else                            player_direction <= player_direction - 1;
             end
 
             // Player x
-            if ($signed(player_x + i_player_x) >= 2048 - 64) begin 
-                player_x <= 2048 - 64;
-            end else if ($signed(player_x + i_player_x) <= 0 + 64) begin
-                player_x <= 0 + 64;
-            end else begin
-                player_x <= $signed(player_x + i_player_x);
-            end
+            if ($signed(player_x + i_player_x) >= 1984)     player_x <= 1984;
+            else if ($signed(player_x + i_player_x) <= 64)  player_x <= 64;
+            else                                            player_x <= player_x + i_player_x;
+
             // Player y
-            if ($signed(player_y + i_player_y) >= 2048 - 64) begin 
-                player_y <= 2048 - 64;
-            end else if ($signed(player_y + i_player_y) <= 0 + 64) begin
-                player_y <= 0 + 64;
-            end else begin
-                player_y <= $signed(player_y + i_player_y);
-            end
+            if ($signed(player_y + i_player_y) >= 1984)     player_y <= 1984;
+            else if ($signed(player_y + i_player_y) <= 64)  player_y <= 64;
+            else                                            player_y <= player_y + i_player_y;
 
             // Opponent x
-            if ($signed(opponent_x + i_opp_x) >= 2048 - 64) begin 
-                opponent_x <= 2048 - 64;
-            end else if ($signed(opponent_x + i_opp_x) <= 0 + 64) begin
-                opponent_x <= 0 + 64;
-            end else begin
-                opponent_x <= $signed(opponent_x + i_opp_x);
-            end
-
+            if ($signed(opponent_x + i_opp_x) >= 1984)      opponent_x <= 1984;
+            else if ($signed(opponent_x + i_opp_x) <= 64)   opponent_x <= 64;
+            else                                            opponent_x <= opponent_x + i_opp_x;
+            
             // Opponent y
-            if ($signed(opponent_y + i_opp_y) >= 2048 - 64) begin 
-                opponent_y <= 2048 - 64;
-            end else if ($signed(opponent_y + i_opp_y) <= 0 + 64) begin
-                opponent_y <= 0 + 64;
-            end else begin
-                opponent_y <= $signed(opponent_y + i_opp_y);
-            end
-
-            player_direction <= player_dir;
+            if ($signed(opponent_y + i_opp_y) >= 1984)      opponent_y <= 1984;
+            else if ($signed(opponent_y + i_opp_y) <= 64)   opponent_y <= 64;
+            else                                            opponent_y <= opponent_y + i_opp_y;
+            
         end
 
         //Collisions
@@ -221,14 +198,12 @@ always_ff @(posedge clk) begin
         //     end
         // end 
 
-        //if (receive_axiiv) begin
         if (hcount == 1198 && vcount == 800) begin
-            i_player_x <= $signed(speed * p_c / 512);
-            i_player_y <= $signed(-1 * speed * p_s / 512);
-            i_opp_x <= $signed(speed * o_c / 512);
-            i_opp_y <= $signed(-1 * speed * o_s / 512);
+            i_player_x <= $signed(speed) * p_c / 512;
+            i_player_y <= $signed(-1 * speed) * p_s / 512;
+            i_opp_x <= $signed(speed) * o_c / 512;
+            i_opp_y <= $signed(-1 * speed) * o_s / 512;
         end 
-        //end
     end
 end
     
