@@ -223,10 +223,10 @@ always_ff @(posedge clk) begin
 
         //if (receive_axiiv) begin
         if (hcount == 1198 && vcount == 800) begin
-            i_player_x <= $signed(speed * p_c);
-            i_player_y <= $signed(-1 * speed * p_s);
-            i_opp_x <= $signed(speed * o_c);
-            i_opp_y <= $signed(-1 * speed * o_s);
+            i_player_x <= $signed(speed * p_c / 512);
+            i_player_y <= $signed(-1 * speed * p_s / 512);
+            i_opp_x <= $signed(speed * o_c / 512);
+            i_opp_y <= $signed(-1 * speed * o_s / 512);
         end 
         //end
     end

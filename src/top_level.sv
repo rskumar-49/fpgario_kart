@@ -289,7 +289,7 @@ module top_level(
                 buffer <= receive_axiod;
             end
 
-            led[7:0] <= buffer[7:0];
+            led[15:0] <= buffer[19:4];
         end
     end
 
