@@ -164,18 +164,18 @@ module top_level(
                 //.eth_rst(sys_rst),
                 .eth_rst(btnu),
                 .sys_rst(btnc),
-                // .hcount(hcount),
-                // .vcount(vcount),
-                .hcount(sync_hcount),
-                .vcount(sync_vcount),
-                .player_x(p_x_sync),
-                .player_y(p_y_sync),
-                .direction(p_dir_sync),
-                .game_stat(p_game_sync),
-                // .player_x(11'd191),
-                // .player_y(11'd191),
-                // .direction(270),
-                // .game_stat(1),
+                .hcount(hcount),
+                .vcount(vcount),
+                // .hcount(sync_hcount),
+                // .vcount(sync_vcount),
+                // .player_x(p_x_sync),
+                // .player_y(p_y_sync),
+                // .direction(p_dir_sync),
+                // .game_stat(p_game_sync),
+                .player_x(player_x),
+                .player_y(player_y),
+                .direction(player_dir),
+                .game_stat(p_game_stat),
                 .eth_txd(eth_txd),
                 .eth_txen(eth_txen));
 
@@ -202,29 +202,39 @@ module top_level(
         end
     end
 
-    xilinx_true_dual_port_read_first_2_clock_ram #(
-        .RAM_WIDTH(34),
-        .RAM_DEPTH(2))
-    transmit_buffer (
-        //Write Side (.67MHz)
-        .addra(0),
-        .clka(clk_65mhz), //NEW FOR LAB 04B
-        .wea(flag),
-        .dina({player_x, player_y, player_dir, p_game_stat}),
-        .ena(1'b1),
-        .regcea(1'b1),
-        .rsta(btnc),
-        .douta(),
-        //Read Side (50 MHz)
-        .addrb(0),
-        .dinb(34'b0),
-        .clkb(eth_refclk),
-        .web(1'b0),
-        .enb(1'b1),
-        .rstb(btnc),
-        .regceb(1'b1),
-        .doutb(game_out_sync)
-    );
+    (*ASYNC_REG = "TRUE"*) reg [34:0] buffer_a;
+    (*ASYNC_REG = "TRUE"*) reg [34:0] buffer_b;
+
+    always_ff @(posedge eth_refclk) begin
+        buffer_a <= {flag, player_x, player_y, player_dir, p_game_stat};
+        buffer_b <= buffer_a;
+    end
+
+    assign game_out_sync = buffer_b[33:0];
+
+    // xilinx_true_dual_port_read_first_2_clock_ram #(
+    //     .RAM_WIDTH(34),
+    //     .RAM_DEPTH(2))
+    // transmit_buffer (
+    //     //Write Side (.67MHz)
+    //     .addra(0),
+    //     .clka(clk_65mhz), //NEW FOR LAB 04B
+    //     .wea(flag),
+    //     .dina({player_x, player_y, player_dir, p_game_stat}),
+    //     .ena(1'b1),
+    //     .regcea(1'b1),
+    //     .rsta(btnc),
+    //     .douta(),
+    //     //Read Side (50 MHz)
+    //     .addrb(0),
+    //     .dinb(34'b0),
+    //     .clkb(eth_refclk),
+    //     .web(1'b0),
+    //     .enb(1'b1),
+    //     .rstb(btnc),
+    //     .regceb(1'b1),
+    //     .doutb(game_out_sync)
+    // );
 
     game g1(.clk(clk_65mhz),
             .sw(sw),
@@ -286,11 +296,11 @@ module top_level(
             led[15:0] <= 0;
             buffer <= 0;
         end else begin 
-            if (buffer != receive_axiod & receive_axiod != 0) begin
-                buffer <= receive_axiod;
-            end
+            // if (buffer != receive_axiod & receive_axiod != 0) begin
+            //     buffer <= receive_axiod;
+            // end
 
-            led[15:0] <= buffer[19:4];
+            led[1:0] <= eth_txen;
         end
     end
 

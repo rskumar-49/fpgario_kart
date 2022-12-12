@@ -36,7 +36,7 @@ always_ff @(posedge clk) begin
                 if (axiiv) begin
                     counter <= counter + 1;
                     data <= {data[41:0], axiid};
-                    if (counter == 15) begin
+                    if (counter == 21) begin
                         load_data_s <= 0;
                         check_rest_s <= 1;
                     end
