@@ -290,7 +290,7 @@ module top_level(
 
     logic [2:0] receive_o_counter;
 
-    always_ff @(posedge eth_refclk) begin
+    always_ff @(posedge clk_65mhz) begin
         //if (sys_rst) begin
         if (sys_rst) begin
             led[15:0] <= 0;
@@ -300,7 +300,7 @@ module top_level(
             //     buffer <= receive_axiod;
             // end
 
-            led[15:0] <= sync_receive[19:4];
+            led[10:0] <= sync_receive[43:33];
         end
     end
 
