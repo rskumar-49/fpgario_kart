@@ -163,6 +163,7 @@ module top_level(
     transmit t1(.eth_clk(eth_refclk),
                 //.eth_rst(sys_rst),
                 .eth_rst(btnu),
+                .sys_rst(btnc),
                 // .hcount(hcount),
                 // .vcount(vcount),
                 .hcount(sync_hcount),
