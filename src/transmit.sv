@@ -5,6 +5,7 @@
 module transmit (
     input wire eth_clk,
     input wire eth_rst,
+    input wire sys_rst,
 
     input wire [10:0] hcount,
     input wire [9:0] vcount, 
@@ -42,7 +43,7 @@ assign len = 16'h00_00;
 logic [31:0] fcs;
 assign fcs = 32'hCBF43926; //needs to be determined from checksum 
 logic [43:0] data;
-assign data = {{player_x, 1'b0}, {player_y, 1'b0}, {direction, 3'd0}, {game_stat, 1'b0}, {eth_rst, 3'b0}};
+assign data = {{player_x, 1'b0}, {player_y, 1'b0}, {direction, 3'd0}, {game_stat, 1'b0}, {sys_rst, 3'b0}};
 
 //TODO: Parsing Ethernet Data
 //4096 + 1024 + 512 + 256 + 128 + 64 + 32 + 1
