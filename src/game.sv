@@ -169,38 +169,38 @@ always_ff @(posedge clk) begin
             end
 
             // Player x
-            if (player_x + i_player_x >= 2048 - 64) begin 
+            if ($signed(player_x + i_player_x) >= 2048 - 64) begin 
                 player_x <= 2048 - 64;
-            end else if (player_x + i_player_x <= 0 + 64) begin
+            end else if ($signed(player_x + i_player_x) <= 0 + 64) begin
                 player_x <= 0 + 64;
             end else begin
-                player_x <= player_x + i_player_x;
+                player_x <= $signed(player_x + i_player_x);
             end
             // Player y
-            if (player_y + i_player_y >= 2048 - 64) begin 
+            if ($signed(player_y + i_player_y) >= 2048 - 64) begin 
                 player_y <= 2048 - 64;
-            end else if (player_y + i_player_y <= 0 + 64) begin
-                player_y <= 0 + 32;
+            end else if ($signed(player_y + i_player_y) <= 0 + 64) begin
+                player_y <= 0 + 64;
             end else begin
-                player_y <= player_y + i_player_y;
+                player_y <= $signed(player_y + i_player_y);
             end
 
             // Opponent x
-            if (opponent_x + i_opp_x >= 2048 - 64) begin 
-                opponent_x <= 2048 - 32;
-            end else if (opponent_x + i_opp_x <= 0 + 64) begin
-                opponent_x <= 0 + 32;
+            if ($signed(opponent_x + i_opp_x) >= 2048 - 64) begin 
+                opponent_x <= 2048 - 64;
+            end else if ($signed(opponent_x + i_opp_x) <= 0 + 64) begin
+                opponent_x <= 0 + 64;
             end else begin
-                opponent_x <= opponent_x + i_opp_x;
+                opponent_x <= $signed(opponent_x + i_opp_x);
             end
 
             // Opponent y
-            if (opponent_y + i_opp_y >= 2048 - 32) begin 
-                opponent_y <= 2048 - 32;
-            end else if (opponent_y + i_opp_y <= 0 + 32) begin
-                opponent_y <= 0 + 32;
+            if ($signed(opponent_y + i_opp_y) >= 2048 - 64) begin 
+                opponent_y <= 2048 - 64;
+            end else if ($signed(opponent_y + i_opp_y) <= 0 + 64) begin
+                opponent_y <= 0 + 64;
             end else begin
-                opponent_y <= opponent_y + i_opp_y;
+                opponent_y <= $signed(opponent_y + i_opp_y);
             end
 
             player_direction <= player_dir;

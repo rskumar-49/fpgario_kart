@@ -213,7 +213,7 @@ module top_level(
         .dina({player_x, player_y, player_dir, p_game_stat}),
         .ena(1'b1),
         .regcea(1'b1),
-        .rsta(sys_rst),
+        .rsta(btnc),
         .douta(),
         //Read Side (50 MHz)
         .addrb(0),
@@ -221,7 +221,7 @@ module top_level(
         .clkb(eth_refclk),
         .web(1'b0),
         .enb(1'b1),
-        .rstb(sys_rst),
+        .rstb(btnc),
         .regceb(1'b1),
         .doutb(game_out_sync)
     );
@@ -282,8 +282,8 @@ module top_level(
 
     always_ff @(posedge eth_refclk) begin
         //if (sys_rst) begin
-        if (btnc) begin
-            led[13:0] <= 0;
+        if (sys_rst) begin
+            led[15:0] <= 0;
             buffer <= 0;
         end else begin 
             if (buffer != receive_axiod & receive_axiod != 0) begin
