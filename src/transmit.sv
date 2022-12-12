@@ -37,7 +37,7 @@ assign sfd = 8'b11010101;
 logic [47:0] dest_addr;
 assign dest_addr = 48'hFF_FF_FF_FF_FF_FF; 
 logic [47:0] source_addr;
-assign source_addr = 48'hFF_FF_FF_FF_FF_FF; 
+assign source_addr = 48'hAB_CD_EF_AB_CD_EF; 
 logic [15:0] len;
 assign len = 16'h00_00;
 logic [31:0] fcs;

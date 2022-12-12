@@ -172,14 +172,14 @@ always_ff @(posedge clk) begin
             else                                            player_y <= player_y + i_player_y;
 
             // Opponent x
-            if ($signed(opponent_x + i_opp_x) >= 1984)      opponent_x <= 1984;
-            else if ($signed(opponent_x + i_opp_x) <= 64)   opponent_x <= 64;
-            else                                            opponent_x <= opponent_x + i_opp_x;
+            if ($signed(r_opp_x + i_opp_x) >= 1984)         opponent_x <= 1984;
+            else if ($signed(r_opp_x + i_opp_x) <= 64)      opponent_x <= 64;
+            else                                            opponent_x <= r_opp_x + i_opp_x;
             
             // Opponent y
-            if ($signed(opponent_y + i_opp_y) >= 1984)      opponent_y <= 1984;
-            else if ($signed(opponent_y + i_opp_y) <= 64)   opponent_y <= 64;
-            else                                            opponent_y <= opponent_y + i_opp_y;
+            if ($signed(r_opp_y + i_opp_y) >= 1984)         opponent_y <= 1984;
+            else if ($signed(r_opp_y + i_opp_y) <= 64)      opponent_y <= 64;
+            else                                            opponent_y <= r_opp_y + i_opp_y;
             
         end
 

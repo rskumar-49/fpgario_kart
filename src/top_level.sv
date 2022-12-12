@@ -53,12 +53,17 @@ module top_level(
     logic [8:0] r_opponent_dir; 
     logic [2:0] r_opponent_game; 
     logic r_opponent_reset;
-    assign r_opponent_x = sync_receive[43:33];
-    assign r_opponent_y = sync_receive[31:21];
-    assign r_opponent_dir = sync_receive[19:11];
-    assign r_opponent_game = sync_receive[7:5];
-    assign r_opponent_reset = sync_receive[3];
-    assign r_axiov = sync_receive[44];
+    // assign r_opponent_x = sync_receive[43:33];
+    // assign r_opponent_y = sync_receive[31:21];
+    // assign r_opponent_dir = sync_receive[19:11];
+    // assign r_opponent_game = sync_receive[7:5];
+    // assign r_opponent_reset = sync_receive[3];
+     assign r_opponent_x = receive_axiod[43:33];
+    assign r_opponent_y = receive_axiod[31:21];
+    assign r_opponent_dir = receive_axiod[19:11];
+    assign r_opponent_game = receive_axiod[7:5];
+    assign r_opponent_reset = receive_axiod[3];
+    // assign r_axiov = sync_receive[44];
 
     logic [10:0] player_x;
     logic [10:0] player_y;
@@ -69,67 +74,67 @@ module top_level(
 
     logic clk_65mhz;
 
-    logic [44:0] sync_receive; 
+    // logic [44:0] sync_receive; 
 
     clk_wiz_0_clk_wiz clk_maker(
         .clk_in1(clk_100mhz),
         .eth_clk(eth_refclk),
         .vga_clk(clk_65mhz));
     
-    xilinx_true_dual_port_read_first_2_clock_ram #(
-        .RAM_WIDTH(45),
-        .RAM_DEPTH(2))
-    eth_buffer (
-        //Write Side (50MHz)
-        .addra(0),
-        .clka(eth_refclk), //NEW FOR LAB 04B
-        .wea(1),
-        .dina({receive_axiov, receive_axiod}),
-        .ena(receive_axiov),
-        .regcea(1'b1),
-        .rsta(btnc),
-        .douta(),
-        //Read Side (65 MHz)
-        .addrb(0),
-        .dinb(44'b0),
-        .clkb(clk_65mhz),
-        .web(1'b0),
-        .enb(1'b1),
-        .rstb(btnc),
-        .regceb(1'b1),
-        .doutb(sync_receive)
-    );
+    // xilinx_true_dual_port_read_first_2_clock_ram #(
+    //     .RAM_WIDTH(45),
+    //     .RAM_DEPTH(2))
+    // eth_buffer (
+    //     //Write Side (50MHz)
+    //     .addra(0),
+    //     .clka(eth_refclk), //NEW FOR LAB 04B
+    //     .wea(1),
+    //     .dina({receive_axiov, receive_axiod}),
+    //     .ena(receive_axiov),
+    //     .regcea(1'b1),
+    //     .rsta(btnc),
+    //     .douta(),
+    //     //Read Side (65 MHz)
+    //     .addrb(0),
+    //     .dinb(44'b0),
+    //     .clkb(clk_65mhz),
+    //     .web(1'b0),
+    //     .enb(1'b1),
+    //     .rstb(btnc),
+    //     .regceb(1'b1),
+    //     .doutb(sync_receive)
+    // );
 
-    logic [20:0] screen_sync; 
-    logic [10:0] sync_hcount; 
-    assign sync_hcount = screen_sync[20:10];
+    // logic [20:0] screen_sync; 
+    // logic [10:0] sync_hcount; 
+    // assign sync_hcount = screen_sync[20:10];
 
-    logic [9:0] sync_vcount; 
-    assign sync_vcount = screen_sync[9:0];
+    // logic [9:0] sync_vcount; 
+    // assign sync_vcount = screen_sync[9:0];
 
-    xilinx_true_dual_port_read_first_2_clock_ram #(
-        .RAM_WIDTH(21),
-        .RAM_DEPTH(2))
-    vga_buffer (
-        //Write Side (.67MHz)
-        .addra(0),
-        .clka(clk_65mhz), //NEW FOR LAB 04B
-        .wea(1),
-        .dina({hcount, vcount}),
-        .ena(1'b1),
-        .regcea(1'b1),
-        .rsta(btnc),
-        .douta(),
-        //Read Side (50 MHz)
-        .addrb(0),
-        .dinb(21'b0),
-        .clkb(eth_refclk),
-        .web(1'b0),
-        .enb(1'b1),
-        .rstb(btnc),
-        .regceb(1'b1),
-        .doutb(screen_sync)
-    );
+    // xilinx_true_dual_port_read_first_2_clock_ram #(
+    //     .RAM_WIDTH(21),
+    //     .RAM_DEPTH(2))
+    // vga_buffer (
+    //     //Write Side (.67MHz)
+    //     .addra(0),
+    //     .clka(clk_65mhz), //NEW FOR LAB 04B
+    //     .wea(1),
+    //     .dina({hcount, vcount}),
+    //     .ena(1'b1),
+    //     .regcea(1'b1),
+    //     .rsta(btnc),
+    //     .douta(),
+    //     //Read Side (50 MHz)
+    //     .addrb(0),
+    //     .dinb(21'b0),
+    //     .clkb(eth_refclk),
+    //     .web(1'b0),
+    //     .enb(1'b1),
+    //     .rstb(btnc),
+    //     .regceb(1'b1),
+    //     .doutb(screen_sync)
+    // );
     
     vga vga_gen(
         .pixel_clk_in(clk_65mhz),
@@ -164,30 +169,34 @@ module top_level(
                 //.eth_rst(sys_rst),
                 .eth_rst(btnu),
                 .sys_rst(btnc),
-                // .hcount(hcount),
-                // .vcount(vcount),
-                .hcount(sync_hcount),
-                .vcount(sync_vcount),
-                .player_x(p_x_sync),
-                .player_y(p_y_sync),
-                .direction(p_dir_sync),
-                .game_stat(p_game_sync),
+                .hcount(hcount),
+                .vcount(vcount),
+                // .hcount(sync_hcount),
+                // .vcount(sync_vcount),
+                // .player_x(p_x_sync),
+                // .player_y(p_y_sync),
+                // .direction(p_dir_sync),
+                // .game_stat(p_game_sync),
                 // .player_x(11'd191),
                 // .player_y(11'd191),
                 // .direction(270),
                 // .game_stat(1),
+                .player_x(player_x),
+                .player_y(player_y),
+                .direction(player_dir),
+                .game_stat(p_game_stat),
                 .eth_txd(eth_txd),
                 .eth_txen(eth_txen));
 
-    logic [33:0] game_out_sync;
-    logic [10:0] p_x_sync;
-    logic [10:0] p_y_sync;
-    logic [8:0] p_dir_sync;
-    logic [2:0] p_game_sync;
-    assign p_x_sync = game_out_sync[33:23];
-    assign p_y_sync = game_out_sync[22:12];
-    assign p_dir_sync = game_out_sync[11:3];
-    assign p_game_sync = game_out_sync[2:0];
+    // logic [33:0] game_out_sync;
+    // logic [10:0] p_x_sync;
+    // logic [10:0] p_y_sync;
+    // logic [8:0] p_dir_sync;
+    // logic [2:0] p_game_sync;
+    // assign p_x_sync = game_out_sync[33:23];
+    // assign p_y_sync = game_out_sync[22:12];
+    // assign p_dir_sync = game_out_sync[11:3];
+    // assign p_game_sync = game_out_sync[2:0];
 
     logic flag;
     always_ff @(posedge clk_65mhz) begin
@@ -202,29 +211,29 @@ module top_level(
         end
     end
 
-    xilinx_true_dual_port_read_first_2_clock_ram #(
-        .RAM_WIDTH(34),
-        .RAM_DEPTH(2))
-    transmit_buffer (
-        //Write Side (.67MHz)
-        .addra(0),
-        .clka(clk_65mhz), //NEW FOR LAB 04B
-        .wea(flag),
-        .dina({player_x, player_y, player_dir, p_game_stat}),
-        .ena(1'b1),
-        .regcea(1'b1),
-        .rsta(sys_rst),
-        .douta(),
-        //Read Side (50 MHz)
-        .addrb(0),
-        .dinb(34'b0),
-        .clkb(eth_refclk),
-        .web(1'b0),
-        .enb(1'b1),
-        .rstb(sys_rst),
-        .regceb(1'b1),
-        .doutb(game_out_sync)
-    );
+    // xilinx_true_dual_port_read_first_2_clock_ram #(
+    //     .RAM_WIDTH(34),
+    //     .RAM_DEPTH(2))
+    // transmit_buffer (
+    //     //Write Side (.67MHz)
+    //     .addra(0),
+    //     .clka(clk_65mhz), //NEW FOR LAB 04B
+    //     .wea(flag),
+    //     .dina({player_x, player_y, player_dir, p_game_stat}),
+    //     .ena(1'b1),
+    //     .regcea(1'b1),
+    //     .rsta(sys_rst),
+    //     .douta(),
+    //     //Read Side (50 MHz)
+    //     .addrb(0),
+    //     .dinb(34'b0),
+    //     .clkb(eth_refclk),
+    //     .web(1'b0),
+    //     .enb(1'b1),
+    //     .rstb(sys_rst),
+    //     .regceb(1'b1),
+    //     .doutb(game_out_sync)
+    // );
 
     game g1(.clk(clk_65mhz),
             .sw(sw),
@@ -232,7 +241,7 @@ module top_level(
             .btnu(btnu),
             .hcount(hcount),
             .vcount(vcount),
-            .receive_axiiv(r_axiov),
+            .receive_axiiv(receive_axiov),
             .r_opp_x(r_opponent_x),
             .r_opp_y(r_opponent_y),
             .r_opp_dir(r_opponent_dir),
@@ -283,17 +292,20 @@ module top_level(
     always_ff @(posedge eth_refclk) begin
         //if (sys_rst) begin
         if (btnc) begin
-            led[13:0] <= 0;
+            // led[13:0] <= 0;
             buffer <= 0;
         end else begin 
             if (buffer != receive_axiod & receive_axiod != 0) begin
-                buffer <= receive_axiod;
+                buffer <= receive_axiod[43:0];
             end
 
-            led[15:0] <= buffer[19:4];
+            // led[15:0] <= receive_axiod[18:3];
         end
+        // led <= receive_axiod[18:3];
     end
 
+    assign led = receive_axiod[18:3];
+    assign led = 16'hFFFF;
     // add logic to formulate message 
 
 endmodule 

@@ -109,37 +109,62 @@ module racer_view (
         .douta(sprite_type)
     );
 
-    xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(11),
-        .RAM_DEPTH(360),
-        .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(cos.mem))                    
-    ) cosine (
-        .addra(direction),
-        .dina(11'b0),       
-        .clka(clk_in),
-        .wea(1'b0),
-        .ena(1'b1),
-        .rsta(rst_in),
-        .regcea(1'b1),
-        .douta(cos)
-    );
+    // xilinx_single_port_ram_read_first #(
+    //     .RAM_WIDTH(11),
+    //     .RAM_DEPTH(360),
+    //     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    //     .INIT_FILE(`FPATH(cos.mem))                    
+    // ) cosine (
+    //     .addra(direction),
+    //     .dina(11'b0),       
+    //     .clka(clk_in),
+    //     .wea(1'b0),
+    //     .ena(1'b1),
+    //     .rsta(rst_in),
+    //     .regcea(1'b1),
+    //     .douta(cos)
+    // );
 
-    xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(11),
-        .RAM_DEPTH(360),
-        .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(sin.mem))                    
-    ) sine (
-        .addra(direction),
-        .dina(11'b0),       
-        .clka(clk_in),
-        .wea(1'b0),
-        .ena(1'b1),
-        .rsta(rst_in),
-        .regcea(1'b1),
-        .douta(sin)
-    );
+    // xilinx_single_port_ram_read_first #(
+    //     .RAM_WIDTH(11),
+    //     .RAM_DEPTH(360),
+    //     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    //     .INIT_FILE(`FPATH(sin.mem))                    
+    // ) sine (
+    //     .addra(direction),
+    //     .dina(11'b0),       
+    //     .clka(clk_in),
+    //     .wea(1'b0),
+    //     .ena(1'b1),
+    //     .rsta(rst_in),
+    //     .regcea(1'b1),
+    //     .douta(sin)
+    // );
+
+    xilinx_true_dual_port_read_first_1_clock_ram #(
+    .RAM_WIDTH(11),
+    .RAM_DEPTH(360),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .INIT_FILE(`FPATH(cos.mem))  
+    ) ram_0 (
+    //Write Side (16.67MHz)
+    .addra(direction),
+    .dina(11'b0),
+    .clka(clk_in),
+    .wea(1'b0),
+    .ena(1'b1),
+    .rsta(rst_in),
+    .regcea(1'b1),
+    .douta(cos),
+    //Read Side (65 MHz)
+    .addrb((direction > 90) ? direction - 90 : 90 - direction),
+    .dinb(11'b0),
+    .web(1'b0),
+    .enb(1'b1),
+    .rstb(rst_in),
+    .regceb(1'b1),
+    .doutb(sin)
+  );
 
     // Normal Sprites
     
