@@ -169,34 +169,34 @@ always_ff @(posedge clk) begin
             end
 
             // Player x
-            if (player_x + i_player_x >= 1024 - 32) begin 
-                player_x <= 1024 - 32;
-            end else if (player_x + i_player_x <= 0 + 32) begin
-                player_x <= 0 + 32;
+            if (player_x + i_player_x >= 2048 - 64) begin 
+                player_x <= 2048 - 64;
+            end else if (player_x + i_player_x <= 0 + 64) begin
+                player_x <= 0 + 64;
             end else begin
                 player_x <= player_x + i_player_x;
             end
             // Player y
-            if (player_y + i_player_y >= 768 - 32) begin 
-                player_y <= 768 - 32;
-            end else if (player_y + i_player_y <= 0 + 32) begin
+            if (player_y + i_player_y >= 2048 - 64) begin 
+                player_y <= 2048 - 64;
+            end else if (player_y + i_player_y <= 0 + 64) begin
                 player_y <= 0 + 32;
             end else begin
                 player_y <= player_y + i_player_y;
             end
 
             // Opponent x
-            if (opponent_x + i_opp_x >= 1024 - 32) begin 
-                opponent_x <= 1024 - 32;
-            end else if (opponent_x + i_opp_x <= 0 + 32) begin
+            if (opponent_x + i_opp_x >= 2048 - 64) begin 
+                opponent_x <= 2048 - 32;
+            end else if (opponent_x + i_opp_x <= 0 + 64) begin
                 opponent_x <= 0 + 32;
             end else begin
                 opponent_x <= opponent_x + i_opp_x;
             end
 
             // Opponent y
-            if (opponent_y + i_opp_y >= 768 - 32) begin 
-                opponent_y <= 768 - 32;
+            if (opponent_y + i_opp_y >= 2048 - 32) begin 
+                opponent_y <= 2048 - 32;
             end else if (opponent_y + i_opp_y <= 0 + 32) begin
                 opponent_y <= 0 + 32;
             end else begin
@@ -222,10 +222,12 @@ always_ff @(posedge clk) begin
         // end 
 
         //if (receive_axiiv) begin
+        if (hcount == 1198 && vcount == 800) begin
             i_player_x <= $signed(speed * p_c);
             i_player_y <= $signed(-1 * speed * p_s);
             i_opp_x <= $signed(speed * o_c);
             i_opp_y <= $signed(-1 * speed * o_s);
+        end 
         //end
     end
 end

@@ -69,7 +69,7 @@ module top_level(
 
     logic clk_65mhz;
 
-    logic [43:0] sync_receive; 
+    logic [44:0] sync_receive; 
 
     clk_wiz_0_clk_wiz clk_maker(
         .clk_in1(clk_100mhz),
@@ -188,6 +188,18 @@ module top_level(
     assign p_dir_sync = game_out_sync[11:3];
     assign p_game_sync = game_out_sync[2:0];
 
+    logic flag;
+    always_ff @(posedge clk_65mhz) begin
+        if (sys_rst) begin
+            flag <= 0;
+        end else begin
+            if (hcount == 1250 && vcount == 850) begin
+                flag <= 1;
+            end else begin
+                flag <= 0;
+            end
+        end
+    end
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(34),
@@ -278,22 +290,6 @@ module top_level(
             end
 
             led[7:0] <= buffer[7:0];
-        end
-    end
-
-    logic [10:0] buffer2;
-    logic flag;
-    always_ff @(posedge clk_65mhz) begin
-        if (sys_rst) begin
-            buffer2 <= player_x;
-            flag <= 0;
-        end else begin
-            if (buffer2 != player_x) begin
-                buffer2 <= player_x;
-                flag <= 1;
-            end else begin
-                flag <= 0;
-            end
         end
     end
 
