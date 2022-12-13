@@ -53,17 +53,17 @@ module top_level(
     logic [8:0] r_opponent_dir; 
     logic [2:0] r_opponent_game; 
     logic r_opponent_reset;
-    // assign r_opponent_x = sync_receive[43:33];
-    // assign r_opponent_y = sync_receive[31:21];
-    // assign r_opponent_dir = sync_receive[19:11];
-    // assign r_opponent_game = sync_receive[7:5];
-    // assign r_opponent_reset = sync_receive[3];
-     assign r_opponent_x = receive_axiod[43:33];
-    assign r_opponent_y = receive_axiod[31:21];
-    assign r_opponent_dir = receive_axiod[19:11];
-    assign r_opponent_game = receive_axiod[7:5];
-    assign r_opponent_reset = receive_axiod[3];
-    // assign r_axiov = sync_receive[44];
+    assign r_opponent_x = sync_receive[43:33];
+    assign r_opponent_y = sync_receive[31:21];
+    assign r_opponent_dir = sync_receive[19:11];
+    assign r_opponent_game = sync_receive[7:5];
+    assign r_opponent_reset = sync_receive[3];
+    // assign r_opponent_x = receive_axiod[43:33];
+    // assign r_opponent_y = receive_axiod[31:21];
+    // assign r_opponent_dir = receive_axiod[19:11];
+    // assign r_opponent_game = receive_axiod[7:5];
+    // assign r_opponent_reset = receive_axiod[3];
+    assign r_axiov = sync_receive[44];
 
     logic [10:0] player_x;
     logic [10:0] player_y;
@@ -74,36 +74,36 @@ module top_level(
 
     logic clk_65mhz;
 
-    // logic [44:0] sync_receive; 
+    logic [44:0] sync_receive; 
 
     clk_wiz_0_clk_wiz clk_maker(
         .clk_in1(clk_100mhz),
         .eth_clk(eth_refclk),
         .vga_clk(clk_65mhz));
     
-    // xilinx_true_dual_port_read_first_2_clock_ram #(
-    //     .RAM_WIDTH(45),
-    //     .RAM_DEPTH(2))
-    // eth_buffer (
-    //     //Write Side (50MHz)
-    //     .addra(0),
-    //     .clka(eth_refclk), //NEW FOR LAB 04B
-    //     .wea(1),
-    //     .dina({receive_axiov, receive_axiod}),
-    //     .ena(receive_axiov),
-    //     .regcea(1'b1),
-    //     .rsta(btnc),
-    //     .douta(),
-    //     //Read Side (65 MHz)
-    //     .addrb(0),
-    //     .dinb(44'b0),
-    //     .clkb(clk_65mhz),
-    //     .web(1'b0),
-    //     .enb(1'b1),
-    //     .rstb(btnc),
-    //     .regceb(1'b1),
-    //     .doutb(sync_receive)
-    // );
+    xilinx_true_dual_port_read_first_2_clock_ram #(
+        .RAM_WIDTH(45),
+        .RAM_DEPTH(2))
+    eth_buffer (
+        //Write Side (50MHz)
+        .addra(0),
+        .clka(eth_refclk), //NEW FOR LAB 04B
+        .wea(1),
+        .dina({receive_axiov, receive_axiod}),
+        .ena(receive_axiov),
+        .regcea(1'b1),
+        .rsta(btnc),
+        .douta(),
+        //Read Side (65 MHz)
+        .addrb(0),
+        .dinb(44'b0),
+        .clkb(clk_65mhz),
+        .web(1'b0),
+        .enb(1'b1),
+        .rstb(btnc),
+        .regceb(1'b1),
+        .doutb(sync_receive)
+    );
 
     // logic [20:0] screen_sync; 
     // logic [10:0] sync_hcount; 
@@ -241,7 +241,7 @@ module top_level(
             .btnu(btnu),
             .hcount(hcount),
             .vcount(vcount),
-            .receive_axiiv(receive_axiov),
+            .receive_axiiv(r_axiov),
             .r_opp_x(r_opponent_x),
             .r_opp_y(r_opponent_y),
             .r_opp_dir(r_opponent_dir),
@@ -295,17 +295,17 @@ module top_level(
             // led[13:0] <= 0;
             buffer <= 0;
         end else begin 
-            if (buffer != receive_axiod & receive_axiod != 0) begin
-                buffer <= receive_axiod[43:0];
-            end
+            // if (buffer != receive_axiod & receive_axiod != 0) begin
+            //     buffer <= receive_axiod[43:0];
+            // end
 
-            // led[15:0] <= receive_axiod[18:3];
+            led[15:0] <= receive_axiod[18:3];
         end
         // led <= receive_axiod[18:3];
     end
 
-    assign led = receive_axiod[18:3];
-    assign led = 16'hFFFF;
+    // assign led = receive_axiod[18:3];
+    // assign led = 16'hFFFF;
     // add logic to formulate message 
 
 endmodule 
