@@ -46,6 +46,11 @@ logic signed [11:0] i_player_y;
 logic [2:0] game_status;
 logic [2:0] laps;
 
+logic corner1;
+logic corner2;
+logic corner3;
+logic corner4; 
+
 logic [10:0] speed;
 assign speed = 6;
 
@@ -115,9 +120,9 @@ always_ff @(posedge clk) begin
         laps <= 0;
         
         // set player and opponent to initial starting locations
-        player_x <= 128;
+        player_x <= 256;
         player_y <= 100;
-        opponent_x <= 256;
+        opponent_x <= 128;
         opponent_y <= 100;
         player_direction <= 0;
         opp_dir <= 0;
@@ -125,6 +130,11 @@ always_ff @(posedge clk) begin
         i_player_y <= 0;
         i_opp_x <= 0;
         i_opp_y <= 0;
+
+        corner1 <= 0;
+        corner2 <= 0;
+        corner3 <= 0;
+        corner4 <= 0;
     end else if (game_state) begin
         game_state <= 1;
         game_status <= 1;
@@ -137,9 +147,13 @@ always_ff @(posedge clk) begin
             end
 
             // Check if completed lap (checks range of position (which will be in track) %% direction (to check they are going right way))
-            if (~player_x == 0 && player_y && player_direction >= 0 && player_direction <= 180) begin
-                laps <= laps + 1;
-            end
+            // if (player_x == 128 && player_y == 128 && corner4) begin
+            //     corner1 <= 
+            // end
+            
+            // (~player_x == 0 && player_y && player_direction >= 0 && player_direction <= 180) begin
+            //     laps <= laps + 1;
+            // end
 
             // win condition
             if (laps == 3) begin
@@ -180,18 +194,18 @@ always_ff @(posedge clk) begin
             
         end
 
-        //Collisions
+        // //Collisions
         if (hcount == 1180 && vcount == 800) begin
             // Check collisions
-            if ((player_x + i_player_x + 128 >= opponent_x + i_opp_x ) && (player_x + i_player_x <= opponent_x + i_opp_x + 128)) begin
-                if ((player_y + i_player_y + 128 >= opponent_y + i_opp_y) && (player_y + i_player_y  <= opponent_y + i_opp_y + 128)) begin
+            if (($signed(player_x + i_player_x + 128) >= $signed(opponent_x + i_opp_x) ) && ($signed(player_x + i_player_x) <= $signed(opponent_x + i_opp_x + 128))) begin
+                if (($signed(player_y + i_player_y + 128) >= $signed(opponent_y + i_opp_y)) && ($signed(player_y + i_player_y)  <= $signed(opponent_y + i_opp_y + 128))) begin
                     opp_dir <= player_direction;
                     player_direction <= opp_dir;
                 end 
             end
         end 
 
-        if (hcount == 1198 && vcount == 800) begin
+        if ((hcount == 1198 && vcount == 800) || (hcount == 1170 && vcount == 800)) begin
             i_player_x <= $signed(speed) * p_c / 512;
             i_player_y <= $signed(-1 * speed) * p_s / 512;
             i_opp_x <= $signed(speed) * o_c / 512;

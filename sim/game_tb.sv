@@ -75,6 +75,7 @@ module game_tb;
                 hcount = j;
                 #20;
             end
+            r_opp_game = 1;
         end
 
         #10000;
