@@ -23,10 +23,12 @@ module racer_view (
     logic [3:0] in_opponent_pipe;
     
     logic [3:0] sprite_type;
+    logic [3:0] obstacle_type;
     logic [9:0] player_addr;
     logic [9:0] opponent_addr;
     logic [9:0] sprite_addr;
     logic [1:0][3:0] sprite_type_pipe;
+    logic [1:0][3:0] obstacle_type_pipe;
 
     logic signed [10:0] cos;
     logic signed [10:0] sin;
@@ -57,6 +59,9 @@ module racer_view (
         sprite_type_pipe[0] <= sprite_type;
         sprite_type_pipe[1] <= sprite_type_pipe[0];
 
+        obstacle_type_pipe[0] <= obstacle_type;
+        obstacle_type_pipe[1] <= obstacle_type_pipe[0];
+
         if (hcount_in == 0 && vcount_in == 0) player_counter <= 0;
         if (in_player) player_counter <= player_counter + 1;
 
@@ -78,6 +83,9 @@ module racer_view (
         end else if (in_opponent_pipe[3]) begin
             if (output_color[9] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
             else pixel_out <= output_color[9];
+        end else if (obstacle_type_pipe[1] != 0) begin
+            if (output_color[obstacle_type_pipe[1]] == 12'h406) pixel_out <= output_color[sprite_type_pipe[1]];
+            else pixel_out <= output_color[obstacle_type_pipe[1]];
         end else pixel_out <= output_color[sprite_type_pipe[1]];
     end
 
@@ -110,36 +118,48 @@ module racer_view (
     );
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(11),
-        .RAM_DEPTH(360),
+        .RAM_WIDTH(4),
+        .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(cos.mem))                    
-    ) cosine (
-        .addra(direction),
-        .dina(11'b0),       
+        .INIT_FILE(`FPATH(track_obstacles.mem))                    
+    ) track_obstacles (
+        .addra(track_addr),
+        .dina(4'b0),       
         .clka(clk_in),
         .wea(1'b0),
         .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
-        .douta(cos)
+        .douta(obstacle_type)
     );
 
-    xilinx_single_port_ram_read_first #(
+    xilinx_true_dual_port_read_first_1_clock_ram #(
         .RAM_WIDTH(11),
         .RAM_DEPTH(360),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(sin.mem))                    
-    ) sine (
+        .INIT_FILE(`FPATH(cos.mem))  
+    ) trig (
+    // Cosine Side
         .addra(direction),
-        .dina(11'b0),       
+        .dina(11'b0),
         .clka(clk_in),
         .wea(1'b0),
         .ena(1'b1),
         .rsta(rst_in),
         .regcea(1'b1),
-        .douta(sin)
+        .douta(cos),
+    // Sine Side
+        .addrb((direction > 9'd90) ? direction - 9'd90 : 9'd90 - direction),
+        .dinb(11'b0),
+        .web(1'b0),
+        .enb(1'b1),
+        .rstb(rst_in),
+        .regceb(1'b1),
+        .doutb(sin)
     );
+
+
+
 
     // Normal Sprites
     
@@ -147,7 +167,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(00_road.mem))
+        .INIT_FILE(`FPATH(00_road_vert.mem))
     ) i0_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -163,7 +183,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH(00_road_pal.mem))
+        .INIT_FILE(`FPATH(00_road_vert_pal.mem))
     ) p0_black_square_pal (
         .addra(palette_addr[0]),
         .dina(12'b0),       
@@ -215,7 +235,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    
+        .INIT_FILE(`FPATH(02_road_horiz.mem))                    
     ) i2_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -231,7 +251,7 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        
+        .INIT_FILE(`FPATH(02_road_horiz_pal.mem))                        
     ) p2_type (
         .addra(palette_addr[2]),
         .dina(12'b0),       
@@ -317,7 +337,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    
+        .INIT_FILE(`FPATH(05_finish.mem))                    
     ) i5_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -333,13 +353,13 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        
+        .INIT_FILE(`FPATH(05_finish_pal.mem))                        
     ) p5_type (
         .addra(palette_addr[5]),
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 5),
+        .ena(obstacle_type == 5),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[5])
@@ -351,7 +371,7 @@ module racer_view (
         .RAM_WIDTH(8),
         .RAM_DEPTH(1024),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                    
+        .INIT_FILE(`FPATH(06_oil_spill.mem))                    
     ) i6_type (
         .addra(sprite_addr),
         .dina(8'b0),       
@@ -367,13 +387,13 @@ module racer_view (
         .RAM_WIDTH(12),
         .RAM_DEPTH(256),
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-        .INIT_FILE(`FPATH())                        
+        .INIT_FILE(`FPATH(06_oil_spill_pal.mem))                        
     ) p6_type (
         .addra(palette_addr[6]),
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 6),
+        .ena(obstacle_type == 6),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[6])
@@ -407,7 +427,7 @@ module racer_view (
         .dina(12'b0),       
         .clka(clk_in),
         .wea(1'b0),
-        .ena(sprite_type == 7),
+        .ena(obstacle_type == 7),
         .rsta(rst_in),
         .regcea(1'b1),
         .douta(output_color[7])

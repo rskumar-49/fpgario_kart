@@ -49,69 +49,57 @@ logic [2:0] laps;
 logic [10:0] speed;
 assign speed = 6;
 
-xilinx_single_port_ram_read_first #(
+xilinx_true_dual_port_read_first_1_clock_ram #(
     .RAM_WIDTH(11),
     .RAM_DEPTH(360),
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-    .INIT_FILE(`FPATH(cos.mem))                    
-) p_cos (
+    .INIT_FILE(`FPATH(cos.mem))  
+) p_angles (
+    // Cosine Side
     .addra(player_direction),
-    .dina(11'b0),       
+    .dina(11'b0),
     .clka(clk),
     .wea(1'b0),
     .ena(1'b1),
     .rsta(rst),
     .regcea(1'b1),
-    .douta(p_c)
-);
+    .douta(p_c),
+    // Sine Side
+    .addrb((player_direction > 90) ? player_direction - 90 : 90 - player_direction),
+    .dinb(11'b0),
+    .web(1'b0),
+    .enb(1'b1),
+    .rstb(rst),
+    .regceb(1'b1),
+    .doutb(p_s)
+  );
 
-xilinx_single_port_ram_read_first #(
+xilinx_true_dual_port_read_first_1_clock_ram #(
     .RAM_WIDTH(11),
     .RAM_DEPTH(360),
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-    .INIT_FILE(`FPATH(sin.mem))                    
-) p_sin (
-    .addra(player_direction),
-    .dina(11'b0),       
-    .clka(clk),
-    .wea(1'b0),
-    .ena(1'b1),
-    .rsta(rst),
-    .regcea(1'b1),
-    .douta(p_s)
-);
-
-xilinx_single_port_ram_read_first #(
-    .RAM_WIDTH(11),
-    .RAM_DEPTH(360),
-    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-    .INIT_FILE(`FPATH(cos.mem))                    
-) o_cos (
+    .INIT_FILE(`FPATH(cos.mem))  
+) o_angles (
+    // Cosine Side
     .addra(r_opp_dir),
-    .dina(11'b0),       
+    .dina(11'b0),
     .clka(clk),
     .wea(1'b0),
     .ena(1'b1),
     .rsta(rst),
     .regcea(1'b1),
-    .douta(o_c)
-);
+    .douta(o_c),
+    // Sine Side
+    .addrb((r_opp_dir > 90) ? r_opp_dir - 90 : 90 - r_opp_dir),
+    .dinb(11'b0),
+    .web(1'b0),
+    .enb(1'b1),
+    .rstb(rst),
+    .regceb(1'b1),
+    .doutb(o_s)
+  );
 
-xilinx_single_port_ram_read_first #(
-    .RAM_WIDTH(11),
-    .RAM_DEPTH(360),
-    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
-    .INIT_FILE(`FPATH(sin.mem))                    
-) o_sin (
-    .addra(r_opp_dir),
-    .dina(11'b0),       
-    .clka(clk),
-    .wea(1'b0),
-    .ena(1'b1),
-    .rsta(rst),
-    .regcea(1'b1),
-    .douta(o_s)
-);
+  
 
 always_ff @(posedge clk) begin
     if (rst) begin
