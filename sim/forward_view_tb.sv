@@ -38,11 +38,11 @@ module forward_view_tb;
         rst_in = 1; //reset system
         #20; //hold high for a few clock cycles
         rst_in=0;
-        player_x = 1200;
-        player_y = 191;
+        player_x = 960;
+        player_y = 1920;
         opponent_x = 1328;
         opponent_y = 191;
-        direction = 270;
+        direction = 90;
         #20;
         
         for (int i = 512; i < 768; i = i+1)begin

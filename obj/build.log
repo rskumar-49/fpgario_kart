@@ -512,7 +512,7 @@ Detailed RTL Component Info :
 	   2 Input   12 Bit       Adders := 15    
 	   2 Input   11 Bit       Adders := 6     
 	   2 Input   10 Bit       Adders := 5     
-	   2 Input    9 Bit       Adders := 2     
+	   2 Input    9 Bit       Adders := 10    
 	   3 Input    5 Bit       Adders := 10    
 	   2 Input    3 Bit       Adders := 1     
 +---XORs : 
@@ -536,16 +536,16 @@ Detailed RTL Component Info :
 	                9 Bit    Registers := 3     
 	                8 Bit    Registers := 34    
 	                6 Bit    Registers := 1     
-	                4 Bit    Registers := 20    
+	                4 Bit    Registers := 32    
 	                3 Bit    Registers := 1     
 	                2 Bit    Registers := 3     
 	                1 Bit    Registers := 38    
 +---RAMs : 
-	               8K Bit	(1024 X 8 bit)          RAMs := 15    
+	               8K Bit	(1024 X 8 bit)          RAMs := 24    
 	               3K Bit	(256 X 12 bit)          RAMs := 30    
-	               3K Bit	(360 X 11 bit)          RAMs := 8     
+	               3K Bit	(360 X 11 bit)          RAMs := 4     
 	               3K Bit	(256 X 13 bit)          RAMs := 1     
-	             1024 Bit	(256 X 4 bit)          RAMs := 3     
+	             1024 Bit	(256 X 4 bit)          RAMs := 6     
 	               90 Bit	(2 X 45 bit)          RAMs := 1     
 	               42 Bit	(2 X 21 bit)          RAMs := 1     
 +---Muxes : 
@@ -561,7 +561,7 @@ Detailed RTL Component Info :
 	   5 Input   16 Bit        Muxes := 5     
 	   2 Input   15 Bit        Muxes := 4     
 	   2 Input   14 Bit        Muxes := 1     
-	   2 Input   12 Bit        Muxes := 14    
+	   2 Input   12 Bit        Muxes := 20    
 	   2 Input   11 Bit        Muxes := 12    
 	   2 Input    9 Bit        Muxes := 9     
 	   5 Input    8 Bit        Muxes := 6     
@@ -597,23 +597,23 @@ WARNING: [Synth 8-3936] Found unconnected internal register 'delta_x_pipe_reg[0]
 WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[1]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.Urf5O2/src/racer_view.sv:54]
 WARNING: [Synth 8-3936] Found unconnected internal register 'delta_y_pipe_reg[0]' and it is trimmed from '22' to '21' bits. [/tmp/tmp.Urf5O2/src/racer_view.sv:54]
 DSP Report: Generating DSP loc_x3, operation Mode is: A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_x3.
+DSP Report: register trig/output_register.doutb_reg_reg is absorbed into DSP loc_x3.
 DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_x3.
 DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_x3.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x3.
 DSP Report: Generating DSP loc_x2, operation Mode is: C-A''*B2.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_x2.
+DSP Report: register trig/output_register.douta_reg_reg is absorbed into DSP loc_x2.
 DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_x2.
 DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_x2.
 DSP Report: operator loc_x2 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x2.
 DSP Report: Generating DSP loc_y3, operation Mode is: A''*B2.
-DSP Report: register cosine/output_register.douta_reg_reg is absorbed into DSP loc_y3.
+DSP Report: register trig/output_register.douta_reg_reg is absorbed into DSP loc_y3.
 DSP Report: register delta_x_pipe_reg[0] is absorbed into DSP loc_y3.
 DSP Report: register delta_x_pipe_reg[1] is absorbed into DSP loc_y3.
 DSP Report: operator loc_y3 is absorbed into DSP loc_y3.
 DSP Report: Generating DSP loc_y2, operation Mode is: C+A''*B2.
-DSP Report: register sine/output_register.douta_reg_reg is absorbed into DSP loc_y2.
+DSP Report: register trig/output_register.doutb_reg_reg is absorbed into DSP loc_y2.
 DSP Report: register delta_y_pipe_reg[0] is absorbed into DSP loc_y2.
 DSP Report: register delta_y_pipe_reg[1] is absorbed into DSP loc_y2.
 DSP Report: operator loc_y2 is absorbed into DSP loc_y2.
@@ -631,21 +631,21 @@ DSP Report: operator conv_y0 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: operator conv_x4 is absorbed into DSP conv_x4.
 DSP Report: Generating DSP loc_x3, operation Mode is: A2*B2.
-DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_x3.
+DSP Report: register trig/output_register.doutb_reg_reg is absorbed into DSP loc_x3.
 DSP Report: register conv_x_reg is absorbed into DSP loc_x3.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x3.
 DSP Report: Generating DSP loc_x2, operation Mode is: C+((D:0x420)-A)*B2.
-DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_x2.
+DSP Report: register trig/output_register.douta_reg_reg is absorbed into DSP loc_x2.
 DSP Report: register conv_y_reg is absorbed into DSP loc_x2.
 DSP Report: operator conv_y0 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x2 is absorbed into DSP loc_x2.
 DSP Report: operator loc_x3 is absorbed into DSP loc_x2.
 DSP Report: Generating DSP loc_y3, operation Mode is: A2*B2.
-DSP Report: register cosine_2/output_register.douta_reg_reg is absorbed into DSP loc_y3.
+DSP Report: register trig/output_register.douta_reg_reg is absorbed into DSP loc_y3.
 DSP Report: register conv_x_reg is absorbed into DSP loc_y3.
 DSP Report: operator loc_y3 is absorbed into DSP loc_y3.
 DSP Report: Generating DSP loc_y2, operation Mode is: C-((D:0x420)-A)*B2.
-DSP Report: register sine_2/output_register.douta_reg_reg is absorbed into DSP loc_y2.
+DSP Report: register trig/output_register.doutb_reg_reg is absorbed into DSP loc_y2.
 DSP Report: register conv_y_reg is absorbed into DSP loc_y2.
 DSP Report: operator conv_y0 is absorbed into DSP loc_y2.
 DSP Report: operator loc_y2 is absorbed into DSP loc_y2.
@@ -699,48 +699,38 @@ WARNING: [Synth 8-7129] Port btnr in module top_level is either unconnected or h
 WARNING: [Synth 8-6014] Unused sequential element eth_buffer/BRAM_reg was removed. 
 WARNING: [Synth 8-6014] Unused sequential element vga_buffer/BRAM_reg was removed. 
 WARNING: [Synth 8-6014] Unused sequential element vga_buffer/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (track_viewer/i2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element track_viewer/i2_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (track_viewer/p2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element track_viewer/p2_type/BRAM_reg was removed. 
+WARNING: [Synth 8-7257] Removed RAM (track_viewer/i3_type/BRAM_reg) due to inactive write enable.
+WARNING: [Synth 8-6014] Unused sequential element track_viewer/i3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (track_viewer/p3_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element track_viewer/p3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (track_viewer/p4_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element track_viewer/p4_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (track_viewer/p5_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element track_viewer/p5_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (track_viewer/p6_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element track_viewer/p6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (track_viewer/p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element track_viewer/p7_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (racer_viewer/i2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element racer_viewer/i2_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p2_type/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element racer_viewer/trig/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element racer_viewer/trig/BRAM_reg was removed. 
+WARNING: [Synth 8-7257] Removed RAM (racer_viewer/i3_type/BRAM_reg) due to inactive write enable.
+WARNING: [Synth 8-6014] Unused sequential element racer_viewer/i3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p3_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p4_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p4_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p5_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p5_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p6_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (racer_viewer/p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element racer_viewer/p7_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (forward_viewer/i2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element forward_viewer/i2_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p2_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p2_type/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element forward_viewer/trig/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element forward_viewer/trig/BRAM_reg was removed. 
+WARNING: [Synth 8-7257] Removed RAM (forward_viewer/i3_type/BRAM_reg) due to inactive write enable.
+WARNING: [Synth 8-6014] Unused sequential element forward_viewer/i3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p3_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p3_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p4_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p4_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p5_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p5_type/BRAM_reg was removed. 
-WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p6_type/BRAM_reg) due to inactive write enable.
-WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p6_type/BRAM_reg was removed. 
 WARNING: [Synth 8-7257] Removed RAM (forward_viewer/p7_type/BRAM_reg) due to inactive write enable.
 WARNING: [Synth 8-6014] Unused sequential element forward_viewer/p7_type/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element p_angles/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element p_angles/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element o_angles/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element o_angles/BRAM_reg was removed. 
 ---------------------------------------------------------------------------------
 Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:25 . Memory (MB): peak = 2839.156 ; gain = 0.000 ; free physical = 1125 ; free virtual = 4329
 ---------------------------------------------------------------------------------
@@ -753,41 +743,54 @@ Block RAM: Preliminary Mapping Report (see note below)
 |Module Name                                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
 +----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized17: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 +----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
@@ -842,41 +845,54 @@ Block RAM: Final Mapping Report
 |Module Name                                         | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
 +----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized17: | BRAM_reg   | 256 x 13(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 |xilinx_single_port_ram_read_first:                  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized7:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized8:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
-|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 360 x 11(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized0:  | BRAM_reg   | 256 x 4(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized1:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized2:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized3:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized4:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized5:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized6:  | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized9:  | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized10: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized11: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized12: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized13: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized14: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized15: | BRAM_reg   | 1 K x 8(READ_FIRST)    | W | R |                        |   |   | Port A           | 1      | 0      | 
+|xilinx_single_port_ram_read_first__parameterized16: | BRAM_reg   | 256 x 12(READ_FIRST)   | W | R |                        |   |   | Port A           | 1      | 0      | 
 +----------------------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 
@@ -893,12 +909,6 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-223] decloning instance 'grapher/racer_viewer/cosine/BRAM_reg' (RAMB18E1_9) to 'grapher/forward_viewer/cosine_2/BRAM_reg'
-INFO: [Synth 8-223] decloning instance 'grapher/racer_viewer/sine/BRAM_reg' (RAMB18E1_10) to 'grapher/forward_viewer/sine_2/BRAM_reg'
-INFO: [Synth 8-223] decloning instance 'grapher/forward_viewer/cosine_2/BRAM_reg' (RAMB18E1_9) to 'g1/p_cos/BRAM_reg'
-INFO: [Synth 8-223] decloning instance 'grapher/forward_viewer/sine_2/BRAM_reg' (RAMB18E1_10) to 'g1/p_sin/BRAM_reg'
-INFO: [Synth 8-7052] The timing for the instance g1/p_cos/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance g1/p_sin/BRAM_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
 Finished Technology Mapping : Time (s): cpu = 00:00:30 ; elapsed = 00:00:34 . Memory (MB): peak = 2839.156 ; gain = 0.000 ; free physical = 930 ; free virtual = 4140
 ---------------------------------------------------------------------------------
@@ -961,8 +971,8 @@ Static Shift Register Report:
 |top_level   | grapher/hcount_pipe_reg[7][10]          | 6      | 2     | NO           | NO                 | YES               | 2      | 0       | 
 |top_level   | grapher/vcount_pipe_reg[5][9]           | 6      | 1     | NO           | NO                 | YES               | 1      | 0       | 
 |top_level   | grapher/vcount_pipe_reg[7][8]           | 8      | 2     | NO           | NO                 | YES               | 2      | 0       | 
-|top_level   | grapher/pixel_out_track_pipe_reg[3][11] | 5      | 9     | NO           | NO                 | YES               | 9      | 0       | 
-|top_level   | grapher/pixel_out_track_pipe_reg[3][6]  | 5      | 3     | NO           | YES                | YES               | 3      | 0       | 
+|top_level   | grapher/pixel_out_track_pipe_reg[3][11] | 5      | 10    | NO           | NO                 | YES               | 10     | 0       | 
+|top_level   | grapher/pixel_out_track_pipe_reg[3][9]  | 5      | 2     | NO           | YES                | YES               | 2      | 0       | 
 |top_level   | blank_pipe_reg[8]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
 |top_level   | hsync_pipe_reg[9]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
 |top_level   | vsync_pipe_reg[9]                       | 10     | 1     | NO           | NO                 | YES               | 1      | 0       | 
@@ -1108,7 +1118,7 @@ INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc
 Running DRC as a precondition to command opt_design
 
 Starting DRC Task
-INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [DRC 23-27] Running DRC with 4 threads
 INFO: [Project 1-461] DRC finished with 0 Errors
 INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
 
@@ -1199,7 +1209,7 @@ INFO: [Pwropt 34-10] Applying ODC optimizations ...
 
 
 Starting PowerOpt Patch Enables Task
-INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 21 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 33 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
 INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
 Number of BRAM Ports augmented: 1 newly gated: 1 Total Ports: 42
 Number of Flops added for Enable Generation: 5
@@ -1236,16 +1246,16 @@ Command: place_design
 Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
 INFO: [Timing 38-35] Done setting XDC timing constraints.
-INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [DRC 23-27] Running DRC with 4 threads
 INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
 INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
 Running DRC as a precondition to command place_design
-INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [DRC 23-27] Running DRC with 4 threads
 INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
 INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
 
 Starting Placer Task
-INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 8 CPUs
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
 
 Phase 1 Placer Initialization
 
@@ -1296,7 +1306,7 @@ Phase 2.4 Global Placement Core
 Phase 2.4.1 Physical Synthesis In Placer
 INFO: [Physopt 32-1035] Found 0 LUTNM shape to break, 149 LUT instances to create LUTNM shape
 INFO: [Physopt 32-1044] Break lutnm for timing: one critical 0, two critical 0, total 0, new lutff created 0
-INFO: [Physopt 32-1138] End 1 Pass. Optimized 70 nets or LUTs. Breaked 0 LUT, combined 70 existing LUTs and moved 0 existing LUT
+INFO: [Physopt 32-1138] End 1 Pass. Optimized 79 nets or LUTs. Breaked 0 LUT, combined 79 existing LUTs and moved 0 existing LUT
 INFO: [Physopt 32-65] No nets found for high-fanout optimization.
 INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
 INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
@@ -1339,7 +1349,7 @@ Summary of Physical Synthesis Optimizations
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 |  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
-|  LUT Combining                                    |            0  |             70  |                    70  |           0  |           1  |  00:00:00  |
+|  LUT Combining                                    |            0  |             79  |                    79  |           0  |           1  |  00:00:00  |
 |  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
 |  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
 |  Fanout                                           |           41  |              0  |                     9  |           0  |           1  |  00:00:00  |
@@ -1464,7 +1474,7 @@ INFO: [Place 30-612] Post-Placement Estimated Congestion
 |           | Global Congestion | Short Congestion  |
 | Direction | Region Size       | Region Size       |
 |___________|___________________|___________________|
-|      North|                1x1|                1x1|
+|      North|                1x1|                4x4|
 |___________|___________________|___________________|
 |      South|                1x1|                2x2|
 |___________|___________________|___________________|
@@ -1703,14 +1713,17 @@ phys_opt_design: Time (s): cpu = 00:02:18 ; elapsed = 00:00:22 . Memory (MB): pe
 Command: route_design
 Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
 Running DRC as a precondition to command route_design
-INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [DRC 23-27] Running DRC with 4 threads
 INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
 INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
 
 
 Starting Routing Task
-INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 8 CPUs
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
 
 Phase 1 Build RT Design
 Checksum: PlaceDB: dcf196e9 ConstDB: 0 ShapeSum: ac61c473 RouteDB: 0
@@ -1950,7 +1963,7 @@ Running DRC as a precondition to command write_bitstream
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2022.1/data/ip'.
-INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [DRC 23-27] Running DRC with 4 threads
 WARNING: [DRC CFGBVS-1] Missing CFGBVS and CONFIG_VOLTAGE Design Properties: Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
 
  set_property CFGBVS value1 [current_design]
@@ -1998,7 +2011,7 @@ WARNING: [DRC PDRC-153] Gated clock check: Net t1/b1/axiod_reg[1]_i_2__1_n_0 is 
 WARNING: [DRC PDRC-153] Gated clock check: Net t1/b1/axiov_reg_i_2__1_n_0 is a gated clock net sourced by a combinational pin t1/b1/axiov_reg_i_2__1/O, cell t1/b1/axiov_reg_i_2__1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 INFO: [Vivado 12-3199] DRC finished with 0 Errors, 37 Warnings
 INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
-INFO: [Designutils 20-2272] Running write_bitstream with 8 threads.
+INFO: [Designutils 20-2272] Running write_bitstream with 4 threads.
 Loading data files...
 Loading site data...
 Loading route data...
