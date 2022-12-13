@@ -87,7 +87,8 @@ xilinx_single_port_ram_read_first #(
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .INIT_FILE(`FPATH(cos.mem))                    
 ) o_cos (
-    .addra(r_opp_dir),
+    //.addra(r_opp_dir),
+    .addra(opp_dir),
     .dina(11'b0),       
     .clka(clk),
     .wea(1'b0),
@@ -103,7 +104,8 @@ xilinx_single_port_ram_read_first #(
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .INIT_FILE(`FPATH(sin.mem))                    
 ) o_sin (
-    .addra(r_opp_dir),
+    //.addra(r_opp_dir),
+    .addra(opp_dir),
     .dina(11'b0),       
     .clka(clk),
     .wea(1'b0),
@@ -174,29 +176,27 @@ always_ff @(posedge clk) begin
             // Opponent x
             if ($signed(opponent_x + i_opp_x) >= 1984)      opponent_x <= 1984;
             else if ($signed(opponent_x + i_opp_x) <= 64)   opponent_x <= 64;
-            else                                            opponent_x <= opponent_x + i_opp_x;
+            else                                            opponent_x <= r_opp_x + i_opp_x;
             
             // Opponent y
             if ($signed(opponent_y + i_opp_y) >= 1984)      opponent_y <= 1984;
             else if ($signed(opponent_y + i_opp_y) <= 64)   opponent_y <= 64;
-            else                                            opponent_y <= opponent_y + i_opp_y;
+            else                                            opponent_y <= r_opp_y + i_opp_y;
+
+            opp_dir <= r_opp_dir;
             
         end
 
         //Collisions
-        // if (receive_axiiv) begin
-        //     // Check collision right side
-        //     if (player_x + i_player_x + 32 >= opponent_x + i_opp_x - 32 && player_x + i_player_x + 32 >= opponent_x + i_opp_x - 32) begin
-            
-        //     end else if (player_x + i_player_x + 32 >= opponent_x + i_opp_x - 32) begin
-
-        //     end else begin
-        //         i_player_x <= $signed(speed * p_c);
-        //         i_player_y <= $signed(-1 * speed * p_s);
-        //         i_opp_x <= $signed(speed * o_c);
-        //         i_opp_y <= $signed(-1 * speed * o_s);
-        //     end
-        // end 
+        if (hcount == 1180 && vcount == 800) begin
+            // Check collisions
+            if ((player_x + i_player_x + 96 >= opponent_x + i_opp_x - 96) && (player_x + i_player_x - 96 <= opponent_x + i_opp_x + 96)) begin
+                if ((player_y + i_player_y + 96 >= opponent_y + i_opp_y - 96) && (player_y + i_player_y - 96 <= opponent_y + i_opp_y + 96)) begin
+                    opp_dir <= player_direction;
+                    player_direction <= opp_dir;
+                end 
+            end
+        end 
 
         if (hcount == 1198 && vcount == 800) begin
             i_player_x <= $signed(speed) * p_c / 512;
