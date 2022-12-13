@@ -183,8 +183,8 @@ always_ff @(posedge clk) begin
         //Collisions
         if (hcount == 1180 && vcount == 800) begin
             // Check collisions
-            if ((player_x + i_player_x + 96 >= opponent_x + i_opp_x - 96) && (player_x + i_player_x - 96 <= opponent_x + i_opp_x + 96)) begin
-                if ((player_y + i_player_y + 96 >= opponent_y + i_opp_y - 96) && (player_y + i_player_y - 96 <= opponent_y + i_opp_y + 96)) begin
+            if ((player_x + i_player_x + 128 >= opponent_x + i_opp_x ) && (player_x + i_player_x <= opponent_x + i_opp_x + 128)) begin
+                if ((player_y + i_player_y + 128 >= opponent_y + i_opp_y) && (player_y + i_player_y  <= opponent_y + i_opp_y + 128)) begin
                     opp_dir <= player_direction;
                     player_direction <= opp_dir;
                 end 
